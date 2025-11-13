@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B_Media - Audiophile Gear Recommendations</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>B_MEDIA</h1>
+            </div>
+
+            <!-- Quick Search -->
+            <div class="sidebar-section">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search products...">
+                </div>
+            </div>
+
+            <!-- Filters Section -->
+            <div class="sidebar-section">
+                <div class="section-header">
+                    <h3>Filters</h3>
+                    <button id="reset-filters" class="reset-btn">Reset</button>
+                </div>
+
+                <div class="filter-controls">
+                    <div class="filter-item">
+                        <label for="category-filter">Category</label>
+                        <select id="category-filter">
+                            <option value="all">All Categories</option>
+                            <option value="iems">IEMs</option>
+                            <option value="headphones">Headphones</option>
+                            <option value="portable-dac-amp">Portable DAC</option>
+                            <option value="desktop-dac-amp">Desktop DAC</option>
+                            <option value="dap">DAPs</option>
+                            <option value="wireless-earbuds">Wireless Earbuds</option>
+                            <option value="wireless-headphones">Wireless Headphones</option>
+                            <option value="cables-eartips">Cables & Tips</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-item">
+                        <label for="price-filter">Price Range</label>
+                        <select id="price-filter">
+                            <option value="all">All Prices</option>
+                            <option value="0-50">$0 - $50</option>
+                            <option value="50-100">$50 - $100</option>
+                            <option value="100-200">$100 - $200</option>
+                            <option value="200-500">$200 - $500</option>
+                            <option value="500+">$500+</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-item">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="show-picks-only">
+                            <span class="checkmark"></span>
+                            B_Media Picks Only
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="sidebar-footer">
+                <div class="social-links">
+                    <a href="mailto:bostrommediastrategies@gmail.com">Email</a>
+                    <a href="https://patreon.com/AxelBostrom" target="_blank">Patreon</a>
+                    <a href="https://discord.gg/KtcQSk4yeR" target="_blank">Discord</a>
+                </div>
+
+                <div class="disclaimer">
+                    <p><strong>Disclaimer:</strong> This webpage is NOT affiliated with B_Media.</p>
+                    <p>Created by <a href="https://github.com/GabiBrawl" target="_blank">𝕲𝖆𝖇𝖎𝕭𝖗𝖆𝖜𝖑</a></p>
+                </div>
+            </div>
+        </aside>
+
+        <main id="main-content">
+            <!-- Categories will be inserted here by JS -->
+        </main>
+    </div>
+
+    <!-- Modal for B_Media Pick Info -->
+    <div id="pick-info-modal" class="modal">
+        <div class="modal-content">
+            <h3>About B_Media Picks</h3>
+            <p>These are products that <strong>Axel</strong> would personally choose based on his experience and preferences.</p>
+            <p><strong>Important:</strong> Audio is subjective! A B_Media pick doesn't mean it's objectively better than other products. What sounds great to one person may not suit another's ears and preferences.</p>
+            <p>Consider your own sound signature preferences, use case, and budget when making your decision.</p>
+            <button class="modal-close">Got it!</button>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
