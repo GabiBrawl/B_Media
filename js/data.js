@@ -1,5 +1,5 @@
 const gearData = {
-    iems: [
+    "iem-recommendations": [
         { name: "Truthear Gate", price: 20, url: "https://amzn.to/3UzzHSQ", pick: false, image: "images/Truthear_Gate.png" },
         { name: "7hz x Crinacle Zero 2", price: 25, url: "https://www.linsoul.com/products/7hz-x-crinacle-zero-2?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/7hz_x_Crinacle_Zero_2.png" },
         { name: "LETSHUOER D02", price: 30, url: "https://letshuoer.net/products/letshuoer-d02?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_D02.jpg" },
@@ -22,7 +22,7 @@ const gearData = {
         { name: "NICEHCK NX8", price: 200, url: "https://nicehck.com/products/nicehck-nx8-in-ear-monitor-with-1dd-6ba-1pzt-8-unit-hybrid-earphone?sca_ref=9185017.bnGYqsxONg", pick: false, image: "images/NICEHCK_NX8.png" },
         { name: "7HZ Timeless II", price: 230, url: "https://www.linsoul.com/products/7hz-timeless-ii?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/7HZ_Timeless_II.jpg" },
         { name: "ZiiGaat x Hangout.Audio: Odyssey 2", price: 250, url: "https://www.linsoul.com/products/ziigaat-x-hangout-audio-odyssey-2?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/ZiiGaat_x_HangoutAudio_Odyssey_2.jpg" },
-        { name: "NICEHCK NX8 SE", price: 270, url: "https://nicehck.com/products/nicehck-nx8-se-nx8-special-edition-iems?sca_ref=9185017.bnGYqsxONg", pick: true, image: "images/NICEHCK_NX8_SE.jpg" },
+        { name: "NICEHCK NX8 SE", price: 250, url: "https://nicehck.com/products/nicehck-nx8-se-nx8-special-edition-iems?sca_ref=9185017.bnGYqsxONg", pick: true, image: "images/NICEHCK_NX8_SE.jpg" },
         { name: "Kiwi Ears Septet", price: 270, url: "https://www.linsoul.com/products/kiwi-ears-septet?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Septet.jpg" },
         { name: "Kiwi Ears Astral", price: 300, url: "https://www.linsoul.com/products/kiwi-ears-astral?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Astral.jpg" },
         { name: "Punch Audio Martilo", price: 330, url: "https://www.linsoul.com/products/punch-audio-martilo?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Punch_Audio_Martilo.png" },
@@ -34,11 +34,11 @@ const gearData = {
         { name: "THIEAUDIO Oracle MKIII", price: 590, url: "https://www.linsoul.com/products/thieaudio-oracle-mkiii?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/THIEAUDIO_Oracle_MKIII.jpg" },
         { name: "LETSHUOER Mystic 8", price: 990, url: "https://letshuoer.net/products/letshuoer-mystic-8-wired-iem-hifi-earphones-8-ba-drivers-in-ear-monitor?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_Mystic_8.jpg" }
     ],
-    headphones: [
+    "headphone-recommendations": [
         { name: "Kiwi Ears Altruva", price: 70, url: "https://www.linsoul.com/products/kiwi-ears-altruva?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Altruva.jpg" },
         { name: "Simgot EP5", price: 98, url: "https://www.linsoul.com/products/simgot-ep5?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Simgot_EP5.png" },
         { name: "FiiO FT1", price: 160, url: "https://www.linsoul.com/products/fiio-ft1?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/FiiO_FT1.png" },
-        { name: "DROP PC38X", price: 200, url: "https://amzn.to/3HhZLiJ", pick: false, image: "images/DROP_PC38X.png" },
+        { name: "Gaming Headset DROP PC38X", price: 200, url: "https://amzn.to/3HhZLiJ", pick: false, image: "images/Gaming_Headset_DROP_PC38X.png" },
         { name: "Sennheiser HD599", price: 200, url: "https://amzn.to/4nl2vvE", pick: true, image: "images/Sennheiser_HD599.png" },
         { name: "Sennheiser HD 560 S", price: 275, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB08J9MVB6W%2Fref%3Dcm_sw_r_as_gl_api_gl_i_GHA0516AARS5E63DD09E%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3Dcb1741c88340e67df6d3d142d6253491&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/Sennheiser_HD_560_S.jpg" },
         { name: "Hifiman Sundara", price: 280, url: "https://apos.audio/products/hifiman-sundara-planar-magnetic-headphones?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Hifiman_Sundara.png" },
@@ -50,13 +50,13 @@ const gearData = {
         { name: "Focal Hadenys", price: 750, url: "https://amzn.to/4oxjjj6", pick: true, image: "images/Focal_Hadenys.png" },
         { name: "Meze 109 Pro", price: 800, url: "https://apos.audio/products/meze-audio-109-pro?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Meze_109_Pro.png" }
     ],
-    "portable-dac-amp": [
+    "portable-dac/amp-recommendations": [
         { name: "JCALLY JM12", price: 10, url: "https://amzn.to/4eB4gRv", pick: false, image: "images/JCALLY_JM12.png" },
         { name: "JCALLY JM6 Pro", price: 18, url: "https://amzn.to/3TMeGUZ", pick: false, image: "images/JCALLY_JM6_Pro.png" },
         { name: "NICEHCK NK1 MAX", price: 24, url: "https://nicehck.com/products/nicehck-nki-max-portable-dac-adapter-cable?sca_ref=9185017.bnGYqsxONg", pick: true, image: "images/NICEHCK_NK1_MAX.jpg" },
         { name: "Kiwi Ears Allegro Mini", price: 25, url: "https://www.linsoul.com/products/kiwi-ears-allegro-mini?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Allegro_Mini.jpg" },
         { name: "TRN Black Pearl", price: 37, url: "https://www.linsoul.com/products/trn-black-pearl?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/TRN_Black_Pearl.jpg" },
-        { name: "HiBy W3 II", price: 49, url: "https://www.linsoul.com/products/hiby-w3-ii?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/HiBy_W3_II.png" },
+        { name: "Bluetooth HiBy W3 II", price: 49, url: "https://www.linsoul.com/products/hiby-w3-ii?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Bluetooth_HiBy_W3_II.png" },
         { name: "Kiwi Ears Allegro Pro", price: 60, url: "https://www.linsoul.com/products/kiwi-ears-allegro-pro?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Allegro_Pro.jpg" },
         { name: "Moondrop Dawn Pro 2", price: 60, url: "https://www.linsoul.com/products/moondrop-dawn-pro2?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Moondrop_Dawn_Pro_2.jpg" },
         { name: "FiiO KA13", price: 80, url: "https://www.linsoul.com/products/fiio-ka13?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/FiiO_KA13.jpg" },
@@ -64,16 +64,16 @@ const gearData = {
         { name: "FiiO KA15", price: 95, url: "https://www.linsoul.com/products/fiio-ka15?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/FiiO_KA15.png" },
         { name: "Questyle M15i", price: 250, url: "https://amzn.to/4evROCA", pick: false, image: "images/Questyle_M15i.png" }
     ],
-    "desktop-dac-amp": [
+    "desktop-dac/amp-recommendations": [
         { name: "IFI Uno", price: 79, url: "https://apos.audio/products/ifi-uno?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/IFI_Uno.png" },
         { name: "Topping DX1 Mini", price: 99, url: "https://apos.audio/products/topping-dx1-dac-amp?sca_ref=9857353.lTWqXMxzNa", pick: true, image: "images/Topping_DX1_Mini.png" },
         { name: "xDuoo MH-02", price: 130, url: "https://www.linsoul.com/products/xduoo-mh-02?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/xDuoo_MH-02.jpg" },
-        { name: "Schiit Fulla", price: 136, url: "https://amzn.to/403r0nk", pick: false, image: "images/Schiit_Fulla.png" },
+        { name: "Gaming Schiit Fulla", price: 136, url: "https://amzn.to/403r0nk", pick: false, image: "images/Gaming_Schiit_Fulla.png" },
         { name: "FiiO K11", price: 140, url: "https://www.linsoul.com/products/fiio-k11?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/FiiO_K11.jpg" },
         { name: "Fosi Audio ZH3", price: 200, url: "https://fosiaudioshop.com/products/zh3-dac-headphone-amp-preamp?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: true, image: "images/Fosi_Audio_ZH3.jpg" },
-        { name: "Schiit Gunnr Mission-Critical", price: 259, url: "https://amzn.to/3TsPAKC", pick: false, image: "images/Schiit_Gunnr_Mission-Critical.png" }
+        { name: "Gaming Schiit Gunnr Mission-Critical", price: 259, url: "https://amzn.to/3TsPAKC", pick: false, image: "images/Gaming_Schiit_Gunnr_Mission-Critical.png" }
     ],
-    dap: [
+    "digital-audio-players": [
         { name: "HiBy R1", price: 85, url: "https://www.linsoul.com/products/hiby-r1?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/HiBy_R1.jpg" },
         { name: "Hidiz x Linsoul AP80 PRO MAX", price: 190, url: "https://www.linsoul.com/products/hidizs-x-linsoul-ap80pro-max?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Hidiz_x_Linsoul_AP80_PRO_MAX.jpg" },
         { name: "Shanling M1 Plus", price: 210, url: "https://www.linsoul.com/products/shanling-m1-plus?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Shanling_M1_Plus.jpg" },
@@ -95,18 +95,21 @@ const gearData = {
     "wireless-headphones": [
         { name: "Moondrop Edge", price: 90, url: "https://www.linsoul.com/products/moondrop-edge?_pos=10&_sid=2605a58ec&_ss=r&sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Moondrop_Edge.jpg" },
         { name: "CMF by Nothing Headphone Pro", price: 100, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB0FKG6TDRR%2Fref%3Dcm_sw_r_as_gl_api_gl_i_10TV6G03W2PC25HEMKE4%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3D8cc5f836f5310ef8f0690b0d272abf92&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/CMF_by_Nothing_Headphone_Pro.jpg" },
-        { name: "Audeze Maxwell", price: 330, url: "https://apos.audio/products/audeze-maxwell-wireless-gaming-headset?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Audeze_Maxwell.png" },
+        { name: "Wireless Gaming Headset Audeze Maxwell", price: 330, url: "https://apos.audio/products/audeze-maxwell-wireless-gaming-headset?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Wireless_Gaming_Headset_Audeze_Maxwell.png" },
         { name: "Bose QC Ultra 2", price: 450, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB0FDKQ2FG6%2Fref%3Dcm_sw_r_as_gl_api_gl_i_KMZZ1JFZZ6GY3C88QWTP%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3D09ba8bbe979351a9c6fb08316894060e&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/Bose_QC_Ultra_2.jpg" },
         { name: "Sennheiser HDB 630", price: 500, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB0FK4K5Z37%2Fref%3Dcm_sw_r_as_gl_api_gl_i_J5QCFF41K3X5F978M3Z1%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3Ddc35d45f37440632ee3611e6c7b1fbdd&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/Sennheiser_HDB_630.jpg" }
     ],
-    "cables-eartips": [
+    "iem-cables/eartips": [
         { name: "NICEHCK C04 Liquid Silicone Eartips", price: null, url: "https://nicehck.com/products/nicehck-c04-liquid-silicone-ear-tips?sca_ref=9185017.bnGYqsxONg", pick: true, image: "images/NICEHCK_C04_Liquid_Silicone_Eartips.jpg" },
         { name: "TANGZU Tang Sancai", price: null, url: "https://www.linsoul.com/products/tangzu-tang-sancai?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/TANGZU_Tang_Sancai.jpg" },
-        { name: "NICEHCK 08 Silicone Ear Tips", price: null, url: "https://nicehck.com/products/nicehck-08-silicone-ear-tips-noise-isolating-earbuds-cushion-earphone-accessories-improve-clear-vocal-for-nx7mk4-zero-2-t2-gk20?sca_ref=9185017.bnGYqsxONg", pick: false, image: "images/NICEHCK_08_Silicone_Ear_Tips.jpg" },
+        { name: "NICEHCK 08 Silicone Ear Tips Noise Isolating", price: null, url: "https://nicehck.com/products/nicehck-08-silicone-ear-tips-noise-isolating-earbuds-cushion-earphone-accessories-improve-clear-vocal-for-nx7mk4-zero-2-t2-gk20?sca_ref=9185017.bnGYqsxONg", pick: false, image: "images/NICEHCK_08_Silicone_Ear_Tips_Noise_Isolating.jpg" },
         { name: "NICEHCK C16-4 16 Core Silver Plated Cable", price: null, url: "https://nicehck.com/products/nicehck-c16-4-16-core-silver-plated-cable?sca_ref=9185017.bnGYqsxONg", pick: false, image: "images/NICEHCK_C16-4_16_Core_Silver_Plated_Cable.jpg" },
         { name: "NICEHCK BlackWheat IEM w/mic", price: null, url: "https://nicehck.com/products/nicehck-blackwheat-8-core-silver-plated-copper-microphone-cable-mmcx-qdc-0-78-2pin-for-db3-zsn-zst-as10-zs10-edx-c10-ca4-c12?variant=47860952662307&sca_ref=9185017.bnGYqsxONg", pick: false, image: "images/NICEHCK_BlackWheat_IEM_wmic.jpg" },
         { name: "NICEHCK SP4 USB C IEM Cable w/mic", price: null, url: "https://nicehck.com/products/nicehck-sp4-usbc-iem-cable-2pin?sca_ref=9185017.bnGYqsxONg", pick: false, image: "images/NICEHCK_SP4_USB_C_IEM_Cable_wmic.png" },
         { name: "Kiwi Ears Terras", price: null, url: "https://www.linsoul.com/products/kiwi-ears-terras?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/Kiwi_Ears_Terras.jpg" },
         { name: "NICEHCK DeepSnow Earphone Upgrade", price: null, url: "https://nicehck.com/products/nicehck-deepsnow-earphone-upgrade-iem-cable-4-strands-silver-plated-german-copper-hifi-wire-mmcx-2pin-qdc-for-conch-nova-f1-pro?sca_ref=9185017.bnGYqsxONg", pick: false, image: "images/NICEHCK_DeepSnow_Earphone_Upgrade.png" }
+    ],
+    "headphone-cables-and-interconnects-by-hart-audio": [
+        { name: "Hart Audio", price: null, url: "https://hartaudiocables.com/?srsltid=AfmBOorgjh48BSZb8D_oMEq1M8iBLxZtShzNSawmyPz1jcFDVez2CGKQ", pick: false, image: "images/Hart_Audio.jpg" }
     ]
 };

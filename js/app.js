@@ -6,6 +6,36 @@ let currentFilters = {
     picksOnly: false
 };
 
+// Mapping of category keys to display names
+const categoryDisplayNames = {
+    'iem-recommendations': 'IEMs',
+    'headphone-recommendations': 'Headphones',
+    'portable-dac/amp-recommendations': 'Portable DAC/AMP',
+    'desktop-dac/amp-recommendations': 'Desktop DAC/AMP',
+    'digital-audio-players': 'Digital Audio Players',
+    'wireless-earbuds': 'Wireless Earbuds',
+    'wireless-headphones': 'Wireless Headphones',
+    'iem-cables/eartips': 'IEM Cables & Eartips',
+    'headphone-cables-and-interconnects-by-hart-audio': 'Headphone Cables & Interconnects'
+};
+
+// Function to populate category filter dynamically
+function populateCategoryFilter() {
+    const categoryFilter = document.getElementById('category-filter');
+    
+    // Clear existing options except "All Categories"
+    categoryFilter.innerHTML = '<option value="all">All Categories</option>';
+    
+    // Add options for each category in gearData
+    for (const categoryKey of Object.keys(gearData)) {
+        const displayName = categoryDisplayNames[categoryKey] || categoryKey.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        const option = document.createElement('option');
+        option.value = categoryKey;
+        option.textContent = displayName;
+        categoryFilter.appendChild(option);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const main = document.getElementById('main-content');
     const searchInput = document.getElementById('search-input');
@@ -42,6 +72,9 @@ document.addEventListener('DOMContentLoaded', function() {
             allItems.push(item);
         });
     }
+
+    // Populate category filter dynamically
+    populateCategoryFilter();
 
     // Render all categories initially
     renderAllCategories();
