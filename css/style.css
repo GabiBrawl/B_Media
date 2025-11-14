@@ -14,9 +14,9 @@
     --medium-text: #c5c5c8;
     --dark-text: #888899;
     --border-color: #3f3f42;
-    --accent-color: #0bbb98;
-    --accent-hover: #10ac92;
-    --accent-glow: rgba(0, 212, 170, 0.3);
+    --accent-color: var(--light-text);
+    --accent-hover: var(--medium-text);
+    --accent-glow: null;
     --success-color: var(--accent-color);
     --success-hover: var(--accent-hover);
     --shadow-color: rgba(0, 0, 0, 0.5);
@@ -600,14 +600,14 @@ main {
     bottom: 20px;
     right: 20px;
     background: var(--accent-color);
-    color: white;
+    color: var(--primary-bg);
     border: none;
     padding: 0.75rem 1.25rem;
     border-radius: 50px;
     cursor: pointer;
     font-weight: 600;
     font-size: 0.9rem;
-    box-shadow: 0 4px 16px rgba(11, 187, 152, 0.4);
+    box-shadow: none;
     z-index: 999;
     align-items: center;
     gap: 0.5rem;
@@ -617,7 +617,7 @@ main {
 .mobile-filter-btn:hover {
     background: var(--accent-hover);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(11, 187, 152, 0.5);
+    box-shadow: none;
 }
 
 .mobile-filter-btn svg {
