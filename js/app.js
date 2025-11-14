@@ -46,6 +46,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('pick-info-modal');
     const modalClose = modal.querySelector('.modal-close');
 
+    // Mobile filter controls
+    const mobileFilterBtn = document.getElementById('mobile-filter-btn');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const sidebarClose = document.getElementById('sidebar-close');
+
+    // Mobile filter handlers
+    if (mobileFilterBtn) {
+        mobileFilterBtn.addEventListener('click', function() {
+            sidebar.classList.add('active');
+            sidebarOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    }
+
+    if (sidebarClose) {
+        sidebarClose.addEventListener('click', closeSidebar);
+    }
+
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebar);
+    }
+
+    function closeSidebar() {
+        sidebar.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
     // Modal handlers
     modalClose.addEventListener('click', function() {
         modal.classList.remove('show');
