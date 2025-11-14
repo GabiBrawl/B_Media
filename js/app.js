@@ -251,13 +251,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const placeholderStyle = 'background: linear-gradient(135deg, #1a1a24, #252535); display: flex; align-items: center; justify-content: center; font-size: 3rem; opacity: 0.3; width: 100%; height: 180px; border-radius: 12px; margin-bottom: 1rem;';
         
         itemDiv.innerHTML = `
+            ${pickBadge}
             <img src="${item.image}" 
                  alt="${item.name}" 
                  class="item-image" 
                  onerror="this.classList.add('broken'); this.alt='🎵';">
             <div class="item-header">
                 <h3>${item.name}</h3>
-                ${pickBadge}
             </div>
             <p>${priceText}</p>
             <a href="${item.url}" target="_blank">View Product</a>
