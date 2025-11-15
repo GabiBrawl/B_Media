@@ -14,8 +14,8 @@
     --medium-text: #c5c5c8;
     --dark-text: #888899;
     --border-color: #3f3f42;
-    --accent-color: var(--light-text);
-    --accent-hover: var(--medium-text);
+    --accent-color: #0bbb98;
+    --accent-hover: #10ac92;
     --accent-glow: null;
     --success-color: var(--accent-color);
     --success-hover: var(--accent-hover);
@@ -63,6 +63,64 @@ main {
     max-width: 1200px;
 }
 
+.quote-banner {
+    background: var(--tertiary-bg);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid --accent-color;
+    padding: 2rem 2.5rem;
+    margin-bottom: 3rem;
+    border-radius: 12px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.quote-banner::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    font-size: 4rem;
+    color: #0bbb98;
+    opacity: 0.3;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.quote-banner::after {
+    content: '"';
+    position: absolute;
+    bottom: -30px;
+    right: 20px;
+    font-size: 4rem;
+    color: --accent-color;
+    opacity: 0.3;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.quote-text {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.6rem;
+    font-style: italic;
+    color: var(--light-text);
+    margin: 0 0 0.75rem 0;
+    font-weight: 400;
+    line-height: 1.4;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+}
+
+.quote-author {
+    font-size: 1.1rem;
+    color: var(--muted-text);
+    margin: 0;
+    font-weight: 300;
+    font-style: normal;
+    letter-spacing: 0.5px;
+    position: relative;
+    z-index: 1;
+}
+
 .category {
     margin-bottom: 3rem;
     scroll-margin-top: 100px;
@@ -100,7 +158,7 @@ main {
 }
 
 .item:hover {
-    border-color: var(--accent-color);
+    border-color: var(--light-text);
     box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
 }
 
@@ -334,7 +392,7 @@ main {
     border-bottom: 1px solid var(--border-color);
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(9, 9, 11, 0.7)), url('../hero_image.jpeg');
     background-size: cover;
-    background-position: center;
+    background-position: top center;
     background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
@@ -350,6 +408,7 @@ main {
 }
 
 .sidebar-header h1 {
+    font-family: 'Times New Roman', Times, serif;
     font-size: 1.5rem;
     font-weight: 700;
     margin: 0;
@@ -643,7 +702,7 @@ main {
         padding: 1rem;
         background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(9, 9, 11, 0.85)), url('../hero_image.jpeg');
         background-size: cover;
-        background-position: center;
+        background-position: top center;
         border-bottom: 1px solid var(--border-color);
         position: sticky;
         top: 0;
@@ -657,6 +716,7 @@ main {
     }
 
     .mobile-header h1 {
+        font-family: 'Times New Roman', Times, serif;
         font-size: 1.1rem;
         font-weight: 700;
         color: var(--light-text);
@@ -812,6 +872,26 @@ main {
         padding: 1rem;
         overflow-x: hidden;
         width: 100%;
+    }
+
+    .quote-banner {
+        padding: 1.5rem 1.5rem;
+        margin-bottom: 2rem;
+        border-radius: 10px;
+    }
+
+    .quote-banner::before,
+    .quote-banner::after {
+        display: none;
+    }
+
+    .quote-text {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .quote-author {
+        font-size: 1rem;
     }
 
     .category {

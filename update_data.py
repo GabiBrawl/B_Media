@@ -30,6 +30,20 @@ BLACKLISTED_ITEMS = {
     ]
 }
 
+# Category display name overrides
+# Maps category keys to custom display names
+CATEGORY_DISPLAY_NAMES = {
+    'iem-recommendations': 'IEMs',
+    'headphone-recommendations': 'Headphones',
+    'portable-dac/amp-recommendations': 'Portable DAC/AMP',
+    'desktop-dac/amp-recommendations': 'Desktop DAC/AMP',
+    'digital-audio-players': 'Digital Audio Players',
+    'wireless-earbuds': 'Wireless Earbuds',
+    'wireless-headphones': 'Wireless Headphones',
+    'iem-cables/eartips': 'IEM Cables & Eartips',
+    'headphone-cables-and-interconnects-by-hart-audio': 'Cables & Interconnects by Hart Audio'
+}
+
 def download_image(image_url, filename):
     """Download an image from a URL to a local file."""
     try:
@@ -90,7 +104,8 @@ def scrape_linktree_with_selenium(url):
             if elem.name in ['h1', 'h2', 'h3']:
                 # This is a potential category header
                 category_name = elem.get_text(strip=True).lower().replace(' ', '-')
-                if category_name and not category_name.startswith('#'):
+                # Skip empty, single-character, or hash-only categories
+                if category_name and len(category_name) > 1 and not category_name.startswith('#'):
                     current_category = category_name
                     categories[current_category] = []
                     print(f"Found category: {current_category}")
@@ -273,7 +288,7 @@ def parse_existing_data_js(file_path):
     return categories
 
 def write_data_js(file_path, categories):
-    """Write the updated data back to the data.js file."""
+    """Write the updated data back to the data.js file using display names."""
     lines = ['const gearData = {']
     
     # Use categories in the order they appear
@@ -282,11 +297,14 @@ def write_data_js(file_path, categories):
     for cat_idx, category in enumerate(ordered_categories):
         items = categories[category]
         
-        # Use quotes for category names with hyphens or spaces
-        if '-' in category or ' ' in category:
-            lines.append(f'    "{category}": [')
-        else:
-            lines.append(f'    {category}: [')
+        # Get display name from CATEGORY_DISPLAY_NAMES, or format the category key as fallback
+        display_name = CATEGORY_DISPLAY_NAMES.get(
+            category, 
+            category.replace('-', ' ').title()
+        )
+        
+        # Always use quotes for category names
+        lines.append(f'    "{display_name}": [')
         
         for idx, item in enumerate(items):
             price_val = item['price'] if item['price'] is not None else 'null'

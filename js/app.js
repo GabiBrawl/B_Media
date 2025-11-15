@@ -6,19 +6,6 @@ let currentFilters = {
     picksOnly: false
 };
 
-// Mapping of category keys to display names
-const categoryDisplayNames = {
-    'iem-recommendations': 'IEMs',
-    'headphone-recommendations': 'Headphones',
-    'portable-dac/amp-recommendations': 'Portable DAC/AMP',
-    'desktop-dac/amp-recommendations': 'Desktop DAC/AMP',
-    'digital-audio-players': 'Digital Audio Players',
-    'wireless-earbuds': 'Wireless Earbuds',
-    'wireless-headphones': 'Wireless Headphones',
-    'iem-cables/eartips': 'IEM Cables & Eartips',
-    'headphone-cables-and-interconnects-by-hart-audio': 'Headphone Cables & Interconnects'
-};
-
 // Function to populate category filter dynamically
 function populateCategoryFilter() {
     const categoryFilter = document.getElementById('category-filter');
@@ -27,16 +14,41 @@ function populateCategoryFilter() {
     categoryFilter.innerHTML = '<option value="all">All Categories</option>';
     
     // Add options for each category in gearData
-    for (const categoryKey of Object.keys(gearData)) {
-        const displayName = categoryDisplayNames[categoryKey] || categoryKey.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    // Category names in gearData are now display names from Python
+    for (const categoryName of Object.keys(gearData)) {
         const option = document.createElement('option');
-        option.value = categoryKey;
-        option.textContent = displayName;
+        option.value = categoryName;
+        option.textContent = categoryName;
         categoryFilter.appendChild(option);
     }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Array of random quotes
+    const quotes = [
+        {
+            text: "In Pursuit of Audio Perfection",
+            author: "sam!, Discord Server Admin"
+        },
+    ];
+
+    // Function to set random quote
+    function setRandomQuote() {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        const randomQuote = quotes[randomIndex];
+
+        const quoteTextElement = document.querySelector('.quote-text');
+        const quoteAuthorElement = document.querySelector('.quote-author');
+
+        if (quoteTextElement && quoteAuthorElement) {
+            quoteTextElement.textContent = `"${randomQuote.text}"`;
+            quoteAuthorElement.textContent = `- ${randomQuote.author}`;
+        }
+    }
+
+    // Set random quote on page load
+    setRandomQuote();
+
     const main = document.getElementById('main-content');
     const searchInput = document.getElementById('search-input');
     const categoryFilter = document.getElementById('category-filter');
@@ -144,15 +156,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function renderAllCategories() {
+        // Preserve the quote banner
+        const quoteBanner = main.querySelector('.quote-banner');
         main.innerHTML = '';
+        if (quoteBanner) {
+            main.appendChild(quoteBanner);
+        }
 
-        for (const [categoryKey, items] of Object.entries(gearData)) {
+        for (const [categoryName, items] of Object.entries(gearData)) {
             const categoryDiv = document.createElement('div');
             categoryDiv.className = 'category';
-            categoryDiv.id = categoryKey;
+            categoryDiv.id = categoryName.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
 
-            const categoryTitle = categoryKey.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-            categoryDiv.innerHTML = `<h2>${categoryTitle}</h2>`;
+            // Category name is already a display name from data.js
+            categoryDiv.innerHTML = `<h2>${categoryName}</h2>`;
 
             const itemsDiv = document.createElement('div');
             itemsDiv.className = 'items';
@@ -212,10 +229,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function renderFilteredCategories(groupedItems) {
+        // Preserve the quote banner
+        const quoteBanner = main.querySelector('.quote-banner');
         main.innerHTML = '';
+        if (quoteBanner) {
+            main.appendChild(quoteBanner);
+        }
 
         if (Object.keys(groupedItems).length === 0) {
-            main.innerHTML = '<div style="text-align: center; padding: 3rem; color: #bbb;"><h2>No products match your filters</h2><p>Try adjusting your search criteria</p></div>';
+            const noResults = document.createElement('div');
+            noResults.style.cssText = 'text-align: center; padding: 3rem; color: #bbb;';
+            noResults.innerHTML = '<h2>No products match your filters</h2><p>Try adjusting your search criteria</p>';
+            main.appendChild(noResults);
             return;
         }
 
