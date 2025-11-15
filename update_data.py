@@ -182,6 +182,11 @@ def parse_linktree(url):
         if category_name in BLACKLISTED_CATEGORIES:
             print(f"\n--- Category: {category_name} --- (SKIPPED - Blacklisted)")
             continue
+        
+        # Skip single letter categories
+        if len(category_name) == 1:
+            print(f"\n--- Category: {category_name} --- (SKIPPED - Single letter)")
+            continue
             
         print(f"\n--- Category: {category_name} ---")
         products = []
@@ -482,6 +487,10 @@ def update_data_js(linktree_data, data_file_path, images_dir):
     # Check if there are categories in existing data that are not in Linktree
     for category in existing_data.keys():
         if category not in updated_categories:
+            # Skip single letter categories
+            if len(category) == 1:
+                print(f"\n--- Category: {category} --- (SKIPPED - Single letter)")
+                continue
             print(f"\n--- Category: {category} ---")
             print(f"  ⚠ Category exists in data.js but not on Linktree (keeping all items)")
             updated_categories[category] = existing_data[category]
