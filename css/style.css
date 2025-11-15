@@ -92,7 +92,7 @@ main {
     bottom: -30px;
     right: 20px;
     font-size: 4rem;
-    color: --accent-color;
+    color: var(--accent-color);
     opacity: 0.3;
     font-family: 'Times New Roman', Times, serif;
 }
