@@ -58,6 +58,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('pick-info-modal');
     const modalClose = modal.querySelector('.modal-close');
 
+    const extraModal = document.getElementById('extra-data-modal');
+    const extraModalClose = extraModal.querySelector('.modal-close');
+
     // Mobile filter controls
     const mobileFilterBtn = document.getElementById('mobile-filter-btn');
     const sidebar = document.getElementById('sidebar');
@@ -98,11 +101,32 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Extra modal handlers
+    extraModalClose.addEventListener('click', function() {
+        extraModal.classList.remove('show');
+    });
+
+    extraModal.addEventListener('click', function(e) {
+        if (e.target === extraModal) {
+            extraModal.classList.remove('show');
+        }
+    });
+
     // Delegate click event for pick badges
     document.addEventListener('click', function(e) {
         if (e.target.classList.contains('pick-badge')) {
             e.preventDefault();
             modal.classList.add('show');
+        }
+    });
+
+    // Delegate click event for extra data buttons
+    document.addEventListener('click', function(e) {
+        const extraBtn = e.target.closest('.extra-data-btn');
+        if (extraBtn) {
+            e.preventDefault();
+            const itemName = extraBtn.getAttribute('data-item-name');
+            showExtraData(itemName);
         }
     });
 
@@ -265,12 +289,55 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function showExtraData(itemName) {
+        const data = extraData[itemName];
+        if (!data) return;
+
+        const title = document.getElementById('extra-data-title');
+        const content = document.getElementById('extra-data-content');
+
+        title.textContent = `More about ${itemName}`;
+
+        let html = '';
+
+        if (data.images && data.images.length > 0) {
+            html += '<div class="extra-images">';
+            data.images.forEach(img => {
+                html += `<img src="${img}" alt="Extra image" class="extra-image">`;
+            });
+            html += '</div>';
+        }
+
+        if (data.tiktoks && data.tiktoks.length > 0) {
+            html += '<div class="extra-tiktoks">';
+            html += `<a href="${data.tiktoks[0]}" target="_blank" class="tiktok-link">B_Media Video on TikTok</a>`;
+            html += '</div>';
+        }
+
+        // Add other stuff
+        const otherKeys = Object.keys(data).filter(key => key !== 'images' && key !== 'tiktoks');
+        if (otherKeys.length > 0) {
+            html += '<div class="extra-notes">';
+            otherKeys.forEach(key => {
+                html += `<h4>${key.charAt(0).toUpperCase() + key.slice(1)}</h4><p>${data[key]}</p>`;
+            });
+            html += '</div>';
+        }
+
+        content.innerHTML = html;
+        extraModal.classList.add('show');
+    }
+
     function createItemElement(item) {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'item';
 
         const pickBadge = item.pick ? '<span class="pick-badge">B_Media Pick</span>' : '';
         const priceText = item.price ? `$${item.price}` : 'Check Price';
+
+        // Check if extra data exists
+        const hasExtraData = extraData.hasOwnProperty(item.name);
+        const extraButton = hasExtraData ? `<a href="#" class="extra-data-btn" data-item-name="${item.name}" title="Extra Data">i</a>` : '';
 
         // Create a div with a better visual placeholder for broken images
         const placeholderStyle = 'background: linear-gradient(135deg, #1a1a24, #252535); display: flex; align-items: center; justify-content: center; font-size: 3rem; opacity: 0.3; width: 100%; height: 180px; border-radius: 12px; margin-bottom: 1rem;';
@@ -285,7 +352,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 <h3>${item.name}</h3>
             </div>
             <p>${priceText}</p>
-            <a href="${item.url}" target="_blank">View Product</a>
+            <div class="item-buttons">
+                <a href="${item.url}" target="_blank">View Product</a>
+                ${extraButton}
+            </div>
         `;
 
         return itemDiv;
