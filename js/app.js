@@ -49,6 +49,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set random quote on page load
     setRandomQuote();
 
+    // Set last updated date
+    if (typeof lastUpdated !== 'undefined') {
+        document.getElementById('last-updated-date').textContent = lastUpdated;
+    } else {
+        document.getElementById('last-updated-date').textContent = 'Unknown';
+    }
+
     const main = document.getElementById('main-content');
     const searchInput = document.getElementById('search-input');
     const categoryFilter = document.getElementById('category-filter');

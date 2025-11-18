@@ -121,6 +121,18 @@ main {
     z-index: 1;
 }
 
+.sidebar-footer .last-updated {
+    margin-bottom: 0rem;
+    font-size: 0.2rem !important;
+    color: var(--medium-text);
+    text-align: center;
+}
+
+.sidebar-footer .last-updated p {
+    font-size: 0.6rem !important;
+    margin: 0;
+}
+
 .category {
     margin-bottom: 3rem;
     scroll-margin-top: 100px;
@@ -982,6 +994,12 @@ main {
 
     .quote-author {
         font-size: 1rem;
+    }
+
+    .sidebar-footer .last-updated p {
+        font-size: 0.7rem !important;
+        margin: 0;
+        padding: 0 0.5rem;
     }
 
     .category {

@@ -499,6 +499,13 @@ def update_data_js(linktree_data, data_file_path, images_dir):
         print(f"\n{'='*60}")
         print("Writing updates to data.js...")
         write_data_js(data_file_path, updated_categories)
+        
+        # Write last updated timestamp
+        from datetime import datetime
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC")
+        with open(os.path.join(os.path.dirname(data_file_path), 'last_updated.js'), 'w') as f:
+            f.write(f'const lastUpdated = "{timestamp}";\n')
+        
         print("✓ Update complete!")
     else:
         print(f"\n{'='*60}")

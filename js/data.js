@@ -1,11 +1,13 @@
 const gearData = {
     "IEMs": [
         { name: "Truthear Gate", price: 20, url: "https://amzn.to/3UzzHSQ", pick: false, image: "images/Truthear_Gate.png" },
-        { name: "7hz x Crinacle Zero 2", price: 25, url: "https://www.linsoul.com/products/7hz-x-crinacle-zero-2?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/7hz_x_Crinacle_Zero_2.png" },
+        { name: "7hz x Crinacle Zero 2", price: 25, url: "https://www.linsoul.com/products/7hz-x-crinacle-zero-2?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/7hz_x_Crinacle_Zero_2.png" },
+        { name: "Kiwi Ears Belle", price: 30, url: "https://www.linsoul.com/products/kiwi-ears-belle?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/Kiwi_Ears_Belle.jpg" },
         { name: "LETSHUOER D02", price: 30, url: "https://letshuoer.net/products/letshuoer-d02?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_D02.jpg" },
         { name: "Kiwi Ears Cadenza", price: 35, url: "https://www.linsoul.com/products/kiwi-ears-cadenza?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Cadenza.jpg" },
         { name: "Kefine Klean", price: 50, url: "https://www.linsoul.com/products/kefine-klean?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/Kefine_Klean.png" },
         { name: "INAWAKEN DAWN Ms", price: 50, url: "https://www.linsoul.com/products/inawaken-dawn-ms?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/INAWAKEN_DAWN_Ms.jpg" },
+        { name: "Apos x Community Rock Lobster IEMs", price: 60, url: "https://apos.audio/products/apos-x-community-rock-lobster-iems?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Apos_x_Community_Rock_Lobster_IEMs.jpg" },
         { name: "Moondrop LAN II", price: 60, url: "https://www.linsoul.com/products/moondrop-lanii?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Moondrop_LAN_II.jpg" },
         { name: "Truthear x Crinacle Zero Blue 2", price: 70, url: "https://amzn.to/45lfczx", pick: false, image: "images/Truthear_x_Crinacle_Zero_Blue_2.png" },
         { name: "Kefine Delci", price: 75, url: "https://www.linsoul.com/products/kefine-delci?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kefine_Delci.jpg" },
@@ -21,7 +23,7 @@ const gearData = {
         { name: "LETSHUOER S12 Ultra", price: 170, url: "https://letshuoer.net/products/letshuoer-s12-ultra?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_S12_Ultra.jpg" },
         { name: "NICEHCK NX8", price: 200, url: "https://nicehck.com/products/nicehck-nx8-in-ear-monitor-with-1dd-6ba-1pzt-8-unit-hybrid-earphone?sca_ref=9185017.bnGYqsxONg", pick: false, image: "images/NICEHCK_NX8.png" },
         { name: "7HZ Timeless II", price: 230, url: "https://www.linsoul.com/products/7hz-timeless-ii?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/7HZ_Timeless_II.jpg" },
-        { name: "ZiiGaat x Hangout.Audio: Odyssey 2", price: 250, url: "https://www.linsoul.com/products/ziigaat-x-hangout-audio-odyssey-2?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/ZiiGaat_x_HangoutAudio_Odyssey_2.jpg" },
+        { name: "SIMGOT EA1000 Fermat", price: 250, url: "https://www.linsoul.com/products/simgot-ea1000-fermat?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/SIMGOT_EA1000_Fermat.jpg" },
         { name: "NICEHCK NX8 SE", price: 250, url: "https://nicehck.com/products/nicehck-nx8-se-nx8-special-edition-iems?sca_ref=9185017.bnGYqsxONg", pick: true, image: "images/NICEHCK_NX8_SE.jpg" },
         { name: "Kiwi Ears Septet", price: 270, url: "https://www.linsoul.com/products/kiwi-ears-septet?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Septet.jpg" },
         { name: "Kiwi Ears Astral", price: 300, url: "https://www.linsoul.com/products/kiwi-ears-astral?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Astral.jpg" },
