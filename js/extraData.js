@@ -59,5 +59,12 @@ const extraData = {
             "https://www.tiktok.com/@axel_bostrom/video/7561466850949762335"
         ],
         "otherStuff": "Here could go some additional information about the INAWAKEN DAWN Ms. This is a temporary placeholder."
+    },
+    "Kiwi Ears Belle": {
+        "images": [
+            "images/extraData/kiwi_ears_belle_graph.png"
+        ],
+        "tiktoks": [],
+        "otherStuff": "Here could go some additional information about the Kiwi Ears Belle. This is a temporary placeholder."
     }
 };
