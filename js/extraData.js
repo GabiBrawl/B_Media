@@ -64,7 +64,9 @@ const extraData = {
         "images": [
             "images/extraData/kiwi_ears_belle_graph.png"
         ],
-        "tiktoks": [],
+        "tiktoks": [
+            "https://www.tiktok.com/@axel_bostrom/video/7579269234799152414"
+        ],
         "otherStuff": "Here could go some additional information about the Kiwi Ears Belle. This is a temporary placeholder."
     },
     "Apos x Community Rock Lobster IEMs": {
