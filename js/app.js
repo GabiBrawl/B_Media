@@ -30,6 +30,18 @@ document.addEventListener('DOMContentLoaded', function() {
             text: "In Pursuit of Audio Perfection",
             author: "sam!, Discord Server Admin"
         },
+        {
+            text: "i wish to eat my oats",
+            author: "hazumi, MW Venus Fan"
+        },
+        {
+            text: "pianos should just explode",
+            author: "hazumi, MW Venus Fan"
+        },
+        {
+            text: "What the nerds up 2?",
+            author: "AudioMan"
+        },
     ];
 
     // Function to set random quote
