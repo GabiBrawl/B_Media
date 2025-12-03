@@ -15,7 +15,7 @@ const gearData = {
         { name: "SIMGOT EW300", price: 80, url: "https://www.linsoul.com/products/simgot-ew300?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/SIMGOT_EW300.jpg" },
         { name: "MOONDROP RAYS", price: 100, url: "https://www.linsoul.com/products/moondrop-rays?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/MOONDROP_RAYS.jpg" },
         { name: "Moondrop Aria 2", price: 100, url: "https://www.linsoul.com/products/moondrop-aria2?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Moondrop_Aria_2.png" },
-        { name: "Save 10% Fosi Audio IM4", price: null, url: "https://fosiaudioshop.com/products/fosi-audio-im4?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: true, image: "images/Save_10___Fosi_Audio_IM4.jpg" },
+        { name: "Save 10%   Fosi Audio IM4", price: null, url: "https://fosiaudioshop.com/products/fosi-audio-im4?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: true, image: "images/Save_10___Fosi_Audio_IM4.jpg" },
         { name: "Kiwi Ears Étude", price: 120, url: "https://www.linsoul.com/products/kiwi-ears-etude?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Étude.jpg" },
         { name: "SIMGOT EM6L", price: 125, url: "https://www.linsoul.com/products/simgot-em6l?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/SIMGOT_EM6L.jpg" },
         { name: "7Hz x Crinacle: Divine", price: 150, url: "https://www.linsoul.com/products/7hz-x-crinacle-divine?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/7Hz_x_Crinacle_Divine.jpg" },
@@ -71,10 +71,11 @@ const gearData = {
         { name: "IFI Uno", price: 79, url: "https://apos.audio/products/ifi-uno?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/IFI_Uno.png" },
         { name: "Topping DX1 Mini", price: 99, url: "https://apos.audio/products/topping-dx1-dac-amp?sca_ref=9857353.lTWqXMxzNa", pick: true, image: "images/Topping_DX1_Mini.png" },
         { name: "xDuoo MH-02", price: 130, url: "https://www.linsoul.com/products/xduoo-mh-02?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/xDuoo_MH-02.jpg" },
-        { name: "Gaming Schiit Fulla", price: 136, url: "https://amzn.to/403r0nk", pick: false, image: "images/Gaming_Schiit_Fulla.png" },
+        { name: "Schiit Fulla", price: 136, url: "https://amzn.to/403r0nk", pick: false, image: "images/Schiit_Fulla.png" },
         { name: "FiiO K11", price: 140, url: "https://www.linsoul.com/products/fiio-k11?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/FiiO_K11.jpg" },
+        { name: "Fosi Audio K7", price: 200, url: "https://fosiaudioshop.com/products/k7-dac-headphone-amp?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: false, image: "images/Fosi_Audio_K7.jpg" },
         { name: "Fosi Audio ZH3", price: 200, url: "https://fosiaudioshop.com/products/zh3-dac-headphone-amp-preamp?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: true, image: "images/Fosi_Audio_ZH3.jpg" },
-        { name: "Gaming Schiit Gunnr Mission-Critical", price: 259, url: "https://amzn.to/3TsPAKC", pick: false, image: "images/Gaming_Schiit_Gunnr_Mission-Critical.png" }
+        { name: "Schiit Gunnr Mission-Critical", price: 259, url: "https://amzn.to/3TsPAKC", pick: false, image: "images/Schiit_Gunnr_Mission-Critical.png" }
     ],
     "Digital Audio Players": [
         { name: "HiBy R1", price: 85, url: "https://www.linsoul.com/products/hiby-r1?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/HiBy_R1.jpg" },
@@ -114,5 +115,11 @@ const gearData = {
     ],
     "Cables & Interconnects by Hart Audio": [
         { name: "Hart Audio", price: null, url: "https://hartaudiocables.com/?srsltid=AfmBOorgjh48BSZb8D_oMEq1M8iBLxZtShzNSawmyPz1jcFDVez2CGKQ", pick: false, image: "images/Hart_Audio.jpg" }
+    ],
+    "Tech I Use": [
+        { name: "K&F Concept 60 inch Carbon Fiber Camera Tripod,Super Lightweight Compact Travel Tripod with 360 Degree Ball Head,Quick Release Plate,Detachable Monopod 17 lb Load Capacity for SLR DSLR C225C0 (BA225)", price: null, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB081DYTR9J%2Fref%3Dcm_sw_r_as_gl_api_gl_i_8M5S06Y5VWKNQEJ8C92X%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3Dd987bf5298e45df9bfdb78f767025db2&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/KF_Concept_60_inch_Carbon_Fiber_Camera_TripodSuper_Lightweight_Compact_Travel_Tripod_with_360_Degree_Ball_HeadQuick_Release_PlateDetachable_Monopod_17_lb_Load_Capacity_for_SLR_DSLR_C225C0_BA225.jpg" },
+        { name: "K&F CONCEPT 67mm Variable Fader ND2-32 ND Filter and CPL Circular Polarizing Lens Filter in 1 for Camera Lens Waterproof Neutral Density Polarizer Filter (Nano-D Series)", price: null, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB0CNV9W4V4%2Fref%3Dcm_sw_r_as_gl_api_gl_i_dl_BAV07S149SNKBK84W03Z%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3D7c705aee77f7273683cd5d0d4d8feadb&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/KF_CONCEPT_67mm_Variable_Fader_ND2-32_ND_Filter_and_CPL_Circular_Polarizing_Lens_Filter_in_1_for_Camera_Lens_Waterproof_Neutral_Density_Polarizer_Filter_Nano-D_Series.jpg" },
+        { name: "Tamron 17-70mm f/2.8 Di III-A VC RXD Lens for Sony E APS-C Mirrorless Cameras Black", price: null, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB08PFNNKCC%2Fref%3Dcm_sw_r_as_gl_api_gl_i_EF9Q6PYQCF8VA23QH9WA%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3D513b0674e336d5df2e57e5df060855b7&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/Tamron_17-70mm_f28_Di_III-A_VC_RXD_Lens_for_Sony_E_APS-C_Mirrorless_Cameras_Black.jpg" },
+        { name: "Sony Alpha a6400 Mirrorless Camera: Compact APS-C Interchangeable Lens Digital Camera with Real-Time Eye Auto Focus, 4K Video & Flip Up Touchscreen - E Mount Compatible Cameras - ILCE-6400/B Body", price: null, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB07MTWVN3M%2Fref%3Dcm_sw_r_as_gl_api_gl_i_FNG9TMGEJ2YYAD1EY767%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3D226d9c09123e826a0039edad56cfc99c&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/Sony_Alpha_a6400_Mirrorless_Camera_Compact_APS-C_Interchangeable_Lens_Digital_Camera_with_Real-Time_Eye_Auto_Focus_4K_Video__Flip_Up_Touchscreen_-_E_Mount_Compatible_Cameras_-_ILCE-6400B_Body.jpg" }
     ]
 };

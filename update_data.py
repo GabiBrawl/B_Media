@@ -30,6 +30,17 @@ BLACKLISTED_ITEMS = {
     ]
 }
 
+# Global blacklist for items that should never be added
+GLOBAL_BLACKLIST = [
+    'Report',
+    'Check Price',
+    'View Product',
+    '🎵',
+    'Privacy',
+    'Learn more about Linktree',
+    'Sign up free'
+]
+
 # Category display name overrides
 # Maps category keys to custom display names
 CATEGORY_DISPLAY_NAMES = {
@@ -249,6 +260,10 @@ def parse_product_text(text, url):
     
     # Skip empty names or category headers
     if not name or 'Recommendation' in name or 'Players' in name:
+        return None
+    
+    # Skip globally blacklisted items
+    if name in GLOBAL_BLACKLIST:
         return None
     
     return {
