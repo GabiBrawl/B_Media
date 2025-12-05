@@ -65,7 +65,8 @@ const gearData = {
         { name: "FiiO KA13", price: 80, url: "https://www.linsoul.com/products/fiio-ka13?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/FiiO_KA13.jpg" },
         { name: "CrinEar Protocol Max", price: 90, url: "https://www.linsoul.com/products/crinear-protocol-max?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/CrinEar_Protocol_Max.jpg" },
         { name: "FiiO KA15", price: 95, url: "https://www.linsoul.com/products/fiio-ka15?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/FiiO_KA15.png" },
-        { name: "Questyle M15i", price: 250, url: "https://amzn.to/4evROCA", pick: false, image: "images/Questyle_M15i.png" }
+        { name: "Questyle M15i", price: 250, url: "https://amzn.to/4evROCA", pick: false, image: "images/Questyle_M15i.png" },
+        { name: "Shanling UA7 ITS GOT A TUBE", price: 270, url: "https://www.linsoul.com/products/shanling-ua7?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/Shanling_UA7_ITS_GOT_A_TUBE.jpg" }
     ],
     "Desktop DAC/AMP": [
         { name: "IFI Uno", price: 79, url: "https://apos.audio/products/ifi-uno?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/IFI_Uno.png" },
