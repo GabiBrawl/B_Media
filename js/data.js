@@ -98,6 +98,7 @@ const gearData = {
         { name: "Apple AirPods Pro 2", price: 250, url: "https://amzn.to/41otTQ2", pick: false, image: "images/Apple_AirPods_Pro_2.png" }
     ],
     "Wireless Headphones": [
+        { name: "1Mii Y8+", price: 60, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB0DZHNWPKD%2Fref%3Dcm_sw_r_as_gl_api_gl_i_8N6015E1PEBPS034B4P8%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3D8803c8bc5823c050876f4707611b1a71&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/1Mii_Y8.jpg" },
         { name: "Moondrop Edge", price: 90, url: "https://www.linsoul.com/products/moondrop-edge?_pos=10&_sid=2605a58ec&_ss=r&sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Moondrop_Edge.jpg" },
         { name: "CMF by Nothing Headphone Pro", price: 100, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB0FKG6TDRR%2Fref%3Dcm_sw_r_as_gl_api_gl_i_10TV6G03W2PC25HEMKE4%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3D8cc5f836f5310ef8f0690b0d272abf92&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/CMF_by_Nothing_Headphone_Pro.jpg" },
         { name: "Wireless Gaming Headset Audeze Maxwell", price: 330, url: "https://apos.audio/products/audeze-maxwell-wireless-gaming-headset?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Wireless_Gaming_Headset_Audeze_Maxwell.png" },
