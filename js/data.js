@@ -40,6 +40,7 @@ const gearData = {
     "Headphones": [
         { name: "Kiwi Ears Altruva", price: 70, url: "https://www.linsoul.com/products/kiwi-ears-altruva?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Altruva.jpg" },
         { name: "Simgot EP5", price: 98, url: "https://www.linsoul.com/products/simgot-ep5?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Simgot_EP5.png" },
+        { name: "FiiO JadeAudio JT7", price: 110, url: "https://apos.audio/products/fiio-jadeaudio-jt7-open-back-planar-headphones?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/FiiO_JadeAudio_JT7.jpg" },
         { name: "FiiO FT1", price: 160, url: "https://www.linsoul.com/products/fiio-ft1?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/FiiO_FT1.png" },
         { name: "Gaming Headset DROP PC38X", price: 200, url: "https://amzn.to/3HhZLiJ", pick: false, image: "images/Gaming_Headset_DROP_PC38X.png" },
         { name: "Sennheiser HD599", price: 200, url: "https://amzn.to/4nl2vvE", pick: true, image: "images/Sennheiser_HD599.png" },
@@ -113,9 +114,8 @@ const gearData = {
         { name: "NICEHCK 08 Silicone Ear Tips Noise Isolating", price: null, url: "https://nicehck.com/products/nicehck-08-silicone-ear-tips-noise-isolating-earbuds-cushion-earphone-accessories-improve-clear-vocal-for-nx7mk4-zero-2-t2-gk20?sca_ref=9185017.bnGYqsxONg", pick: false, image: "images/NICEHCK_08_Silicone_Ear_Tips_Noise_Isolating.jpg" },
         { name: "NICEHCK C16-4 16 Core Silver Plated Cable", price: null, url: "https://nicehck.com/products/nicehck-c16-4-16-core-silver-plated-cable?sca_ref=9185017.bnGYqsxONg", pick: false, image: "images/NICEHCK_C16-4_16_Core_Silver_Plated_Cable.jpg" },
         { name: "NICEHCK BlackWheat IEM w/mic", price: null, url: "https://nicehck.com/products/nicehck-blackwheat-8-core-silver-plated-copper-microphone-cable-mmcx-qdc-0-78-2pin-for-db3-zsn-zst-as10-zs10-edx-c10-ca4-c12?variant=47860952662307&sca_ref=9185017.bnGYqsxONg", pick: false, image: "images/NICEHCK_BlackWheat_IEM_wmic.jpg" },
-        { name: "NICEHCK SP4 USB C IEM Cable w/mic", price: null, url: "https://nicehck.com/products/nicehck-sp4-usbc-iem-cable-2pin?sca_ref=9185017.bnGYqsxONg", pick: false, image: "images/NICEHCK_SP4_USB_C_IEM_Cable_wmic.png" },
-        { name: "Kiwi Ears Terras", price: null, url: "https://www.linsoul.com/products/kiwi-ears-terras?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/Kiwi_Ears_Terras.jpg" },
-        { name: "NICEHCK DeepSnow Earphone Upgrade", price: null, url: "https://nicehck.com/products/nicehck-deepsnow-earphone-upgrade-iem-cable-4-strands-silver-plated-german-copper-hifi-wire-mmcx-2pin-qdc-for-conch-nova-f1-pro?sca_ref=9185017.bnGYqsxONg", pick: false, image: "images/NICEHCK_DeepSnow_Earphone_Upgrade.png" }
+        { name: "LETSHUOER LC01 USB Type-C", price: null, url: "https://letshuoer.net/products/letshuoer-lc01-usb-type-c-earphones-cable?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_LC01_USB_Type-C.jpg" },
+        { name: "Kiwi Ears Terras", price: null, url: "https://www.linsoul.com/products/kiwi-ears-terras?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/Kiwi_Ears_Terras.jpg" }
     ],
     "Cables & Interconnects by Hart Audio": [
         { name: "Hart Audio", price: null, url: "https://hartaudiocables.com/?srsltid=AfmBOorgjh48BSZb8D_oMEq1M8iBLxZtShzNSawmyPz1jcFDVez2CGKQ", pick: false, image: "images/Hart_Audio.jpg" }
