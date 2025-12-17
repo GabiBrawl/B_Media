@@ -38,9 +38,10 @@ const gearData = {
         { name: "LETSHUOER Mystic 8", price: 990, url: "https://letshuoer.net/products/letshuoer-mystic-8-wired-iem-hifi-earphones-8-ba-drivers-in-ear-monitor?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_Mystic_8.jpg" }
     ],
     "Headphones": [
+        { name: "MOONDROP Old Fashioned", price: 25, url: "https://www.linsoul.com/products/moondrop-old-fashioned?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/MOONDROP_Old_Fashioned.jpg" },
         { name: "Kiwi Ears Altruva", price: 70, url: "https://www.linsoul.com/products/kiwi-ears-altruva?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Altruva.jpg" },
         { name: "Simgot EP5", price: 98, url: "https://www.linsoul.com/products/simgot-ep5?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Simgot_EP5.png" },
-        { name: "FiiO JadeAudio JT7", price: 110, url: "https://apos.audio/products/fiio-jadeaudio-jt7-open-back-planar-headphones?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/FiiO_JadeAudio_JT7.jpg" },
+        { name: "FiiO JadeAudio JT7", price: 120, url: "https://apos.audio/products/fiio-jadeaudio-jt7-open-back-planar-headphones?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/FiiO_JadeAudio_JT7.jpg" },
         { name: "FiiO FT1", price: 160, url: "https://www.linsoul.com/products/fiio-ft1?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/FiiO_FT1.png" },
         { name: "Gaming Headset DROP PC38X", price: 200, url: "https://amzn.to/3HhZLiJ", pick: false, image: "images/Gaming_Headset_DROP_PC38X.png" },
         { name: "Sennheiser HD599", price: 200, url: "https://amzn.to/4nl2vvE", pick: true, image: "images/Sennheiser_HD599.png" },
