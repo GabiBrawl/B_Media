@@ -98,7 +98,7 @@ const gearData = {
         { name: "Moondrop Golden Ages 2", price: 90, url: "https://amzn.to/46e5hMZ", pick: false, image: "images/Moondrop_Golden_Ages_2.png" },
         { name: "Moondrop Robin", price: 120, url: "https://amzn.to/4mslt22", pick: true, image: "images/Moondrop_Robin.png" },
         { name: "SoundPEATS H3", price: 130, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB0FJKYVSMP%2Fref%3Dcm_sw_r_as_gl_api_gl_i_RXTZ92A5JQYJFTP9PNMW%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3D60a065112fb14a8361f5e08f9709b9b2&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/SoundPEATS_H3.jpg" },
-        { name: "Apple AirPods Pro 2", price: 250, url: "https://amzn.to/41otTQ2", pick: false, image: "images/Apple_AirPods_Pro_2.png" }
+        { name: "Soundpeats Air5 Pro+", price: 170, url: "https://soundpeats.com/collections/new-arrivals/products/air5-pro-plus-eu", pick: false, image: "images/Soundpeats_Air5_Pro.jpg" }
     ],
     "Wireless Headphones": [
         { name: "1Mii Y8+", price: 60, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB0DZHNWPKD%2Fref%3Dcm_sw_r_as_gl_api_gl_i_8N6015E1PEBPS034B4P8%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3D8803c8bc5823c050876f4707611b1a71&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/1Mii_Y8.jpg" },
