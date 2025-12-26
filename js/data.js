@@ -56,7 +56,7 @@ const gearData = {
         { name: "Meze 109 Pro", price: 800, url: "https://apos.audio/products/meze-audio-109-pro?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Meze_109_Pro.png" }
     ],
     "Portable DAC/AMP": [
-        { name: "JCALLY JM12", price: 10, url: "https://amzn.to/4eB4gRv", pick: false, image: "images/JCALLY_JM12.png" },
+        { name: "Kiwi Ears AD1", price: 10, url: "https://www.linsoul.com/products/kiwi-ears-ad1?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_AD1.jpg" },
         { name: "JCALLY JM6 Pro", price: 18, url: "https://amzn.to/3TMeGUZ", pick: false, image: "images/JCALLY_JM6_Pro.png" },
         { name: "NICEHCK NK1 MAX", price: 24, url: "https://nicehck.com/products/nicehck-nki-max-portable-dac-adapter-cable?sca_ref=9185017.bnGYqsxONg", pick: true, image: "images/NICEHCK_NK1_MAX.jpg" },
         { name: "Kiwi Ears Allegro Mini", price: 25, url: "https://www.linsoul.com/products/kiwi-ears-allegro-mini?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Allegro_Mini.jpg" },
