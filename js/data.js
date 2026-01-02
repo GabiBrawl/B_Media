@@ -33,6 +33,7 @@ const gearData = {
         { name: "INAWAKEN Twilight-DS", price: 350, url: "https://www.linsoul.com/products/inawaken-twilight-ds?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/INAWAKEN_Twilight-DS.jpg" },
         { name: "XENNS Mangird Tea Pro", price: 360, url: "https://www.linsoul.com/products/xenns-mangird-tea-pro?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/XENNS_Mangird_Tea_Pro.jpg" },
         { name: "Kiwi Ears x HBB Punch", price: 450, url: "https://www.linsoul.com/products/kiwi-ears-x-hbb-punch?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_x_HBB_Punch.jpg" },
+        { name: "LETSHUOER Ember", price: 500, url: "https://letshuoer.net/products/letshuoer-ember-14-8mm-large-flagship-planar-magnetic-hi-fi-in-ear-monitors?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_Ember.jpg" },
         { name: "XENNS Mangird Top Pro", price: 500, url: "https://www.linsoul.com/products/xenns-mangird-top-pro?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/XENNS_Mangird_Top_Pro.jpg" },
         { name: "LETSHUOER Mystic 8", price: 990, url: "https://letshuoer.net/products/letshuoer-mystic-8-wired-iem-hifi-earphones-8-ba-drivers-in-ear-monitor?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_Mystic_8.jpg" }
     ],
@@ -68,11 +69,13 @@ const gearData = {
         { name: "FiiO KA15", price: 95, url: "https://www.linsoul.com/products/fiio-ka15?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/FiiO_KA15.png" },
         { name: "Fosi Audio DS3", price: 100, url: "https://fosiaudioshop.com/products/fosi-audio-ds3?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: false, image: "images/Fosi_Audio_DS3.jpg" },
         { name: "Questyle M15i", price: 250, url: "https://amzn.to/4evROCA", pick: false, image: "images/Questyle_M15i.png" },
-        { name: "Shanling UA7 ITS GOT A TUBE", price: 270, url: "https://www.linsoul.com/products/shanling-ua7?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/Shanling_UA7_ITS_GOT_A_TUBE.jpg" }
+        { name: "Shanling UA7 ITS GOT A TUBE", price: 270, url: "https://www.linsoul.com/products/shanling-ua7?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/Shanling_UA7_ITS_GOT_A_TUBE.jpg" },
+        { name: "Questyle Sigma", price: 600, url: "https://amzn.to/3Npc92M", pick: false, image: "images/Questyle_Sigma.jpg" }
     ],
     "Desktop DAC/AMP": [
         { name: "IFI Uno", price: 79, url: "https://apos.audio/products/ifi-uno?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/IFI_Uno.png" },
         { name: "Topping DX1 Mini", price: 99, url: "https://apos.audio/products/topping-dx1-dac-amp?sca_ref=9857353.lTWqXMxzNa", pick: true, image: "images/Topping_DX1_Mini.png" },
+        { name: "Apos x Community Gremlin Tube Amp", price: 120, url: "https://apos.audio/products/apos-x-community-gremlin-diy-tube-amp?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Apos_x_Community_Gremlin_Tube_Amp.png" },
         { name: "xDuoo MH-02", price: 130, url: "https://www.linsoul.com/products/xduoo-mh-02?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/xDuoo_MH-02.jpg" },
         { name: "Schiit Fulla", price: 136, url: "https://amzn.to/403r0nk", pick: false, image: "images/Schiit_Fulla.png" },
         { name: "FiiO K11", price: 140, url: "https://www.linsoul.com/products/fiio-k11?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/FiiO_K11.jpg" },
