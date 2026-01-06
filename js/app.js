@@ -42,6 +42,10 @@ document.addEventListener('DOMContentLoaded', function() {
             text: "What the nerds up 2?",
             author: "AudioMan"
         },
+        {
+            text: "yall did auntie forget to take her special candy today?",
+            author: "Asperumi"
+        },
     ];
 
     // Function to set random quote
