@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         {
             text: "yall did auntie forget to take her special candy today?",
-            author: "Asperumi"
+            author: "Aspenumi"
         },
     ];
 
