@@ -46,6 +46,10 @@ document.addEventListener('DOMContentLoaded', function() {
             text: "yall did auntie forget to take her special candy today?",
             author: "Aspenumi"
         },
+        {
+            text: "When will you all realize that I am perfect and not capable of mistakes. If I typed 'fro' it will be in the dictionary by tomorrow.",
+            author: "Axel Bostrom"
+        },
     ];
 
     // Function to set random quote
