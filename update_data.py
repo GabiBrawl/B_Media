@@ -16,7 +16,8 @@ from selenium.webdriver.support import expected_conditions as EC
 # Categories to blacklist from being added to data.js
 BLACKLISTED_CATEGORIES = [
     'bostrommediastrategies@gmail.com',
-    'cookie-preferences'
+    'cookie-preferences',
+    'explore-related-linktrees'
 ]
 
 # Items to blacklist within specific categories
