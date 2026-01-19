@@ -16,6 +16,7 @@ const gearData = {
         { name: "MOONDROP RAYS", price: 100, url: "https://www.linsoul.com/products/moondrop-rays?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/MOONDROP_RAYS.jpg" },
         { name: "Moondrop Aria 2", price: 100, url: "https://www.linsoul.com/products/moondrop-aria2?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Moondrop_Aria_2.png" },
         { name: "Fosi Audio IM4", price: 100, url: "https://fosiaudioshop.com/products/fosi-audio-im4?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: true, image: "images/Fosi_Audio_IM4.jpg" },
+        { name: "TINHIFI P1 MAX II", price: 110, url: "https://amzn.to/4bzXbkw", pick: false, image: "images/TINHIFI_P1_MAX_II.jpg" },
         { name: "Kiwi Ears Étude", price: 120, url: "https://www.linsoul.com/products/kiwi-ears-etude?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Étude.jpg" },
         { name: "SIMGOT EM6L", price: 125, url: "https://www.linsoul.com/products/simgot-em6l?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/SIMGOT_EM6L.jpg" },
         { name: "7Hz x Crinacle: Divine", price: 150, url: "https://www.linsoul.com/products/7hz-x-crinacle-divine?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/7Hz_x_Crinacle_Divine.jpg" },
@@ -124,6 +125,7 @@ const gearData = {
         { name: "Hart Audio", price: null, url: "https://hartaudiocables.com/?srsltid=AfmBOorgjh48BSZb8D_oMEq1M8iBLxZtShzNSawmyPz1jcFDVez2CGKQ", pick: false, image: "images/Hart_Audio.jpg" }
     ],
     "Tech I Use": [
+        { name: "SENNHEISER MKE 400 + Mobile Kit", price: null, url: "https://amzn.to/4qx1hPm", pick: false, image: "images/SENNHEISER_MKE_400__Mobile_Kit.jpg" },
         { name: "Anker 555 USB-C Hub (8-in-1)", price: null, url: "https://amzn.to/4qGGrN6", pick: false, image: "images/Anker_555_USB-C_Hub_8-in-1.jpg" },
         { name: "Anker 140W MAX 4-Port GaN USB C Charger", price: null, url: "https://amzn.to/4qBUvHq", pick: false, image: "images/Anker_140W_MAX_4-Port_GaN_USB_C_Charger.jpg" },
         { name: "K&F Concept 60 inch Carbon Fiber Camera Tripod,Super Lightweight Compact Travel Tripod with 360 Degree Ball Head,Quick Release Plate,Detachable Monopod 17 lb Load Capacity for SLR DSLR C225C0 (BA225)", price: null, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB081DYTR9J%2Fref%3Dcm_sw_r_as_gl_api_gl_i_8M5S06Y5VWKNQEJ8C92X%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3Dd987bf5298e45df9bfdb78f767025db2&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/KF_Concept_60_inch_Carbon_Fiber_Camera_TripodSuper_Lightweight_Compact_Travel_Tripod_with_360_Degree_Ball_HeadQuick_Release_PlateDetachable_Monopod_17_lb_Load_Capacity_for_SLR_DSLR_C225C0_BA225.jpg" },
