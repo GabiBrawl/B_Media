@@ -29,7 +29,6 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, 'Helvetica Neue', Arial, sans-serif;
     background: var(--primary-bg);
     color: var(--light-text);
-    line-height: 1.6;
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -280,7 +279,7 @@ main {
     display: inline-block;
     background: white;
     color: var(--primary-bg);
-    padding: 0.65rem 3rem;
+    padding: 0.85rem 1.3rem;
     text-decoration: none;
     border-radius: 10px;
     font-weight: 600;
@@ -290,7 +289,6 @@ main {
     cursor: pointer;
     position: relative;
     z-index: 1;
-    margin-top: auto;
     text-align: center;
     align-self: center;
     width: auto;
@@ -310,6 +308,8 @@ main {
     border-radius: 10px;
     font-weight: 600;
     font-size: 0.85rem;
+    line-height: 1;
+    min-height: 42.5667px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border: none;
     cursor: pointer;
@@ -750,7 +750,6 @@ main {
 
 .extra-notes p {
     color: var(--medium-text);
-    line-height: 1.6;
     margin: 0 0 1rem 0;
 }
 
@@ -1100,5 +1099,336 @@ main {
 
     .category h2 {
         font-size: 1.2rem;
+    }
+}
+/* Wishlist Styles */
+.wishlist-controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.wishlist-btn {
+    flex: 1;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.wishlist-btn:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.wishlist-btn svg {
+    flex-shrink: 0;
+}
+
+#wishlist-count {
+    font-weight: 700;
+}
+
+.share-btn {
+    background: var(--tertiary-bg);
+    color: var(--light-text);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.share-btn:hover {
+    background: var(--accent-bg);
+    border-color: var(--accent-color);
+}
+
+.share-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Social Links in Rows */
+.social-row {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.social-row:last-child {
+    margin-bottom: 0;
+}
+
+.social-row a {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    background: var(--tertiary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.social-row a:hover {
+    background: var(--accent-bg);
+    border-color: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+/* Favorite Heart Button on Items */
+.favorite-btn {
+    display: inline-block;
+    background: white;
+    color: var(--primary-bg);
+    padding: 0.65rem 1.1rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    line-height: 1;
+    min-height: 42.5667px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    align-self: center;
+    width: auto;
+    text-decoration: none;
+}
+
+.favorite-btn:hover {
+    background: var(--light-text);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+}
+
+.favorite-btn.active {
+    background: #ff6b6b;
+    color: white;
+}
+
+.favorite-btn.active svg {
+    fill: white;
+}
+
+@keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.favorite-btn svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+/* Share Modal Styles */
+.share-link-container {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+}
+
+#share-link-input {
+    flex: 1;
+    background: var(--tertiary-bg);
+    border: 1px solid var(--border-color);
+    color: var(--light-text);
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: 'Courier New', monospace;
+}
+
+.copy-btn {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+    background: var(--accent-hover);
+}
+
+.copy-btn.copied {
+    background: #10b981;
+}
+
+.share-note {
+    font-size: 0.85rem;
+    color: var(--dark-text);
+    margin-top: 0.5rem;
+}
+
+/* Shared Wishlist Modal */
+.shared-wishlist-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.shared-wishlist-actions button {
+    background: var(--tertiary-bg);
+    color: var(--light-text);
+    border: 1px solid var(--border-color);
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.shared-wishlist-actions button:hover {
+    background: var(--accent-bg);
+    border-color: var(--accent-color);
+}
+
+.shared-wishlist-actions button:first-child {
+    background: var(--accent-color);
+    color: white;
+}
+
+.shared-wishlist-actions button:first-child:hover {
+    background: var(--accent-hover);
+}
+
+#shared-wishlist-content {
+    max-height: 400px;
+    overflow-y: auto;
+    margin: 1rem 0;
+}
+
+#shared-wishlist-content .shared-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: var(--tertiary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
+#shared-wishlist-content .shared-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+#shared-wishlist-content .shared-item-info {
+    flex: 1;
+}
+
+#shared-wishlist-content .shared-item-info h4 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+}
+
+#shared-wishlist-content .shared-item-info p {
+    margin: 0;
+    color: var(--dark-text);
+    font-size: 0.85rem;
+}
+
+/* Wishlist Banner */
+.wishlist-banner {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(255, 107, 107, 0.3);
+}
+
+.wishlist-banner h2 {
+    margin: 0 0 0.5rem 0;
+    color: white;
+}
+
+.wishlist-banner p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+}
+
+.wishlist-banner .wishlist-actions {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.wishlist-banner button {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+}
+
+.wishlist-banner button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 768px) {
+    .wishlist-controls {
+        flex-direction: column;
+    }
+
+    .wishlist-btn {
+        width: 100%;
+    }
+
+    .share-link-container {
+        flex-direction: column;
+    }
+
+    .copy-btn {
+        width: 100%;
+    }
+
+    .social-row {
+        gap: 0.25rem;
+    }
+
+    .shared-wishlist-actions {
+        flex-direction: column;
+    }
+
+    .shared-wishlist-actions button {
+        width: 100%;
     }
 }
