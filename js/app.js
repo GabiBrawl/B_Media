@@ -7,6 +7,32 @@ let currentFilters = {
 };
 let main; // Main content element
 
+// Image loading observer
+let imageObserver;
+
+// Initialize lazy image loading
+function initImageObserver() {
+    imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const img = entry.target;
+            // Only process if visibility state actually changed
+            if (entry.isIntersecting && img.dataset.src) {
+                // Load image
+                img.src = img.dataset.src;
+                img.removeAttribute('data-src');
+                // Stop observing after loading to reduce observer overhead
+                imageObserver.unobserve(img);
+            } else if (!entry.isIntersecting && img.src && !img.src.includes('data:image')) {
+                // Unload image - only if it has a real image loaded
+                img.dataset.src = img.src;
+                img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23333" width="100" height="100"/%3E%3C/svg%3E';
+            }
+        });
+    }, {
+        rootMargin: '100px' // Load 100px before entering viewport for smoother scrolling
+    });
+}
+
 // Wishlist Management
 let wishlist = [];
 const WISHLIST_KEY = 'bmedia_wishlist';
@@ -115,14 +141,15 @@ function populateCategoryFilter() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOMContentLoaded fired');
-    console.log('typeof gearData:', typeof gearData);
-    console.log('gearData exists:', typeof gearData !== 'undefined');
     
     if (typeof gearData === 'undefined') {
         console.error('gearData is not defined! Check if data.js is loaded.');
         return;
     }
+
+    // Initialize image observer for lazy loading
+    initImageObserver();
+
     // Array of random quotes
     const quotes = [
         {
@@ -153,6 +180,10 @@ document.addEventListener('DOMContentLoaded', function() {
             text: "We listen & We judge!",
             author: "sam!, Discord Server Admin"
         },
+        {
+            text: "Derp Durp",
+            author: "Bellumi 🥭🍒🥥🍊🍍🍎🫐🍋 🥝🍌🍇"
+        }
     ];
 
     // Function to set random quote
@@ -353,6 +384,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Preload extra data images on hover
+    document.addEventListener('mouseenter', function(e) {
+        const extraBtn = e.target.closest('.extra-data-btn');
+        if (extraBtn) {
+            const itemName = extraBtn.getAttribute('data-item-name');
+            preloadExtraImages(itemName);
+        }
+    }, true);
+
     // Delegate click event for extra data buttons
     document.addEventListener('click', function(e) {
         const extraBtn = e.target.closest('.extra-data-btn');
@@ -375,22 +415,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Initialize all items
-    console.log('Initializing all items...');
-    console.log('gearData keys:', Object.keys(gearData));
     for (const [categoryKey, items] of Object.entries(gearData)) {
-        console.log(`Processing category ${categoryKey} with ${items.length} items`);
         items.forEach(item => {
             item.category = categoryKey;
             allItems.push(item);
         });
     }
-    console.log('Total allItems:', allItems.length);
 
     // Populate category filter dynamically
     populateCategoryFilter();
 
     // Render all categories initially
-    console.log('Calling renderAllCategories...');
     renderAllCategories();
 
     // Check for shared wishlist in URL (after allItems is populated)
@@ -399,9 +434,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show the shared wishlist modal
         showSharedWishlistModal(sharedWishlist);
     }
+
+    // Debounce search to reduce re-renders
+    let searchTimeout;
     searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
         currentFilters.search = this.value.toLowerCase();
-        applyFilters();
+        searchTimeout = setTimeout(() => applyFilters(), 500);
     });
 
     categoryFilter.addEventListener('change', function() {
@@ -434,10 +473,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function renderAllCategories() {
-        console.log('renderAllCategories called');
-        console.log('gearData:', gearData);
-        console.log('allItems length:', allItems.length);
-        
         // Preserve the quote banner
         const quoteBanner = main.querySelector('.quote-banner');
         main.innerHTML = '';
@@ -595,6 +630,17 @@ document.addEventListener('DOMContentLoaded', function() {
         extraModal.classList.add('show');
     }
 
+    // Preload images for extra data when hovering over info button
+    function preloadExtraImages(itemName) {
+        const data = extraData[itemName];
+        if (!data || !data.images) return;
+        
+        data.images.forEach(imgPath => {
+            const img = new Image();
+            img.src = imgPath;
+        });
+    }
+
     function createItemElement(item) {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'item';
@@ -615,9 +661,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         itemDiv.innerHTML = `
             ${pickBadge}
-            <img src="${item.image}" 
-                 alt="${item.name}" 
-                 class="item-image" 
+            <img class="item-image" 
+                 alt="${item.name}"
+                 data-src="${item.image}"
+                 src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23333' width='100' height='100'/%3E%3C/svg%3E"
                  onerror="this.classList.add('broken'); this.alt='🎵';">
             <div class="item-header">
                 <h3>${item.name}</h3>
@@ -633,6 +680,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 ${extraButton}
             </div>
         `;
+
+        // Observe image for lazy loading
+        if (imageObserver) {
+            const img = itemDiv.querySelector('.item-image');
+            imageObserver.observe(img);
+        }
 
         return itemDiv;
     }

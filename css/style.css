@@ -51,7 +51,6 @@ body {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    box-shadow: 2px 0 15px var(--shadow-color);
 }
 
 main {
@@ -163,14 +162,15 @@ main {
     flex-direction: column;
     gap: 0.5rem;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: border-color 0.2s ease;
     position: relative;
     overflow: hidden;
+    contain: layout style paint;
 }
 
 .item:hover {
     border-color: var(--light-text);
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
 }
 
 .item-image {
@@ -296,8 +296,6 @@ main {
 
 .item a:hover {
     background: var(--light-text);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
 .item .extra-data-btn {
@@ -323,8 +321,6 @@ main {
 
 .item .extra-data-btn:hover {
     background: #357abd;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
 }
 
 .item-buttons {
@@ -495,7 +491,7 @@ main {
     outline: none;
     border-color: var(--accent-color);
     background: var(--card-bg);
-    box-shadow: 0 0 0 3px var(--accent-glow), 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 0 2px var(--accent-color);
 }
 
 .search-box input::placeholder {
@@ -570,7 +566,7 @@ main {
     outline: none;
     border-color: var(--accent-color);
     background: var(--card-bg);
-    box-shadow: 0 0 0 3px var(--accent-glow);
+    box-shadow: 0 0 0 2px var(--accent-color);
 }
 
 .checkbox-label {
@@ -633,7 +629,6 @@ main {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
 }
 
 .modal.show {
@@ -649,7 +644,7 @@ main {
     padding: 2rem;
     max-width: 500px;
     width: 90%;
-    box-shadow: 0 20px 60px var(--shadow-color);
+    box-shadow: 0 4px 12px var(--shadow-color);
     animation: modalSlideIn 0.3s ease;
 }
 
@@ -687,14 +682,11 @@ main {
     cursor: pointer;
     font-weight: 600;
     font-size: 0.9rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px var(--accent-glow);
+    transition: background 0.3s ease;
 }
 
 .modal-close:hover {
     background: var(--accent-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px var(--accent-glow);
 }
 
 /* Extra Data Modal Styles */
@@ -1127,7 +1119,6 @@ main {
 
 .wishlist-btn:hover {
     background: var(--accent-hover);
-    transform: translateY(-1px);
 }
 
 .wishlist-btn svg {
@@ -1203,7 +1194,7 @@ main {
     font-size: 0.85rem;
     line-height: 1;
     min-height: 42.5667px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background 0.2s ease, color 0.2s ease;
     border: none;
     cursor: pointer;
     position: relative;
@@ -1216,8 +1207,6 @@ main {
 
 .favorite-btn:hover {
     background: var(--light-text);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
 .favorite-btn.active {
@@ -1358,7 +1347,7 @@ main {
 
 /* Wishlist Banner */
 .wishlist-banner {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    background: #ff6b6b;
     border-radius: 12px;
     padding: 1.5rem;
     margin-bottom: 2rem;
@@ -1394,18 +1383,12 @@ main {
     cursor: pointer;
     font-size: 0.9rem;
     font-weight: 600;
-    transition: all 0.2s ease;
-    backdrop-filter: blur(10px);
-}
+        transition: background 0.2s ease, border-color 0.2s ease;
+    }
 
-.wishlist-banner button:hover {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
-}
-
-@media (max-width: 768px) {
-    .wishlist-controls {
-        flex-direction: column;
+    .wishlist-banner button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.5);
     }
 
     .wishlist-btn {
