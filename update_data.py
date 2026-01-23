@@ -17,7 +17,8 @@ from selenium.webdriver.support import expected_conditions as EC
 BLACKLISTED_CATEGORIES = [
     'bostrommediastrategies@gmail.com',
     'cookie-preferences',
-    'explore-related-linktrees'
+    'explore-related-linktrees',
+    'explore-other-linktrees'
 ]
 
 # Items to blacklist within specific categories
