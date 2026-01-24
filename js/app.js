@@ -644,6 +644,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         itemDiv.innerHTML = `
             ${pickBadge}
+            <span class="item-price">${priceText}</span>
             <div class="item-image-wrapper">
                 <img class="item-image" 
                      alt="${item.name}"
@@ -654,7 +655,6 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="item-info">
                 <div class="item-header">
                     <h3>${item.name}</h3>
-                    <p>${priceText}</p>
                 </div>
                 <div class="item-buttons">
                     <a href="${item.url}" target="_blank">View Product</a>
