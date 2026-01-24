@@ -20,7 +20,7 @@
         
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div class="sidebar-header-content">
                     <img src="favicon.ico" alt="B_Media Logo" class="sidebar-logo">
                     <h1>B_MEDIA</h1>
                 </div>
@@ -192,15 +192,16 @@
         </div>
     </div>
 
-    <!-- Modal for Shared Wishlist -->
-    <div id="shared-wishlist-modal" class="modal">
-        <div class="modal-content">
-            <h3>Shared Wishlist</h3>
-            <p>Someone shared their wishlist with you! Here are the products they recommended:</p>
-            <div id="shared-wishlist-content"></div>
-            <div class="shared-wishlist-actions">
-                <button id="add-shared-to-wishlist-btn">Add All to My Wishlist</button>
-                <button id="view-shared-products-btn">View Products</button>
+    <!-- Modal for Wishlist View -->
+    <div id="wishlist-modal" class="modal">
+        <div class="modal-content wishlist-modal-content">
+            <div class="modal-header">
+                <h3 id="wishlist-modal-title">❤️ Your Wishlist</h3>
+                <span id="wishlist-item-count">0 items</span>
+            </div>
+            <div id="wishlist-modal-content" class="wishlist-modal-items"></div>
+            <div class="wishlist-modal-actions" id="wishlist-modal-actions">
+                <button id="wishlist-modal-clear" class="clear-btn">Clear Wishlist</button>
                 <button class="modal-close">Close</button>
             </div>
         </div>
