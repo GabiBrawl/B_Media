@@ -40,11 +40,13 @@ const gearData = {
     ],
     "Headphones": [
         { name: "MOONDROP Old Fashioned", price: 25, url: "https://www.linsoul.com/products/moondrop-old-fashioned?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/MOONDROP_Old_Fashioned.jpg" },
+        { name: "FiiO Jade Audio JT3", price: 70, url: "https://amzn.to/4qDkwqe", pick: true, image: "images/FiiO_Jade_Audio_JT3.jpg" },
         { name: "Kiwi Ears Altruva", price: 70, url: "https://www.linsoul.com/products/kiwi-ears-altruva?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Altruva.jpg" },
         { name: "Simgot EP5", price: 98, url: "https://www.linsoul.com/products/simgot-ep5?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Simgot_EP5.png" },
         { name: "FiiO JadeAudio JT7", price: 120, url: "https://apos.audio/products/fiio-jadeaudio-jt7-open-back-planar-headphones?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/FiiO_JadeAudio_JT7.jpg" },
         { name: "FiiO FT1", price: 160, url: "https://www.linsoul.com/products/fiio-ft1?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/FiiO_FT1.png" },
         { name: "Gaming Headset DROP PC38X", price: 200, url: "https://amzn.to/3HhZLiJ", pick: false, image: "images/Gaming_Headset_DROP_PC38X.png" },
+        { name: "FiiO FT1 Pro", price: 220, url: "https://apos.audio/products/fiio-ft1-pro-open-back?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/FiiO_FT1_Pro.jpg" },
         { name: "Sennheiser HD599", price: 200, url: "https://amzn.to/4nl2vvE", pick: true, image: "images/Sennheiser_HD599.png" },
         { name: "Sennheiser HD 560 S", price: 275, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB08J9MVB6W%2Fref%3Dcm_sw_r_as_gl_api_gl_i_GHA0516AARS5E63DD09E%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3Dcb1741c88340e67df6d3d142d6253491&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/Sennheiser_HD_560_S.jpg" },
         { name: "Hifiman Sundara", price: 280, url: "https://apos.audio/products/hifiman-sundara-planar-magnetic-headphones?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Hifiman_Sundara.png" },
@@ -85,6 +87,7 @@ const gearData = {
         { name: "Schiit Gunnr Mission-Critical", price: 259, url: "https://amzn.to/3TsPAKC", pick: false, image: "images/Schiit_Gunnr_Mission-Critical.png" }
     ],
     "Digital Audio Players": [
+        { name: "FiiO SNOWSKY Echo Mini", price: 55, url: "https://www.linsoul.com/products/fiio-snowsky-echo-mini?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/FiiO_SNOWSKY_Echo_Mini.jpg" },
         { name: "HiBy R1", price: 85, url: "https://www.linsoul.com/products/hiby-r1?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/HiBy_R1.jpg" },
         { name: "Shanling M1 Plus", price: 210, url: "https://www.linsoul.com/products/shanling-m1-plus?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Shanling_M1_Plus.jpg" },
         { name: "HiBy R4", price: 250, url: "https://www.linsoul.com/products/hiby-r4?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/HiBy_R4.jpg" },

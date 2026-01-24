@@ -377,6 +377,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Preload extra data images on hover
     document.addEventListener('mouseenter', function(e) {
+        if (!e.target || !e.target.closest) return;
         const extraBtn = e.target.closest('.extra-data-btn');
         if (extraBtn) {
             const itemName = extraBtn.getAttribute('data-item-name');
@@ -630,10 +631,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Check if item is in wishlist (only for personal wishlist)
         const inWishlist = !isShared && isInWishlist(item.name);
         const favoriteClass = inWishlist ? 'active' : '';
-
-        // Create a div with a better visual placeholder for broken images
-        const placeholderStyle = 'background: linear-gradient(135deg, #1a1a24, #252535); display: flex; align-items: center; justify-content: center; font-size: 3rem; opacity: 0.3; width: 100%; height: 180px; border-radius: 12px; margin-bottom: 1rem;';
-        
         const favoriteButton = isShared ? '' : `
             <button class="favorite-btn ${favoriteClass}" data-item-name="${item.name}" title="Add to Wishlist">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -649,8 +646,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <img class="item-image" 
                      alt="${item.name}"
                      data-src="${item.image}"
-                     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23333' width='100' height='100'/%3E%3C/svg%3E"
-                     onerror="this.classList.add('broken'); this.alt='🎵';">
+                     onerror="this.classList.add('broken'); this.alt='No image';">
             </div>
             <div class="item-info">
                 <div class="item-header">
