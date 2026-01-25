@@ -395,6 +395,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Delegate click event for share product buttons
+    document.addEventListener('click', function(e) {
+        const shareBtn = e.target.closest('.share-product-btn');
+        if (shareBtn) {
+            e.preventDefault();
+            const itemName = shareBtn.getAttribute('data-item-name');
+            shareProduct(itemName, shareBtn);
+        }
+    });
+
     // Delegate click event for favorite buttons
     document.addEventListener('click', function(e) {
         const favoriteBtn = e.target.closest('.favorite-btn');
@@ -639,15 +649,39 @@ document.addEventListener('DOMContentLoaded', function() {
             </button>
         `;
 
-        itemDiv.innerHTML = `
-            ${pickBadge}
-            <span class="item-price">${priceText}</span>
+        // Share button for individual product (overlay on image) - only on main grid, not wishlist modal
+        const shareButton = isShared ? '' : `
+            <button class="share-product-btn" data-item-name="${item.name}" title="Share">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+            </button>
+        `;
+
+        // Use wrapper only for main grid (for share button overlay)
+        const imageSection = isShared ? `
+            <img class="item-image" 
+                 alt="${item.name}"
+                 data-src="${item.image}"
+                 onerror="this.classList.add('broken'); this.alt='No image';">
+        ` : `
             <div class="item-image-wrapper">
                 <img class="item-image" 
                      alt="${item.name}"
                      data-src="${item.image}"
                      onerror="this.classList.add('broken'); this.alt='No image';">
+                ${shareButton}
             </div>
+        `;
+
+        itemDiv.innerHTML = `
+            ${pickBadge}
+            <span class="item-price">${priceText}</span>
+            ${imageSection}
             <div class="item-info">
                 <div class="item-header">
                     <h3>${item.name}</h3>
@@ -669,6 +703,95 @@ document.addEventListener('DOMContentLoaded', function() {
         return itemDiv;
     }
 
+    // Generate markdown for a single product (concise format)
+    function generateProductMarkdown(item) {
+        const pick = item.pick ? ' *(B_Media Pick)*' : '';
+        const price = item.price ? ` · $${item.price}` : '';
+        
+        return `**${item.name}**${pick}${price}\n[View Product](${item.url})`;
+    }
+
+    // Copy single product markdown to clipboard
+    function shareProduct(itemName, button) {
+        const item = allItems.find(i => i.name === itemName);
+        if (!item) return;
+        
+        const markdown = generateProductMarkdown(item);
+        
+        navigator.clipboard.writeText(markdown).then(() => {
+            // Visual feedback
+            const svg = button.querySelector('svg');
+            const originalHTML = button.innerHTML;
+            button.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>';
+            button.classList.add('copied');
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+                button.classList.remove('copied');
+            }, 1500);
+        }).catch(() => {
+            alert('Failed to copy to clipboard');
+        });
+    }
+
+    // Export wishlist as markdown for Discord/sharing
+    function exportWishlistAsMarkdown(itemsToShow = null) {
+        const items = itemsToShow || wishlist;
+        if (items.length === 0) return '';
+
+        // Get items data and group by category
+        const wishlistItems = allItems.filter(item => items.includes(item.name));
+        const groupedItems = {};
+        wishlistItems.forEach(item => {
+            if (!groupedItems[item.category]) {
+                groupedItems[item.category] = [];
+            }
+            groupedItems[item.category].push(item);
+        });
+
+        // Generate shareable wishlist link
+        const encoded = btoa(JSON.stringify(items));
+        const shareUrl = `${window.location.origin}${window.location.pathname}?wishlist=${encoded}`;
+        
+        // Build clean markdown
+        let markdown = `# My Wishlist\n`;
+        
+        for (const [categoryKey, categoryItems] of Object.entries(groupedItems)) {
+            const categoryTitle = categoryKey.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            markdown += `\n**${categoryTitle}**\n`;
+            
+            categoryItems.forEach(item => {
+                const pick = item.pick ? ' *(Pick)*' : '';
+                const price = item.price ? ` · $${item.price}` : '';
+                markdown += `[${item.name}](${item.url})${pick}${price}\n`;
+            });
+        }
+
+        markdown += `\n[View Wishlist →](${shareUrl})\n----\nShared from [B_Media Gear List](${window.location.origin}${window.location.pathname})`;
+        
+        return markdown;
+    }
+
+    // Copy markdown to clipboard with visual feedback
+    function copyMarkdownToClipboard(button, itemsToShow = null) {
+        const markdown = exportWishlistAsMarkdown(itemsToShow);
+        if (!markdown) {
+            alert('Your wishlist is empty!');
+            return;
+        }
+
+        navigator.clipboard.writeText(markdown).then(() => {
+            const originalText = button.textContent;
+            button.textContent = 'Copied!';
+            button.classList.add('copied');
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.classList.remove('copied');
+            }, 2000);
+        }).catch(() => {
+            alert('Failed to copy to clipboard');
+        });
+    }
+
     function showWishlistModal(sharedItems = null, isShared = false) {
         const itemsToShow = isShared ? sharedItems : wishlist;
         
@@ -686,10 +809,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Set title and count
         if (isShared) {
-            wishlistTitle.textContent = '💚 Shared Wishlist';
-            wishlistItemCount.textContent = `${itemsToShow.length} items`;
+            wishlistTitle.innerHTML = `
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+                Shared Wishlist
+            `;
+            wishlistItemCount.textContent = `${itemsToShow.length} item${itemsToShow.length !== 1 ? 's' : ''}`;
         } else {
-            wishlistTitle.textContent = '❤️ Your Wishlist';
+            wishlistTitle.innerHTML = `
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                Your Wishlist
+            `;
             wishlistItemCount.textContent = `${itemsToShow.length} item${itemsToShow.length !== 1 ? 's' : ''}`;
         }
 
@@ -715,17 +852,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
         for (const [categoryKey, items] of Object.entries(groupedItems)) {
             const categoryDiv = document.createElement('div');
-            categoryDiv.className = 'category';
-            categoryDiv.id = categoryKey;
+            categoryDiv.className = 'wishlist-category';
+            categoryDiv.id = `wishlist-${categoryKey}`;
 
             const categoryTitle = categoryKey.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-            categoryDiv.innerHTML = `<h2>${categoryTitle} (${items.length})</h2>`;
+            categoryDiv.innerHTML = `
+                <div class="wishlist-category-header">
+                    <h3>${categoryTitle}</h3>
+                    <span class="wishlist-category-count">${items.length} item${items.length !== 1 ? 's' : ''}</span>
+                </div>
+            `;
 
             const itemsDiv = document.createElement('div');
-            itemsDiv.className = 'items';
+            itemsDiv.className = 'wishlist-items-grid';
 
             items.forEach(item => {
-                const itemDiv = createItemElement(item, isShared);
+                const itemDiv = createItemElement(item, true); // Always true in wishlist modal to hide share button
                 itemsDiv.appendChild(itemDiv);
             });
 
@@ -738,9 +880,31 @@ document.addEventListener('DOMContentLoaded', function() {
         // Set up actions
         if (isShared) {
             wishlistActions.innerHTML = `
-                <button id="import-shared-wishlist-btn" style="background: var(--accent-color); color: white; flex: 1;">Import All Items</button>
-                <button id="close-shared-wishlist-btn" style="flex: 1;">Close</button>
+                <div class="wishlist-actions-primary">
+                    <button id="import-shared-wishlist-btn" class="action-btn primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7,10 12,15 17,10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Import All Items
+                    </button>
+                    <button id="copy-markdown-btn" class="action-btn secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                        Copy as Markdown
+                    </button>
+                </div>
+                <div class="wishlist-actions-secondary">
+                    <button id="close-shared-wishlist-btn" class="action-btn tertiary">Close</button>
+                </div>
             `;
+            // Copy markdown handler (for shared wishlist)
+            document.getElementById('copy-markdown-btn').addEventListener('click', function() {
+                copyMarkdownToClipboard(this, itemsToShow);
+            });
             // Import button handler
             document.getElementById('import-shared-wishlist-btn').addEventListener('click', function() {
                 itemsToShow.forEach(itemName => {
@@ -758,9 +922,32 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         } else {
             wishlistActions.innerHTML = `
-                <button id="wishlist-modal-clear" class="clear-btn">Clear Wishlist</button>
-                <button id="close-wishlist-btn">Close</button>
+                <div class="wishlist-actions-primary">
+                    <button id="copy-markdown-btn" class="action-btn secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                        Copy as Markdown
+                    </button>
+                </div>
+                <div class="wishlist-actions-secondary">
+                    <button id="wishlist-modal-clear" class="action-btn danger">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3,6 5,6 21,6"></polyline>
+                            <path d="m19,6v14a2,2 0 0,1-2,2H7a2,2 0 0,1-2-2V6m3,0V4a2,2 0 0,1,2-2h4a2,2 0 0,1,2,2v2"></path>
+                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                        Clear Wishlist
+                    </button>
+                    <button id="close-wishlist-btn" class="action-btn tertiary">Close</button>
+                </div>
             `;
+            // Copy markdown handler
+            document.getElementById('copy-markdown-btn').addEventListener('click', function() {
+                copyMarkdownToClipboard(this);
+            });
             // Clear wishlist handler
             document.getElementById('wishlist-modal-clear').onclick = function() {
                 if (confirm('Are you sure you want to clear your entire wishlist?')) {
