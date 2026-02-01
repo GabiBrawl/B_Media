@@ -188,6 +188,10 @@ document.addEventListener('DOMContentLoaded', function() {
             text: "legit my fav tiktoker",
             author: "Aiden, aka A_Media"
         },
+        {
+            text: "Will you add garlic to it?",
+            author: "Punnyumi, A Luxury High Tech Washing Machine"
+        }
     ];
 
     // Function to set random quote
