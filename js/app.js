@@ -183,7 +183,11 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             text: "Derp Durp",
             author: "Bellumi 🥭🍒🥥🍊🍍🍎🫐🍋 🥝🍌🍇"
-        }
+        },
+        {
+            text: "legit my fav tiktoker",
+            author: "Aiden, aka A_Media"
+        },
     ];
 
     // Function to set random quote
