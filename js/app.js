@@ -191,6 +191,10 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             text: "Will you add garlic to it?",
             author: "Punnyumi, A Luxury High Tech Washing Machine"
+        },
+        {
+            text: "I have never gooned for a cable before",
+            author: "Axel Bostrom"
         }
     ];
 
