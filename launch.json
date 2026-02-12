@@ -1,0 +1,22 @@
+{
+    "enabled": true,
+    "targetDate": "2026-02-13T02:00:00Z",
+    "title": "Kiwi Ears x B_Media: Terras launching in",
+    "launchInfo": {
+        "title": "Kiwi Ears x B_Media: Terras Cable",
+        "description": "The exclusive collaboration cable between Kiwi Ears and B_Media is now available!",
+        "details": [
+            "Available Now - The wait is over!",
+            "Premium Quality - Crafted specifically for audiophiles",
+            "Exclusive Collab - Limited B_Media community edition",
+            "Shipping Info - Orders ship starting Feb 24 (after Chinese New Year holidays)"
+        ],
+        "purchaseLink": "https://www.linsoul.com/products/kiwi-ears-x-b_media-terras?sca_ref=8292414.EuVtu9PPWr",
+        "discountCode": {
+            "code": "BMEDIATERRAS10OFF",
+            "description": "$10 off Kiwi Ears x B_Media: Terras",
+            "restrictions": "One use per customer • Active from Feb 13 to Apr 12",
+            "exclusivity": "EXCLUSIVE TO B_MEDIA MUSIC COMMUNITY"
+        }
+    }
+}

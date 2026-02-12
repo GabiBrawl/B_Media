@@ -118,6 +118,58 @@ main {
     z-index: 1;
 }
 
+.countdown-bar {
+    background: var(--tertiary-bg);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--accent-color);
+    padding: 2rem 2.5rem;
+    margin-bottom: 3rem;
+    border-radius: 12px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.countdown-bar:hover {
+    background: var(--card-bg);
+}
+
+.countdown-bar.launch-ready {
+    border-left-color: var(--pick-color);
+}
+
+.countdown-content {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 1rem !important;
+    flex-wrap: wrap !important;
+    color: var(--light-text) !important;
+}
+
+.countdown-label {
+    font-size: 0.85rem !important;
+    color: var(--medium-text) !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.3px !important;
+}
+
+.countdown-timer {
+    font-family: 'Courier New', monospace !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    color: var(--accent-color) !important;
+    letter-spacing: 1px !important;
+    padding: 0.25rem 0.75rem !important;
+    background: var(--secondary-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 4px !important;
+    min-width: 140px !important;
+    text-align: center !important;
+}
+
 .sidebar-footer .last-updated {
     margin-bottom: 0rem;
     font-size: 0.2rem !important;
@@ -1154,6 +1206,143 @@ main {
     margin: 0 0 1rem 0;
 }
 
+/* Launch Modal Styles */
+.modal-content.launch-modal-content {
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    max-width: 600px;
+    margin: 2rem auto;
+}
+
+.launch-modal-body {
+    padding: 1.5rem 2rem 0.5rem 2rem;
+}
+
+.launch-modal-body .launch-description {
+    font-size: 1rem;
+    color: var(--light-text);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: 400;
+}
+
+.launch-modal-body .launch-details {
+    margin-bottom: 2rem;
+}
+
+.launch-modal-body .launch-details li {
+    color: var(--medium-text);
+    margin: 0.5rem 0;
+    line-height: 1.5;
+    list-style: none;
+    padding-left: 1rem;
+    position: relative;
+}
+
+.launch-modal-body .launch-details li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.launch-modal-body .discount-section {
+    background: var(--tertiary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1.5rem 0;
+    text-align: center;
+    position: relative;
+}
+
+.launch-modal-body .discount-section::before {
+    content: attr(data-exclusivity);
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--secondary-bg);
+    color: var(--medium-text);
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.launch-modal-body .discount-code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--pick-color);
+    background: var(--secondary-bg);
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    margin: 0.75rem 0;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    user-select: all;
+    transition: all 0.2s ease;
+}
+
+.launch-modal-body .discount-code:hover {
+    border-color: var(--pick-color);
+}
+
+.launch-modal-body .discount-code.copied {
+    background: rgba(11, 187, 152, 0.1);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.launch-modal-body .discount-description {
+    color: var(--light-text);
+    font-weight: 600;
+    margin: 0.5rem 0;
+}
+
+.launch-modal-body .discount-restrictions {
+    color: var(--medium-text);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.launch-modal-actions {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.launch-purchase-btn {
+    flex: 2;
+    background: var(--pick-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.launch-purchase-btn:hover {
+    background: var(--pick-hover);
+}
+
+.launch-modal-actions .modal-close {
+    flex: 1;
+    background: var(--accent-color);
+    color: white;
+}
+
+.launch-modal-actions .modal-close:hover {
+    background: var(--accent-hover);
+}
+
 /* Mobile Filter Button */
 .mobile-filter-btn {
     display: none;
@@ -1428,6 +1617,26 @@ main {
         font-size: 1rem;
     }
 
+    .countdown-bar {
+        padding: 1.5rem 1.5rem;
+        margin-bottom: 2rem;
+        border-radius: 10px;
+    }
+
+    .countdown-content {
+        gap: 0.75rem;
+    }
+
+    .countdown-label {
+        font-size: 0.8rem;
+    }
+
+    .countdown-timer {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.5rem;
+        min-width: 120px;
+    }
+
     .sidebar-footer .last-updated p {
         font-size: 0.7rem !important;
         margin: 0;
@@ -1532,6 +1741,43 @@ main {
 
     .category h2 {
         font-size: 1.2rem;
+    }
+
+    .countdown-content {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .countdown-label {
+        font-size: 0.75rem;
+    }
+
+    .countdown-timer {
+        font-size: 0.75rem;
+        min-width: 110px;
+    }
+
+    .launch-modal-content {
+        margin: 1rem;
+        max-width: calc(100% - 2rem);
+    }
+
+    .launch-modal-body {
+        padding: 1rem 1.5rem 0.5rem 1.5rem;
+    }
+
+    .launch-modal-actions {
+        padding: 1rem 1.5rem;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .launch-purchase-btn {
+        order: 1;
+    }
+
+    .launch-modal-actions .modal-close {
+        order: 2;
     }
 }
 /* Wishlist Styles */

@@ -33,6 +33,202 @@ function initImageObserver() {
     });
 }
 
+// Launch configuration and countdown management
+let launchConfig = null;
+
+// Load launch configuration
+async function loadLaunchConfig() {
+    try {
+        const response = await fetch('launch.json');
+        if (response.ok) {
+            launchConfig = await response.json();
+        } else {
+            console.log('launch.json not found or error loading');
+            launchConfig = { enabled: false };
+        }
+    } catch (error) {
+        console.error('Error loading launch config:', error);
+        launchConfig = { enabled: false };
+    }
+}
+
+// Create and initialize countdown banner
+async function initLaunchCountdown() {
+    await loadLaunchConfig();
+    
+    if (!launchConfig || !launchConfig.enabled) {
+        // Remove countdown banner if it exists but is disabled
+        const existingCountdown = document.getElementById('countdown-bar');
+        if (existingCountdown) {
+            existingCountdown.remove();
+        }
+        return;
+    }
+
+    // Create countdown HTML if it doesn't exist
+    let countdownBar = document.getElementById('countdown-bar');
+    if (!countdownBar) {
+        const quoteBanner = document.querySelector('.quote-banner');
+        if (quoteBanner && quoteBanner.parentNode) {
+            countdownBar = document.createElement('div');
+            countdownBar.className = 'countdown-bar';
+            countdownBar.id = 'countdown-bar';
+            countdownBar.innerHTML = `
+                <div class="countdown-content">
+                    <span class="countdown-label">${launchConfig.title}</span>
+                    <span class="countdown-timer" id="countdown-timer">--:--:--:--</span>
+                </div>
+            `;
+            quoteBanner.parentNode.insertBefore(countdownBar, quoteBanner.nextSibling);
+        }
+    }
+
+    const targetDate = new Date(launchConfig.targetDate).getTime();
+    const countdownElement = document.getElementById('countdown-timer');
+    
+    if (!countdownElement) return;
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const timeRemaining = targetDate - now;
+        
+        if (timeRemaining <= 0) {
+            // Countdown finished - make it clickable
+            countdownElement.textContent = 'AVAILABLE NOW! Click to view';
+            countdownBar.classList.add('launch-ready');
+            countdownBar.style.cursor = 'pointer';
+            
+            // Add click handler
+            countdownBar.onclick = () => showLaunchModal();
+            return;
+        }
+        
+        // Calculate time units
+        const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+        
+        // Format as DD:HH:MM:SS
+        const formattedTime = `${String(days).padStart(2, '0')}:${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        countdownElement.textContent = formattedTime;
+        
+        // Remove click handler when countdown is active
+        countdownBar.onclick = null;
+        countdownBar.style.cursor = 'default';
+    }
+    
+    // Update immediately and then every second
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+}
+
+// Show launch information modal
+function showLaunchModal() {
+    if (!launchConfig || !launchConfig.launchInfo) return;
+    
+    const modal = document.getElementById('launch-modal');
+    const title = document.getElementById('launch-modal-title');
+    const content = document.getElementById('launch-modal-content');
+    const purchaseBtn = document.getElementById('launch-modal-purchase');
+    
+    const info = launchConfig.launchInfo;
+    
+    // Set title
+    title.textContent = info.title;
+    
+    // Build content HTML
+    let html = `
+        <div class="launch-description">
+            ${info.description}
+        </div>
+        <ul class="launch-details">
+            ${info.details.map(detail => `<li>${detail}</li>`).join('')}
+        </ul>
+    `;
+    
+    // Add discount section if available
+    if (info.discountCode) {
+        html += `
+            <div class="discount-section" data-exclusivity="${info.discountCode.exclusivity}">
+                <div class="discount-description">${info.discountCode.description}</div>
+                <div class="discount-code" onclick="copyToClipboard('${info.discountCode.code}', this)">${info.discountCode.code}</div>
+                <div class="discount-restrictions">${info.discountCode.restrictions}</div>
+            </div>
+        `;
+    }
+    
+    content.innerHTML = html;
+    
+    // Set purchase button action
+    purchaseBtn.onclick = () => {
+        window.open(info.purchaseLink, '_blank');
+    };
+    
+    // Show modal
+    modal.classList.add('show');
+}
+
+// Copy discount code to clipboard
+function copyToClipboard(text, element) {
+    navigator.clipboard.writeText(text).then(() => {
+        const original = element.textContent;
+        element.textContent = 'Copied!';
+        element.style.backgroundColor = 'rgba(11, 187, 152, 0.1)';
+        element.style.borderColor = 'var(--accent-color)';
+        element.style.color = 'var(--accent-color)';
+        
+        setTimeout(() => {
+            element.textContent = original;
+            element.style.backgroundColor = '';
+            element.style.borderColor = '';
+            element.style.color = '';
+        }, 2000);
+    }).catch(() => {
+        alert('Failed to copy to clipboard');
+    });
+}
+
+// Countdown Timer for Kiwi Ears x B_Media Collab (legacy - replaced by initLaunchCountdown)
+function initCountdown() {
+    // Target date: Friday, 13 February 2026 at 02:00 UTC
+    // We'll use UTC to ensure consistency across timezones
+    const targetDate = new Date('2026-02-13T02:00:00Z').getTime();
+    const countdownElement = document.getElementById('countdown-timer');
+    
+    if (!countdownElement) {
+        return; // Exit if element doesn't exist
+    }
+    
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const timeRemaining = targetDate - now;
+        
+        if (timeRemaining <= 0) {
+            // Countdown finished
+            countdownElement.textContent = '🎉 LAUNCHED! 🎉';
+            countdownElement.parentElement.classList.add('countdown-finished');
+            return;
+        }
+        
+        // Calculate time units
+        const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+        
+        // Format as DD:HH:MM:SS
+        const formattedTime = `${String(days).padStart(2, '0')}:${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        countdownElement.textContent = formattedTime;
+    }
+    
+    // Update immediately
+    updateCountdown();
+    
+    // Update every 1 second
+    setInterval(updateCountdown, 1000);
+}
+
 // Wishlist Management
 let wishlist = [];
 const WISHLIST_KEY = 'bmedia_wishlist';
@@ -215,6 +411,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set random quote on page load
     setRandomQuote();
 
+    // Initialize launch countdown
+    initLaunchCountdown();
+
     // Set last updated date
     if (typeof lastUpdated !== 'undefined') {
         document.getElementById('last-updated-date').textContent = lastUpdated;
@@ -240,6 +439,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const shareWishlistBtn = document.getElementById('share-wishlist-btn');
     const copyLinkBtn = document.getElementById('copy-link-btn');
     const shareLinkInput = document.getElementById('share-link-input');
+
+    const launchModal = document.getElementById('launch-modal');
+    const launchModalClose = launchModal.querySelectorAll('.modal-close');
 
     // Mobile filter controls
     const mobileFilterBtn = document.getElementById('mobile-filter-btn');
@@ -325,6 +527,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupModalHandler(modal, modalClose);
     setupModalHandler(extraModal, extraModalClose);
     setupModalHandler(shareModal, shareModalClose);
+    setupModalHandler(launchModal, launchModalClose);
     
     // Setup wishlist modal
     const wishlistModal = document.getElementById('wishlist-modal');
@@ -466,11 +669,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function renderAllCategories() {
-        // Preserve the quote banner
+        // Preserve the quote banner and countdown bar
         const quoteBanner = main.querySelector('.quote-banner');
+        const countdownBar = main.querySelector('.countdown-bar');
         const children = [];
         if (quoteBanner) {
             children.push(quoteBanner.cloneNode(true));
+        }
+        if (countdownBar) {
+            children.push(countdownBar.cloneNode(true));
         }
 
         // Reset wishlist button text
@@ -503,6 +710,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         main.replaceChildren(...children);
+        
+        // Re-initialize launch countdown after DOM manipulation
+        initLaunchCountdown();
     }
 
     function applyFilters() {
@@ -550,11 +760,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function renderFilteredCategories(groupedItems) {
-        // Preserve the quote banner
+        // Preserve the quote banner and countdown bar
         const quoteBanner = main.querySelector('.quote-banner');
+        const countdownBar = main.querySelector('.countdown-bar');
         const children = [];
         if (quoteBanner) {
             children.push(quoteBanner.cloneNode(true));
+        }
+        if (countdownBar) {
+            children.push(countdownBar.cloneNode(true));
         }
 
         if (Object.keys(groupedItems).length === 0) {
@@ -563,6 +777,9 @@ document.addEventListener('DOMContentLoaded', function() {
             noResults.innerHTML = '<h2>No products match your filters</h2><p>Try adjusting your search criteria</p>';
             children.push(noResults);
             main.replaceChildren(...children);
+            
+            // Re-initialize launch countdown after DOM manipulation
+            initLaunchCountdown();
             return;
         }
 
@@ -587,6 +804,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         main.replaceChildren(...children);
+        
+        // Re-initialize launch countdown after DOM manipulation
+        initLaunchCountdown();
     }
 
     function showExtraData(itemName) {
