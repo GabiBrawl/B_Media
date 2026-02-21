@@ -35,6 +35,7 @@ const gearData = {
         { name: "INAWAKEN Twilight-DS", price: 350, url: "https://www.linsoul.com/products/inawaken-twilight-ds?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/INAWAKEN_Twilight-DS.jpg" },
         { name: "XENNS Mangird Tea Pro", price: 360, url: "https://www.linsoul.com/products/xenns-mangird-tea-pro?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/XENNS_Mangird_Tea_Pro.jpg" },
         { name: "Kiwi Ears x HBB Punch", price: 450, url: "https://www.linsoul.com/products/kiwi-ears-x-hbb-punch?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_x_HBB_Punch.jpg" },
+        { name: "Yanyin Baker", price: 500, url: "https://www.linsoul.com/products/yanyin-baker?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Yanyin_Baker.jpg" },
         { name: "XENNS Mangird Top Pro", price: 500, url: "https://www.linsoul.com/products/xenns-mangird-top-pro?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/XENNS_Mangird_Top_Pro.jpg" },
         { name: "LETSHUOER Ember", price: 500, url: "https://letshuoer.net/products/letshuoer-ember-14-8mm-large-flagship-planar-magnetic-hi-fi-in-ear-monitors?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_Ember.jpg" },
         { name: "LETSHUOER Mystic 8", price: 990, url: "https://letshuoer.net/products/letshuoer-mystic-8-wired-iem-hifi-earphones-8-ba-drivers-in-ear-monitor?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_Mystic_8.jpg" }
@@ -51,6 +52,7 @@ const gearData = {
         { name: "Sennheiser HD599", price: 200, url: "https://amzn.to/4nl2vvE", pick: true, image: "images/Sennheiser_HD599.png" },
         { name: "Sennheiser HD 560 S", price: 275, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB08J9MVB6W%2Fref%3Dcm_sw_r_as_gl_api_gl_i_GHA0516AARS5E63DD09E%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3Dcb1741c88340e67df6d3d142d6253491&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/Sennheiser_HD_560_S.jpg" },
         { name: "Hifiman Sundara", price: 280, url: "https://apos.audio/products/hifiman-sundara-planar-magnetic-headphones?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Hifiman_Sundara.png" },
+        { name: "ROG x Hifiman Kithara", price: 300, url: "https://amzn.to/4awEqfZ", pick: false, image: "images/ROG_x_Hifiman_Kithara.jpg" },
         { name: "Harmonicdyne Romantic", price: 340, url: "https://www.linsoul.com/products/harmonicdyne-romantic?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/Harmonicdyne_Romantic.jpg" },
         { name: "Sennheiser HD620S", price: 400, url: "https://amzn.to/4eytz6T", pick: false, image: "images/Sennheiser_HD620S.png" },
         { name: "Meze 105 AER", price: 400, url: "https://mezeaudio.com/products/105-aer?_ef_transaction_id=&oid=46&affid=287.", pick: false, image: "images/Meze_105_AER.png" },
@@ -86,6 +88,7 @@ const gearData = {
         { name: "FiiO K11", price: 140, url: "https://www.linsoul.com/products/fiio-k11?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/FiiO_K11.jpg" },
         { name: "Fosi Audio K7", price: 200, url: "https://fosiaudioshop.com/products/k7-dac-headphone-amp?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: false, image: "images/Fosi_Audio_K7.jpg" },
         { name: "Fosi Audio ZH3", price: 200, url: "https://fosiaudioshop.com/products/zh3-dac-headphone-amp-preamp?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: true, image: "images/Fosi_Audio_ZH3.jpg" },
+        { name: "ZEN DAC 3", price: 230, url: "https://ifi-audio.com/products/zen-dac-3?sca_ref=10519355.D1AXS2sPYkLyQJvS", pick: false, image: "images/ZEN_DAC_3.jpg" },
         { name: "Schiit Gunnr Mission-Critical", price: 259, url: "https://amzn.to/3TsPAKC", pick: false, image: "images/Schiit_Gunnr_Mission-Critical.png" }
     ],
     "Digital Audio Players": [
