@@ -52,7 +52,7 @@ const gearData = {
         { name: "Sennheiser HD599", price: 200, url: "https://amzn.to/4nl2vvE", pick: true, image: "images/Sennheiser_HD599.png" },
         { name: "Sennheiser HD 560 S", price: 275, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB08J9MVB6W%2Fref%3Dcm_sw_r_as_gl_api_gl_i_GHA0516AARS5E63DD09E%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3Dcb1741c88340e67df6d3d142d6253491&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/Sennheiser_HD_560_S.jpg" },
         { name: "Hifiman Sundara", price: 280, url: "https://apos.audio/products/hifiman-sundara-planar-magnetic-headphones?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Hifiman_Sundara.png" },
-        { name: "ROG x Hifiman Kithara", price: 300, url: "https://amzn.to/4awEqfZ", pick: false, image: "images/ROG_x_Hifiman_Kithara.jpg" },
+        { name: "ROG x Hifiman Kithara", price: 300, url: "https://amzn.to/4awEqfZ", pick: true, image: "images/ROG_x_Hifiman_Kithara.jpg" },
         { name: "Harmonicdyne Romantic", price: 340, url: "https://www.linsoul.com/products/harmonicdyne-romantic?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/Harmonicdyne_Romantic.jpg" },
         { name: "Sennheiser HD620S", price: 400, url: "https://amzn.to/4eytz6T", pick: false, image: "images/Sennheiser_HD620S.png" },
         { name: "Meze 105 AER", price: 400, url: "https://mezeaudio.com/products/105-aer?_ef_transaction_id=&oid=46&affid=287.", pick: false, image: "images/Meze_105_AER.png" },
