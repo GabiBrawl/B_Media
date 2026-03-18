@@ -879,7 +879,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Delegate click event for pick badges
     document.addEventListener('click', function(e) {
-        const viewToggleBtn = e.target.closest('#view-mode-toggle');
+        const viewToggleBtn = e.target.closest('[id^="view-mode-toggle"]');
         if (viewToggleBtn) {
             e.preventDefault();
             currentViewMode = currentViewMode === 'category' ? 'classic' : 'category';
@@ -1284,7 +1284,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const showCounts = false;
+        const showCounts = true;
         const optionsGrid = document.createElement('div');
         optionsGrid.className = 'category-options-grid';
 
@@ -1357,19 +1357,26 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        // Remove the view-mode-bar since we'll include the toggle in the category header
+        const filteredChildren = children.filter(child => !child.classList || !child.classList.contains('view-mode-bar'));
+
         const categoryHeader = document.createElement('div');
         categoryHeader.className = 'category-page-header';
         categoryHeader.innerHTML = `
-            <button class="category-page-back" type="button">← Back to Categories</button>
-            <div>
+            <div class="category-header-left">
+                <button class="category-page-back" type="button">← Back to Categories</button>
+            </div>
+            <div class="category-header-middle">
                 <h2 class="category-page-title">
                     <span class="category-page-title-icon">${getCategoryIconSvg(categoryName)}</span>
                     ${categoryName}
                 </h2>
-                <p class="category-page-count">${itemCount} item${itemCount !== 1 ? 's' : ''}</p>
+            </div>
+            <div class="category-header-right">
+                <button id="view-mode-toggle-in-header" class="view-mode-toggle-btn">Switch to Classic View</button>
             </div>
         `;
-        children.push(categoryHeader);
+        filteredChildren.push(categoryHeader);
 
         const itemsDiv = document.createElement('div');
         itemsDiv.className = 'items category-page-items';
@@ -1379,8 +1386,8 @@ document.addEventListener('DOMContentLoaded', function() {
             itemsDiv.appendChild(itemDiv);
         });
 
-        children.push(itemsDiv);
-        main.replaceChildren(...children);
+        filteredChildren.push(itemsDiv);
+        main.replaceChildren(...filteredChildren);
         updateBottomBarScrollProgress();
     }
 

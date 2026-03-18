@@ -217,13 +217,35 @@ main {
 
 .category-page-header {
     margin-bottom: 1.5rem;
-    background: var(--tertiary-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 1rem 1.1rem;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
     display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.category-header-left {
+    display: flex;
+    align-items: center;
+    flex: 0 1 auto;
+}
+
+.category-header-middle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.category-header-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 0 1 auto;
 }
 
 .category-page-back {
@@ -251,6 +273,7 @@ main {
     display: flex;
     align-items: center;
     gap: 0.55rem;
+    white-space: nowrap;
 }
 
 .category-page-title-icon {
@@ -271,6 +294,7 @@ main {
     margin: 0.25rem 0 0 0;
     color: var(--medium-text);
     font-size: 0.9rem;
+    display: none;
 }
 
 .items.category-page-items {
@@ -1781,8 +1805,11 @@ button svg {
 
     .category-page-header {
         margin-bottom: 1rem;
-        padding: 0.9rem;
+        padding: 0;
         display: none;
+        background: transparent;
+        border: none;
+        flex-direction: column;
     }
 
     .category-page-title {
