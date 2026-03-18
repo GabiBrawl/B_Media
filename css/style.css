@@ -75,14 +75,6 @@ main {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
 }
 
-.quote-banner::before {
-    display: none;
-}
-
-.quote-banner::after {
-    display: none;
-}
-
 .quote-text {
     font-family: var(--serif-font);
     font-size: 1.35rem;
@@ -98,7 +90,7 @@ main {
 
 .quote-author {
     font-size: 0.95rem;
-    color: var(--muted-text);
+    color: var(--medium-text);
     margin: 0;
     font-weight: 300;
     font-style: normal;
@@ -146,10 +138,6 @@ main {
     border-color: var(--accent-color);
     color: var(--accent-color);
     transform: translateY(-1px);
-}
-
-.category-collapsible {
-    margin-bottom: 1.2rem;
 }
 
 .category-options-grid {
@@ -225,10 +213,6 @@ main {
     word-break: break-word;
     text-wrap: balance;
     color: var(--light-text);
-}
-
-.category-toggle-icon {
-    display: none;
 }
 
 .category-page-header {
@@ -897,10 +881,6 @@ main {
     z-index: 2050;
 }
 
-#shared-wishlist-modal {
-    z-index: 2050;
-}
-
 .modal.show {
     visibility: visible;
     opacity: 1;
@@ -946,6 +926,31 @@ main {
 .modal-header span {
     color: var(--medium-text);
     font-size: 0.9rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--medium-text);
+}
+
+.empty-state h2 {
+    color: var(--light-text);
+    margin: 0 0 0.5rem;
+}
+
+.empty-state p {
+    margin: 0;
+}
+
+.empty-state.compact {
+    padding: 2rem 0;
+}
+
+.shared-wishlist-note {
+    color: var(--medium-text);
+    font-size: 0.9rem;
+    margin: 0 0 1rem 0;
 }
 
 .wishlist-modal-items {
@@ -1201,23 +1206,6 @@ button svg {
     transform: translateY(-2px);
 }
 
-.wishlist-modal-actions .markdown-btn {
-    background: #5865F2;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-}
-
-.wishlist-modal-actions .markdown-btn:hover {
-    background: #4752c4;
-}
-
-.wishlist-modal-actions .markdown-btn.copied {
-    background: var(--accent-color);
-}
-
 .wishlist-modal-actions .clear-btn {
     background: #ff6b6b;
     color: white;
@@ -1323,11 +1311,6 @@ button svg {
     margin: 0 0 1rem 0;
 }
 
-/* Mobile Filter Button */
-.mobile-filter-btn {
-    display: none;
-}
-
 /* Bottom Bar - Collapsed State */
 .bottom-bar {
     display: none;
@@ -1401,13 +1384,6 @@ button svg {
     padding: 0.75rem 1rem 1rem;
 }
 
-.mobile-wishlist-title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--light-text);
-    margin: 0 0 0.75rem;
-}
-
 .mobile-wishlist-empty {
     color: var(--medium-text);
     font-size: 0.9rem;
@@ -1425,9 +1401,54 @@ button svg {
 }
 
 .mobile-wishlist-items {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.mobile-bottom-wishlist.wishlist-modal-content .item {
+    width: 100%;
+    max-width: none;
+    flex: 1 1 auto;
+    margin-top: 0;
     gap: 0.75rem;
+    padding: 0.7rem;
+    border-radius: 10px;
+}
+
+.mobile-bottom-wishlist.wishlist-modal-content .item-image {
+    width: 60px;
+    height: 60px;
+}
+
+.mobile-bottom-wishlist.wishlist-modal-content .item-info {
+    gap: 0.45rem;
+}
+
+.mobile-bottom-wishlist.wishlist-modal-content .item h3 {
+    font-size: 0.88rem;
+    line-height: 1.25;
+}
+
+.mobile-bottom-wishlist.wishlist-modal-content .item-buttons {
+    gap: 0.4rem;
+}
+
+.mobile-bottom-wishlist.wishlist-modal-content .item a,
+.mobile-bottom-wishlist.wishlist-modal-content .favorite-btn,
+.mobile-bottom-wishlist.wishlist-modal-content .extra-data-btn {
+    min-height: 34px;
+    height: 34px;
+    padding: 0.45rem 0.7rem;
+    font-size: 0.8rem;
+}
+
+.mobile-bottom-wishlist.wishlist-modal-content .favorite-btn,
+.mobile-bottom-wishlist.wishlist-modal-content .extra-data-btn {
+    width: 34px;
+    min-width: 34px;
+    max-width: 34px;
+    padding: 0;
 }
 
 .mobile-wishlist-actions {
@@ -1543,11 +1564,6 @@ button svg {
     /* Hide mobile header */
     .mobile-header {
         display: none !important;
-    }
-
-    /* Show floating bottom bar */
-    .floating-bottom-bar {
-        display: block;
     }
 
     /* Show new bottom bar */
@@ -1699,11 +1715,6 @@ button svg {
         padding: 1.5rem 1.5rem;
         margin-bottom: 2rem;
         border-radius: 10px;
-    }
-
-    .quote-banner::before,
-    .quote-banner::after {
-        display: none;
     }
 
     .quote-text {
@@ -1864,14 +1875,6 @@ button svg {
         font-size: 1.1rem;
     }
 
-    .filters {
-        padding: 1rem;
-    }
-
-    footer {
-        padding: 1rem;
-    }
-
     main {
         padding: 1rem;
         padding-bottom: calc(1.5rem + 96px + env(safe-area-inset-bottom));
@@ -2014,11 +2017,6 @@ button svg {
     fill: white;
 }
 
-@keyframes heartBeat {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
-
 .favorite-btn svg {
     width: 18px;
     height: 18px;
@@ -2068,59 +2066,6 @@ button svg {
     margin-top: 0.5rem;
 }
 
-/* Shared Wishlist Modal */
-#shared-wishlist-content {
-    max-height: 80vh;
-    overflow-y: auto;
-    margin: 1rem 0;
-}
-
-/* Wishlist Banner */
-.wishlist-banner {
-    background: #ff6b6b;
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    text-align: center;
-    box-shadow: 0 4px 20px rgba(255, 107, 107, 0.3);
-}
-
-.wishlist-banner h2 {
-    margin: 0 0 0.5rem 0;
-    color: white;
-}
-
-.wishlist-banner p {
-    margin: 0;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 0.95rem;
-}
-
-.wishlist-banner .wishlist-actions {
-    margin-top: 1rem;
-    display: flex;
-    gap: 0.75rem;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.wishlist-banner button {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 0.5rem 1.25rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 600;
-    transition: background 0.2s ease, border-color 0.2s ease;
-}
-
-.wishlist-banner button:hover {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
-}
-
 @media (max-width: 600px) {
     .wishlist-btn {
         width: 100%;
@@ -2138,11 +2083,4 @@ button svg {
         gap: 0.25rem;
     }
 
-    .shared-wishlist-actions {
-        flex-direction: column;
-    }
-
-    .shared-wishlist-actions button {
-        width: 100%;
-    }
 }

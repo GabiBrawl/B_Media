@@ -24,10 +24,6 @@ function initImageObserver() {
                 img.removeAttribute('data-src');
                 // Stop observing after loading to reduce observer overhead
                 imageObserver.unobserve(img);
-            } else if (!entry.isIntersecting && img.src && !img.src.includes('data:image')) {
-                // Unload image - only if it has a real image loaded
-                img.dataset.src = img.src;
-                img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23333" width="100" height="100"/%3E%3C/svg%3E';
             }
         });
     }, {
@@ -95,9 +91,8 @@ function updateWishlistCount() {
     // Update wishlist button text if not currently viewing wishlist
     const wishlistBtn = document.getElementById('show-wishlist-btn');
     if (wishlistBtn) {
-        const currentView = main.querySelector('.wishlist-banner');
         const wishlistBtnText = wishlistBtn.querySelector('span');
-        if (wishlistBtnText && !currentView) {
+        if (wishlistBtnText) {
             wishlistBtnText.textContent = `View Wishlist (${wishlist.length})`;
         }
     }
@@ -134,12 +129,14 @@ function populateCategoryFilter() {
     
     // Add options for each category in gearData
     // Category names in gearData are now display names from Python
+    const fragment = document.createDocumentFragment();
     for (const categoryName of Object.keys(gearData)) {
         const option = document.createElement('option');
         option.value = categoryName;
         option.textContent = categoryName;
-        categoryFilter.appendChild(option);
+        fragment.appendChild(option);
     }
+    categoryFilter.appendChild(fragment);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -294,12 +291,29 @@ document.addEventListener('DOMContentLoaded', function() {
         bottomBar.prepend(bottomBarProgressSvg);
     }
 
+    function shouldShowBottomBarProgressLine() {
+        return isMobileViewport() && !filtersOpen && !isCategorySelectionScreen();
+    }
+
+    function updateBottomBarProgressVisibility() {
+        if (!bottomBarProgressSvg) {
+            return;
+        }
+
+        bottomBarProgressSvg.style.display = shouldShowBottomBarProgressLine() ? 'block' : 'none';
+    }
+
     function updateBottomBarProgressPath() {
         if (!bottomBar || !isMobileViewport()) {
             return;
         }
 
         ensureBottomBarProgressLine();
+        updateBottomBarProgressVisibility();
+
+        if (!shouldShowBottomBarProgressLine()) {
+            return;
+        }
 
         if (!bottomBarProgressSvg || !bottomBarProgressTrackPath || !bottomBarProgressFillPath) {
             return;
@@ -359,6 +373,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         ensureBottomBarProgressLine();
+        updateBottomBarProgressVisibility();
+
+        if (!shouldShowBottomBarProgressLine()) {
+            return;
+        }
+
         updateBottomBarProgressPath();
 
         const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
@@ -403,12 +423,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (!mobileWishlistContainer) {
             mobileWishlistContainer = document.createElement('div');
-            mobileWishlistContainer.className = 'mobile-bottom-wishlist';
+            mobileWishlistContainer.className = 'mobile-bottom-wishlist wishlist-modal-content';
             bottomBarPanel.appendChild(mobileWishlistContainer);
         }
 
         const sidebarContent = sidebar.querySelectorAll('.sidebar-section, .sidebar-footer');
         sidebarContent.forEach((node) => {
+            if (node.classList.contains('sidebar-section') && (node.querySelector('#show-wishlist-btn') || node.querySelector('#share-wishlist-btn'))) {
+                return;
+            }
             mobileFiltersContainer.appendChild(node);
         });
 
@@ -462,7 +485,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 itemsDiv.className = 'mobile-wishlist-items';
 
                 items.forEach(item => {
-                    itemsDiv.appendChild(createItemElement(item, true));
+                    itemsDiv.appendChild(createItemElement(item, isSharedWishlistMode, { hideShareButton: true }));
                 });
 
                 categoryDiv.appendChild(itemsDiv);
@@ -630,6 +653,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         sidebarOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
+        updateBottomBarScrollProgress();
     }
 
     function closeFiltersModal() {
@@ -647,6 +671,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sidebarOverlay.classList.remove('active');
         document.body.style.overflow = '';
         updateFilterVisibility();
+        updateBottomBarScrollProgress();
     }
 
     // Initialize filters
@@ -737,6 +762,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        updateBottomBarProgressVisibility();
+
         if (bottomBarMode === 'wishlist-shared' && filtersOpen) {
             setBottomBarActionText('Someone shared their wishlist!');
             return;
@@ -792,7 +819,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Setup wishlist modal
     const wishlistModal = document.getElementById('wishlist-modal');
-    const wishlistModalClose = wishlistModal.querySelectorAll('.modal-close');
     // Note: URL cleaning is handled in the modal close buttons for shared wishlists
 
     // Wishlist button handlers
@@ -1034,7 +1060,28 @@ document.addEventListener('DOMContentLoaded', function() {
         
     }
 
+    function createEmptyState(message, description = '', compact = false) {
+        const emptyState = document.createElement('div');
+        emptyState.className = compact ? 'empty-state compact' : 'empty-state';
+        emptyState.innerHTML = `<h2>${message}</h2>${description ? `<p>${description}</p>` : ''}`;
+        return emptyState;
+    }
+
     function applyFilters() {
+        let minPrice = -Infinity;
+        let maxPrice = Infinity;
+        if (currentFilters.price !== 'all') {
+            const [minRaw, maxRaw] = currentFilters.price.split('-');
+            minPrice = Number.parseInt(minRaw, 10);
+            maxPrice = maxRaw ? Number.parseInt(maxRaw, 10) : Infinity;
+            if (!Number.isFinite(minPrice)) {
+                minPrice = -Infinity;
+            }
+            if (!Number.isFinite(maxPrice)) {
+                maxPrice = Infinity;
+            }
+        }
+
         const filteredItems = allItems.filter(item => {
             // Search filter
             if (currentFilters.search && !item.name.toLowerCase().includes(currentFilters.search)) {
@@ -1051,8 +1098,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const price = item.price;
                 if (!price) return false;
 
-                const [min, max] = currentFilters.price.split('-').map(p => p === '+' ? Infinity : parseInt(p));
-                if (price < min || (max !== Infinity && price > max)) {
+                if (price < minPrice || price > maxPrice) {
                     return false;
                 }
             }
@@ -1094,9 +1140,7 @@ document.addEventListener('DOMContentLoaded', function() {
         resetWishlistButtonText();
 
         if (Object.keys(groupedItems).length === 0) {
-            const noResults = document.createElement('div');
-            noResults.style.cssText = 'text-align: center; padding: 3rem; color: #bbb;';
-            noResults.innerHTML = '<h2>No products match your filters</h2><p>Try adjusting your search criteria</p>';
+            const noResults = createEmptyState('No products match your filters', 'Try adjusting your search criteria');
             children.push(noResults);
             main.replaceChildren(...children);
             updateBottomBarScrollProgress();
@@ -1223,9 +1267,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const categoryEntries = Object.entries(groupedItems);
         if (categoryEntries.length === 0) {
-            const noResults = document.createElement('div');
-            noResults.style.cssText = 'text-align: center; padding: 3rem; color: #bbb;';
-            noResults.innerHTML = '<h2>No products match your filters</h2><p>Try adjusting your search criteria</p>';
+            const noResults = createEmptyState('No products match your filters', 'Try adjusting your search criteria');
             children.push(noResults);
             main.replaceChildren(...children);
             updateBottomBarScrollProgress();
@@ -1260,7 +1302,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         <span class="category-toggle-svg">${categoryIcon}</span>
                         <span class="category-toggle-label">${categoryName}${countSuffix}</span>
                     </span>
-                    <span class="category-toggle-icon">→</span>
                 </button>
             `;
 
@@ -1275,9 +1316,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderCategoryFilteredItems(groupedItems, children) {
         const categoryEntries = Object.entries(groupedItems);
         if (categoryEntries.length === 0) {
-            const noResults = document.createElement('div');
-            noResults.style.cssText = 'text-align: center; padding: 3rem; color: #bbb;';
-            noResults.innerHTML = '<h2>No products match your filters</h2><p>Try adjusting your search criteria</p>';
+            const noResults = createEmptyState('No products match your filters', 'Try adjusting your search criteria');
             children.push(noResults);
             main.replaceChildren(...children);
             updateBottomBarScrollProgress();
@@ -1311,9 +1350,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateFilterVisibility();
 
         if (!categoryItems || categoryItems.length === 0) {
-            const empty = document.createElement('div');
-            empty.style.cssText = 'text-align: center; padding: 2rem 0; color: #bbb;';
-            empty.innerHTML = '<h3>No products match your filters in this category</h3><p>Go back or adjust your filters.</p>';
+            const empty = createEmptyState('No products match your filters in this category', 'Go back or adjust your filters.', true);
             children.push(empty);
             main.replaceChildren(...children);
             updateBottomBarScrollProgress();
@@ -1397,7 +1434,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function createItemElement(item, isShared = false) {
+    function createItemElement(item, isShared = false, options = {}) {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'item';
 
@@ -1420,7 +1457,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
 
         // Share button for individual product (overlay on image) - only on main grid, not wishlist modal
-        const shareButton = isShared ? '' : `
+        const shareButton = (isShared || options.hideShareButton) ? '' : `
             <button class="share-product-btn" data-item-name="${item.name}" title="Share">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="18" cy="5" r="3"></circle>
@@ -1433,7 +1470,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
 
         // Use wrapper only for main grid (for share button overlay)
-        const imageSection = isShared ? `
+        const imageSection = (isShared || options.hideShareButton) ? `
             <img class="item-image" 
                  alt="${item.name}"
                  data-src="${item.image}"
@@ -1490,7 +1527,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         navigator.clipboard.writeText(markdown).then(() => {
             // Visual feedback
-            const svg = button.querySelector('svg');
             const originalHTML = button.innerHTML;
             button.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>';
             button.classList.add('copied');
@@ -1615,7 +1651,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isShared) {
             // Add description for shared wishlist
             const desc = document.createElement('p');
-            desc.style.cssText = 'color: var(--medium-text); font-size: 0.9rem; margin: 0 0 1rem 0;';
+            desc.className = 'shared-wishlist-note';
             desc.textContent = 'Someone shared their wishlist with you!';
             children.push(desc);
         }
@@ -1762,11 +1798,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
         document.addEventListener('keydown', escHandler);
-    }
-
-    function showWishlistView() {
-        // This function is no longer used, but kept for backward compatibility
-        showWishlistModal();
     }
 
     function generateShareLink() {
