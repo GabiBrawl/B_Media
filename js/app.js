@@ -6,6 +6,8 @@ let currentFilters = {
     picksOnly: false
 };
 let main; // Main content element
+let currentViewMode = 'category';
+let activeCategoryPage = null;
 
 // Image loading observer
 let imageObserver;
@@ -242,58 +244,411 @@ document.addEventListener('DOMContentLoaded', function() {
     const shareLinkInput = document.getElementById('share-link-input');
 
     // Mobile filter controls
-    const mobileFilterBtn = document.getElementById('mobile-filter-btn');
     const sidebar = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebar-overlay');
     const sidebarClose = document.getElementById('sidebar-close');
+    const bottomBar = document.getElementById('bottom-bar');
+    const bottomBarHead = document.getElementById('bottom-bar-head');
+    const bottomBarPanel = document.getElementById('bottom-bar-panel');
+    const bottomBarText = document.getElementById('bottom-bar-text');
+    const wishlistBtn = document.getElementById('wishlist-btn');
 
-    // Initialize wishlist
-    loadWishlist();
+    // Modal state
+    let filtersOpen = false;
+    let bottomBarMode = 'filters';
+    let mobileFiltersContainer = null;
+    let mobileWishlistContainer = null;
+    let mobileSharedWishlistItems = null;
 
-    // Mobile filter handlers
-    if (mobileFilterBtn) {
-        mobileFilterBtn.addEventListener('click', function() {
+    function isMobileViewport() {
+        return window.matchMedia('(max-width: 768px)').matches;
+    }
+
+    function isCategorySelectionScreen() {
+        return currentViewMode === 'category' && !activeCategoryPage;
+    }
+
+    function updateBottomBarScrollProgress() {
+        if (!bottomBar || !isMobileViewport()) {
+            return;
+        }
+
+        const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = maxScroll > 0 ? Math.min(100, Math.max(0, (scrollTop / maxScroll) * 100)) : 0;
+        bottomBar.style.setProperty('--scroll-progress', `${progress}%`);
+    }
+
+    function setBottomBarActionText(nextText) {
+        if (!bottomBarText) {
+            return;
+        }
+
+        const changed = bottomBarText.textContent !== nextText;
+        bottomBarText.textContent = nextText;
+
+        if (!changed || !bottomBarHead) {
+            return;
+        }
+
+        bottomBarHead.classList.remove('action-change-flash');
+        void bottomBarHead.offsetWidth;
+        bottomBarHead.classList.add('action-change-flash');
+    }
+
+    function setupMobileBottomBarContent() {
+        if (!isMobileViewport() || !sidebar || !bottomBarPanel || bottomBarPanel.dataset.initialized === 'true') {
+            return;
+        }
+
+        if (!mobileFiltersContainer) {
+            mobileFiltersContainer = document.createElement('div');
+            mobileFiltersContainer.className = 'mobile-bottom-filters';
+            bottomBarPanel.appendChild(mobileFiltersContainer);
+        }
+
+        if (!mobileWishlistContainer) {
+            mobileWishlistContainer = document.createElement('div');
+            mobileWishlistContainer.className = 'mobile-bottom-wishlist';
+            bottomBarPanel.appendChild(mobileWishlistContainer);
+        }
+
+        const sidebarContent = sidebar.querySelectorAll('.sidebar-section, .sidebar-footer');
+        sidebarContent.forEach((node) => {
+            mobileFiltersContainer.appendChild(node);
+        });
+
+        bottomBarPanel.dataset.initialized = 'true';
+    }
+
+    function renderMobileWishlistContent() {
+        if (!mobileWishlistContainer) {
+            return;
+        }
+
+        const isSharedWishlistMode = bottomBarMode === 'wishlist-shared' && Array.isArray(mobileSharedWishlistItems);
+        const itemsForDisplay = isSharedWishlistMode ? mobileSharedWishlistItems : wishlist;
+
+        if (bottomBarText && (bottomBarMode === 'wishlist' || bottomBarMode === 'wishlist-shared') && filtersOpen) {
+            if (isSharedWishlistMode) {
+                setBottomBarActionText('Someone shared their wishlist!');
+            } else {
+                setBottomBarActionText(`Tap to close wishlist - ${itemsForDisplay.length} item(s)`);
+            }
+        }
+
+        const children = [];
+
+        if (itemsForDisplay.length === 0) {
+            const empty = document.createElement('div');
+            empty.className = 'mobile-wishlist-empty';
+            empty.textContent = isSharedWishlistMode
+                ? 'This shared wishlist is empty.'
+                : 'Your wishlist is empty. Tap hearts on products to add items.';
+            children.push(empty);
+        } else {
+            const wishlistItems = allItems.filter(item => itemsForDisplay.includes(item.name));
+            const groupedItems = {};
+            wishlistItems.forEach(item => {
+                if (!groupedItems[item.category]) {
+                    groupedItems[item.category] = [];
+                }
+                groupedItems[item.category].push(item);
+            });
+
+            for (const [categoryKey, items] of Object.entries(groupedItems)) {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'mobile-wishlist-category';
+
+                const categoryTitle = document.createElement('h4');
+                categoryTitle.textContent = categoryKey;
+                categoryDiv.appendChild(categoryTitle);
+
+                const itemsDiv = document.createElement('div');
+                itemsDiv.className = 'mobile-wishlist-items';
+
+                items.forEach(item => {
+                    itemsDiv.appendChild(createItemElement(item, true));
+                });
+
+                categoryDiv.appendChild(itemsDiv);
+                children.push(categoryDiv);
+            }
+        }
+
+        const actions = document.createElement('div');
+        actions.className = 'mobile-wishlist-actions';
+        actions.innerHTML = isSharedWishlistMode
+            ? `
+                <div class="wishlist-actions-primary">
+                    <button id="mobile-import-shared-wishlist-btn" class="action-btn primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7,10 12,15 17,10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Import
+                    </button>
+                    <button id="mobile-copy-markdown-btn" class="action-btn secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                        Markdown
+                    </button>
+                </div>
+            `
+            : `
+                <div class="wishlist-actions-primary">
+                    <button id="mobile-share-wishlist-btn" class="action-btn primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                        </svg>
+                        Share Wishlist
+                    </button>
+                    <button id="mobile-copy-markdown-btn" class="action-btn secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                        Markdown
+                    </button>
+                </div>
+                <div class="wishlist-actions-secondary">
+                    <button id="mobile-clear-wishlist-btn" class="action-btn danger mobile-clear-icon-btn" aria-label="Clear wishlist" title="Clear wishlist">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3,6 5,6 21,6"></polyline>
+                            <path d="m19,6v14a2,2 0 0,1-2,2H7a2,2 0 0,1-2-2V6m3,0V4a2,2 0 0,1,2-2h4a2,2 0 0,1,2,2v2"></path>
+                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                    </button>
+                </div>
+            `;
+        children.push(actions);
+
+        mobileWishlistContainer.replaceChildren(...children);
+
+        const mobileShareBtn = mobileWishlistContainer.querySelector('#mobile-share-wishlist-btn');
+        if (mobileShareBtn) {
+            mobileShareBtn.addEventListener('click', function() {
+                generateShareLink();
+            });
+        }
+
+        const mobileCopyBtn = mobileWishlistContainer.querySelector('#mobile-copy-markdown-btn');
+        if (mobileCopyBtn) {
+            mobileCopyBtn.addEventListener('click', function() {
+                copyMarkdownToClipboard(this, isSharedWishlistMode ? itemsForDisplay : null);
+            });
+        }
+
+        const importSharedBtn = mobileWishlistContainer.querySelector('#mobile-import-shared-wishlist-btn');
+        if (importSharedBtn) {
+            importSharedBtn.addEventListener('click', function() {
+                itemsForDisplay.forEach(itemName => {
+                    if (!wishlist.includes(itemName)) {
+                        wishlist.push(itemName);
+                    }
+                });
+                saveWishlist();
+                setMobileBottomBarMode('wishlist');
+                renderMobileWishlistContent();
+            });
+        }
+
+        const mobileClearBtn = mobileWishlistContainer.querySelector('#mobile-clear-wishlist-btn');
+        if (mobileClearBtn) {
+            mobileClearBtn.addEventListener('click', function() {
+                if (!confirm('Are you sure you want to clear your entire wishlist?')) {
+                    return;
+                }
+
+                wishlist = [];
+                saveWishlist();
+                renderMobileWishlistContent();
+
+                if (hasActiveFilters()) {
+                    applyFilters();
+                } else {
+                    renderAllCategories();
+                }
+            });
+        }
+    }
+
+    function setMobileBottomBarMode(mode) {
+        if (!isMobileViewport()) {
+            return;
+        }
+
+        setupMobileBottomBarContent();
+        bottomBarMode = mode;
+
+        if (mode === 'wishlist' || mode === 'wishlist-shared') {
+            renderMobileWishlistContent();
+            if (mobileFiltersContainer) {
+                mobileFiltersContainer.style.display = 'none';
+            }
+            if (mobileWishlistContainer) {
+                mobileWishlistContainer.style.display = 'block';
+            }
+            if (bottomBar) {
+                bottomBar.classList.add('wishlist-mode');
+            }
+        } else {
+            mobileSharedWishlistItems = null;
+            if (mobileFiltersContainer) {
+                mobileFiltersContainer.style.display = 'block';
+            }
+            if (mobileWishlistContainer) {
+                mobileWishlistContainer.style.display = 'none';
+            }
+            if (bottomBar) {
+                bottomBar.classList.remove('wishlist-mode');
+            }
+        }
+
+        updateFilterVisibility();
+    }
+
+    // Toggle filters modal
+    function toggleFiltersModal(mode = 'filters') {
+        if (filtersOpen) {
+            closeFiltersModal();
+        } else {
+            openFiltersModal(mode);
+        }
+    }
+
+    function openFiltersModal(mode = 'filters') {
+        filtersOpen = true;
+
+        if (isMobileViewport()) {
+            setMobileBottomBarMode(mode);
+            bottomBar.classList.add('active');
+        } else {
             sidebar.classList.add('active');
-            sidebarOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
+        }
+        sidebarOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
     }
 
-    if (sidebarClose) {
-        sidebarClose.addEventListener('click', closeSidebar);
-    }
+    function closeFiltersModal() {
+        filtersOpen = false;
 
-    if (sidebarOverlay) {
-        sidebarOverlay.addEventListener('click', closeSidebar);
-    }
-
-    // Add drag-to-close functionality for mobile sidebar
-    let touchStartY = 0;
-    if (sidebar) {
-        sidebar.addEventListener('touchstart', function(e) {
-            touchStartY = e.touches[0].clientY;
-        });
-
-        sidebar.addEventListener('touchmove', function(e) {
-            // Only allow drag-to-close if at the absolute top of the sidebar
-            if (sidebar.scrollTop > 0) {
-                return;
-            }
-
-            const touchCurrentY = e.touches[0].clientY;
-            const diff = touchCurrentY - touchStartY;
-            
-            // If dragging down more than 50px from top, close the sidebar
-            if (diff > 111) {
-                closeSidebar();
-            }
-        });
-    }
-
-    function closeSidebar() {
+        if (bottomBar) {
+            bottomBar.classList.remove('active');
+        }
+        if (isMobileViewport()) {
+            setMobileBottomBarMode('filters');
+        } else if (bottomBarText) {
+            setBottomBarActionText('Tap to open filters');
+        }
         sidebar.classList.remove('active');
         sidebarOverlay.classList.remove('active');
         document.body.style.overflow = '';
+        updateFilterVisibility();
+    }
+
+    // Initialize filters
+    loadWishlist();
+
+    // Bottom bar click opens filters
+    if (bottomBarHead) {
+        bottomBarHead.addEventListener('click', (e) => {
+            if (e.target.closest('.bottom-bar-wishlist')) {
+                return;
+            }
+
+            if (isMobileViewport() && currentViewMode === 'category' && activeCategoryPage) {
+                if (filtersOpen) {
+                    closeFiltersModal();
+                }
+
+                activeCategoryPage = null;
+                updateFilterVisibility();
+
+                if (hasActiveFilters()) {
+                    applyFilters();
+                } else {
+                    renderAllCategories();
+                }
+                return;
+            }
+
+            if (isMobileViewport() && currentViewMode === 'category' && bottomBarMode === 'filters' && !isCategorySelectionScreen()) {
+                return;
+            }
+
+            toggleFiltersModal(bottomBarMode);
+        });
+    }
+
+    // Wishlist button click
+    if (wishlistBtn) {
+        wishlistBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (isMobileViewport()) {
+                if (filtersOpen && bottomBarMode === 'wishlist') {
+                    closeFiltersModal();
+                } else if (filtersOpen) {
+                    setMobileBottomBarMode('wishlist');
+                } else {
+                    openFiltersModal('wishlist');
+                }
+            } else {
+                showWishlistModal();
+            }
+        });
+    }
+
+    // Sidebar close button
+    if (sidebarClose) {
+        sidebarClose.addEventListener('click', closeFiltersModal);
+    }
+
+    // Overlay click closes modal
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeFiltersModal);
+    }
+
+    setupMobileBottomBarContent();
+    updateBottomBarScrollProgress();
+    window.addEventListener('scroll', updateBottomBarScrollProgress, { passive: true });
+    window.addEventListener('resize', updateBottomBarScrollProgress);
+
+    // Placeholder function for filter visibility management
+    function updateFilterVisibility() {
+        if (!bottomBarText) {
+            return;
+        }
+
+        if (bottomBarMode === 'wishlist-shared' && filtersOpen) {
+            setBottomBarActionText('Someone shared their wishlist!');
+            return;
+        }
+
+        if (bottomBarMode === 'wishlist' && filtersOpen) {
+            setBottomBarActionText(`Tap to close wishlist - ${wishlist.length} item(s)`);
+            return;
+        }
+
+        if (currentViewMode === 'category' && !!activeCategoryPage) {
+            setBottomBarActionText('Tap to go back to categories');
+            return;
+        }
+
+        if (filtersOpen) {
+            setBottomBarActionText('Tap to close filters');
+            return;
+        }
+
+        setBottomBarActionText('Tap to open filters');
     }
 
     // Modal handlers
@@ -334,7 +689,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Wishlist button handlers
     if (showWishlistBtn) {
         showWishlistBtn.addEventListener('click', function() {
-            showWishlistModal();
+            if (isMobileViewport()) {
+                openFiltersModal('wishlist');
+            } else {
+                showWishlistModal();
+            }
         });
     }
 
@@ -375,12 +734,65 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check for shared wishlist in URL (AFTER allItems is populated)
     const sharedWishlist = loadWishlistFromURL();
     if (sharedWishlist) {
-        // Show the shared wishlist modal
-        showWishlistModal(sharedWishlist, true);
+        if (isMobileViewport()) {
+            mobileSharedWishlistItems = sharedWishlist;
+            openFiltersModal('wishlist-shared');
+        } else {
+            showWishlistModal(sharedWishlist, true);
+        }
     }
 
     // Delegate click event for pick badges
     document.addEventListener('click', function(e) {
+        const viewToggleBtn = e.target.closest('#view-mode-toggle');
+        if (viewToggleBtn) {
+            e.preventDefault();
+            currentViewMode = currentViewMode === 'category' ? 'classic' : 'category';
+            if (currentViewMode === 'classic') {
+                activeCategoryPage = null;
+            }
+            updateFilterVisibility();
+            if (hasActiveFilters()) {
+                applyFilters();
+            } else {
+                renderAllCategories();
+            }
+            return;
+        }
+
+        const categoryToggleBtn = e.target.closest('.category-toggle-btn');
+        if (categoryToggleBtn) {
+            e.preventDefault();
+            const categoryName = categoryToggleBtn.getAttribute('data-category');
+            if (!categoryName) {
+                return;
+            }
+
+            activeCategoryPage = categoryName;
+            updateFilterVisibility();
+
+            if (hasActiveFilters()) {
+                applyFilters();
+            } else {
+                renderAllCategories();
+            }
+            return;
+        }
+
+        const categoryBackBtn = e.target.closest('.category-page-back');
+        if (categoryBackBtn) {
+            e.preventDefault();
+            activeCategoryPage = null;
+            updateFilterVisibility();
+
+            if (hasActiveFilters()) {
+                applyFilters();
+            } else {
+                renderAllCategories();
+            }
+            return;
+        }
+
         if (e.target.classList.contains('pick-badge')) {
             e.preventDefault();
             modal.classList.add('show');
@@ -425,6 +837,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const itemName = favoriteBtn.getAttribute('data-item-name');
             toggleWishlist(itemName);
             favoriteBtn.classList.toggle('active');
+
+            if (isMobileViewport() && filtersOpen && bottomBarMode === 'wishlist') {
+                renderMobileWishlistContent();
+            }
         }
     });
 
@@ -438,6 +854,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     categoryFilter.addEventListener('change', function() {
         currentFilters.category = this.value;
+        updateFilterVisibility();
         applyFilters();
     });
 
@@ -458,29 +875,30 @@ document.addEventListener('DOMContentLoaded', function() {
             price: 'all',
             picksOnly: false
         };
+        activeCategoryPage = null;
         searchInput.value = '';
         categoryFilter.value = 'all';
         priceFilter.value = 'all';
         picksOnlyCheckbox.checked = false;
+        updateFilterVisibility();
         renderAllCategories();
     });
 
     function renderAllCategories() {
+        if (currentViewMode === 'category') {
+            renderCategoryOnlyCategories(gearData);
+            return;
+        }
+
         // Preserve the quote banner
         const quoteBanner = main.querySelector('.quote-banner');
         const children = [];
         if (quoteBanner) {
             children.push(quoteBanner.cloneNode(true));
         }
+        children.push(createViewModeToggleElement());
 
-        // Reset wishlist button text
-        const wishlistBtn = document.getElementById('show-wishlist-btn');
-        if (wishlistBtn) {
-            const wishlistBtnText = wishlistBtn.querySelector('span');
-            if (wishlistBtnText) {
-                wishlistBtnText.textContent = `View Wishlist (${wishlist.length})`;
-            }
-        }
+        resetWishlistButtonText();
 
         for (const [categoryName, items] of Object.entries(gearData)) {
             const categoryDiv = document.createElement('div');
@@ -503,6 +921,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         main.replaceChildren(...children);
+        updateBottomBarScrollProgress();
         
     }
 
@@ -547,6 +966,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Render filtered results
+        if (currentViewMode === 'category') {
+            renderCategoryOnlyCategories(groupedItems);
+            return;
+        }
+
         renderFilteredCategories(groupedItems);
     }
 
@@ -557,6 +981,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (quoteBanner) {
             children.push(quoteBanner.cloneNode(true));
         }
+        children.push(createViewModeToggleElement());
+        resetWishlistButtonText();
 
         if (Object.keys(groupedItems).length === 0) {
             const noResults = document.createElement('div');
@@ -564,6 +990,7 @@ document.addEventListener('DOMContentLoaded', function() {
             noResults.innerHTML = '<h2>No products match your filters</h2><p>Try adjusting your search criteria</p>';
             children.push(noResults);
             main.replaceChildren(...children);
+            updateBottomBarScrollProgress();
             
             return;
         }
@@ -589,7 +1016,226 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         main.replaceChildren(...children);
+        updateBottomBarScrollProgress();
         
+    }
+
+    function hasActiveFilters() {
+        return (
+            currentFilters.search ||
+            currentFilters.category !== 'all' ||
+            currentFilters.price !== 'all' ||
+            currentFilters.picksOnly
+        );
+    }
+
+    function resetWishlistButtonText() {
+        const wishlistBtn = document.getElementById('show-wishlist-btn');
+        if (wishlistBtn) {
+            const wishlistBtnText = wishlistBtn.querySelector('span');
+            if (wishlistBtnText) {
+                wishlistBtnText.textContent = `View Wishlist (${wishlist.length})`;
+            }
+        }
+    }
+
+    function createViewModeToggleElement() {
+        const viewBar = document.createElement('div');
+        viewBar.className = 'view-mode-bar';
+        const buttonText = currentViewMode === 'category'
+            ? 'Switch to Classic View'
+            : 'Switch to Category View';
+
+        viewBar.innerHTML = `<button id="view-mode-toggle" class="view-mode-toggle-btn">${buttonText}</button>`;
+        updateFilterVisibility();
+        return viewBar;
+    }
+
+    function getCategoryIconSvg(categoryName) {
+        const normalized = categoryName.toLowerCase();
+
+        const icon = (paths) => `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                ${paths}
+            </svg>
+        `;
+
+        if (normalized.includes('business')) {
+            return icon('<rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M3 12h18"></path>');
+        }
+        if (normalized.includes('gmail') || normalized.includes('email')) {
+            return icon('<rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path>');
+        }
+        if (normalized.includes('iem')) {
+            return icon('<path d="M7 11a3 3 0 1 1 0 6"></path><path d="M17 11a3 3 0 1 0 0 6"></path><path d="M10 13h4"></path><path d="M7 14v4"></path><path d="M17 14v4"></path>');
+        }
+        if (normalized.includes('headphone')) {
+            return icon('<path d="M4 13a8 8 0 0 1 16 0"></path><rect x="3" y="13" width="4" height="7" rx="2"></rect><rect x="17" y="13" width="4" height="7" rx="2"></rect>');
+        }
+        if (normalized.includes('portable-dac') || normalized.includes('portable dac')) {
+            return icon('<rect x="6" y="3" width="12" height="18" rx="2"></rect><circle cx="12" cy="16" r="1"></circle><path d="M9 7h6"></path><path d="M9 10h6"></path>');
+        }
+        if (normalized.includes('desktop-dac') || normalized.includes('desktop dac')) {
+            return icon('<rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M8 20h8"></path><path d="M12 16v4"></path><circle cx="8" cy="10" r="1"></circle><circle cx="12" cy="10" r="1"></circle><circle cx="16" cy="10" r="1"></circle>');
+        }
+        if (normalized.includes('digital-audio-player') || normalized.includes('digital audio player')) {
+            return icon('<rect x="5" y="2" width="14" height="20" rx="2"></rect><rect x="8" y="5" width="8" height="6" rx="1"></rect><circle cx="12" cy="16" r="2"></circle>');
+        }
+        if (normalized.includes('wireless-earbuds') || normalized.includes('wireless earbuds')) {
+            return icon('<path d="M8 6a2 2 0 0 0-2 2v4a2 2 0 0 0 4 0V8a2 2 0 0 0-2-2z"></path><path d="M16 6a2 2 0 0 0-2 2v4a2 2 0 0 0 4 0V8a2 2 0 0 0-2-2z"></path><path d="M8 16v3"></path><path d="M16 16v3"></path>');
+        }
+        if (normalized.includes('wireless-headphones') || normalized.includes('wireless headphones')) {
+            return icon('<path d="M4 12a8 8 0 0 1 16 0"></path><rect x="3" y="12" width="4" height="8" rx="2"></rect><rect x="17" y="12" width="4" height="8" rx="2"></rect><path d="M12 6v-2"></path><path d="M9.5 4.5 8 3"></path><path d="M14.5 4.5 16 3"></path>');
+        }
+        if (normalized.includes('cable') || normalized.includes('eartip') || normalized.includes('interconnect')) {
+            return icon('<path d="M7 6v7a3 3 0 0 0 3 3h1"></path><path d="M17 6v7a3 3 0 0 1-3 3h-1"></path><rect x="5" y="3" width="4" height="3" rx="1"></rect><rect x="15" y="3" width="4" height="3" rx="1"></rect>');
+        }
+        if (normalized.includes('tech-i-use') || normalized.includes('tech i use')) {
+            return icon('<circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1 1 0 0 0 .2 1.1l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1 1 0 0 0-1.1-.2 1 1 0 0 0-.6.9V20a2 2 0 1 1-4 0v-.2a1 1 0 0 0-.6-.9 1 1 0 0 0-1.1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1 1 0 0 0 .2-1.1 1 1 0 0 0-.9-.6H4a2 2 0 1 1 0-4h.2a1 1 0 0 0 .9-.6 1 1 0 0 0-.2-1.1l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1 1 0 0 0 1.1.2h.2a1 1 0 0 0 .6-.9V4a2 2 0 1 1 4 0v.2a1 1 0 0 0 .6.9h.2a1 1 0 0 0 1.1-.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1 1 0 0 0-.2 1.1v.2a1 1 0 0 0 .9.6H20a2 2 0 1 1 0 4h-.2a1 1 0 0 0-.9.6z"></path>');
+        }
+        if (normalized.includes('explore-other-linktrees') || normalized.includes('other linktrees')) {
+            return icon('<path d="M12 22V12"></path><path d="M8 12h8"></path><path d="M6 7a4 4 0 1 1 8 0"></path><path d="M10 4a4 4 0 1 1 8 0"></path><path d="M4 10a4 4 0 1 1 8 0"></path>');
+        }
+        if (normalized.includes('about-this-account') || normalized.includes('about this account')) {
+            return icon('<circle cx="12" cy="8" r="4"></circle><path d="M4 20a8 8 0 0 1 16 0"></path>');
+        }
+
+        return icon('<path d="M9 18V6l10-2v12"></path><circle cx="6" cy="18" r="3"></circle><circle cx="16" cy="16" r="3"></circle>');
+    }
+
+    function renderCategoryOnlyCategories(groupedItems) {
+        const quoteBanner = main.querySelector('.quote-banner');
+        const children = [];
+        if (quoteBanner) {
+            children.push(quoteBanner.cloneNode(true));
+        }
+        children.push(createViewModeToggleElement());
+        resetWishlistButtonText();
+
+        const categoryEntries = Object.entries(groupedItems);
+        if (categoryEntries.length === 0) {
+            const noResults = document.createElement('div');
+            noResults.style.cssText = 'text-align: center; padding: 3rem; color: #bbb;';
+            noResults.innerHTML = '<h2>No products match your filters</h2><p>Try adjusting your search criteria</p>';
+            children.push(noResults);
+            main.replaceChildren(...children);
+            updateBottomBarScrollProgress();
+            return;
+        }
+
+        if (activeCategoryPage) {
+            renderFocusedCategoryPage(activeCategoryPage, groupedItems[activeCategoryPage], children);
+            return;
+        }
+
+        if (hasActiveFilters()) {
+            renderCategoryFilteredItems(groupedItems, children);
+            return;
+        }
+
+        const showCounts = false;
+        const optionsGrid = document.createElement('div');
+        optionsGrid.className = 'category-options-grid';
+
+        for (const [categoryName, items] of categoryEntries) {
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'category category-collapsible';
+            categoryDiv.id = categoryName.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+
+            const countSuffix = showCounts ? ` (${items.length})` : '';
+            const categoryIcon = getCategoryIconSvg(categoryName);
+
+            categoryDiv.innerHTML = `
+                <button class="category-toggle-btn" data-category="${categoryName}">
+                    <span class="category-toggle-content">
+                        <span class="category-toggle-svg">${categoryIcon}</span>
+                        <span class="category-toggle-label">${categoryName}${countSuffix}</span>
+                    </span>
+                    <span class="category-toggle-icon">→</span>
+                </button>
+            `;
+
+            optionsGrid.appendChild(categoryDiv);
+        }
+
+        children.push(optionsGrid);
+        main.replaceChildren(...children);
+        updateBottomBarScrollProgress();
+    }
+
+    function renderCategoryFilteredItems(groupedItems, children) {
+        const categoryEntries = Object.entries(groupedItems);
+        if (categoryEntries.length === 0) {
+            const noResults = document.createElement('div');
+            noResults.style.cssText = 'text-align: center; padding: 3rem; color: #bbb;';
+            noResults.innerHTML = '<h2>No products match your filters</h2><p>Try adjusting your search criteria</p>';
+            children.push(noResults);
+            main.replaceChildren(...children);
+            updateBottomBarScrollProgress();
+            return;
+        }
+
+        for (const [categoryName, items] of categoryEntries) {
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'category';
+            categoryDiv.id = categoryName.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+            categoryDiv.innerHTML = `<h2>${categoryName} (${items.length})</h2>`;
+
+            const itemsDiv = document.createElement('div');
+            itemsDiv.className = 'items';
+
+            items.forEach(item => {
+                const itemDiv = createItemElement(item, false);
+                itemsDiv.appendChild(itemDiv);
+            });
+
+            categoryDiv.appendChild(itemsDiv);
+            children.push(categoryDiv);
+        }
+
+        main.replaceChildren(...children);
+        updateBottomBarScrollProgress();
+    }
+
+    function renderFocusedCategoryPage(categoryName, categoryItems, children) {
+        const itemCount = categoryItems ? categoryItems.length : 0;
+        updateFilterVisibility();
+
+        if (!categoryItems || categoryItems.length === 0) {
+            const empty = document.createElement('div');
+            empty.style.cssText = 'text-align: center; padding: 2rem 0; color: #bbb;';
+            empty.innerHTML = '<h3>No products match your filters in this category</h3><p>Go back or adjust your filters.</p>';
+            children.push(empty);
+            main.replaceChildren(...children);
+            updateBottomBarScrollProgress();
+            return;
+        }
+
+        const categoryHeader = document.createElement('div');
+        categoryHeader.className = 'category-page-header';
+        categoryHeader.innerHTML = `
+            <button class="category-page-back" type="button">← Back to Categories</button>
+            <div>
+                <h2 class="category-page-title">
+                    <span class="category-page-title-icon">${getCategoryIconSvg(categoryName)}</span>
+                    ${categoryName}
+                </h2>
+                <p class="category-page-count">${itemCount} item${itemCount !== 1 ? 's' : ''}</p>
+            </div>
+        `;
+        children.push(categoryHeader);
+
+        const itemsDiv = document.createElement('div');
+        itemsDiv.className = 'items category-page-items';
+
+        categoryItems.forEach(item => {
+            const itemDiv = createItemElement(item, false);
+            itemsDiv.appendChild(itemDiv);
+        });
+
+        children.push(itemsDiv);
+        main.replaceChildren(...children);
+        updateBottomBarScrollProgress();
     }
 
     function showExtraData(itemName) {
