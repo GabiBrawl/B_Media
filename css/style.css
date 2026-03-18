@@ -1331,19 +1331,34 @@ button svg {
 /* Bottom Bar - Collapsed State */
 .bottom-bar {
     display: none;
-    --scroll-progress: 0%;
 }
 
-.bottom-bar::before {
-    content: '';
+.bottom-bar-progress-svg {
     position: absolute;
     left: 0;
     top: 0;
-    height: 3px;
-    width: var(--scroll-progress);
-    background: var(--accent-color);
-    transition: width 0.12s linear;
+    height: 100%;
+    width: 40px;
     z-index: 2;
+    pointer-events: none;
+}
+
+.bottom-bar-progress-track,
+.bottom-bar-progress-fill {
+    fill: none;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+}
+
+.bottom-bar-progress-track {
+    stroke: var(--accent-bg);
+}
+
+.bottom-bar-progress-fill {
+    stroke: var(--accent-color);
+    transition: stroke-dasharray 0.12s linear;
 }
 
 .bottom-bar-head {

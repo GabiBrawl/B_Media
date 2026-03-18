@@ -259,6 +259,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let mobileFiltersContainer = null;
     let mobileWishlistContainer = null;
     let mobileSharedWishlistItems = null;
+    let bottomBarProgressSvg = null;
+    let bottomBarProgressTrackPath = null;
+    let bottomBarProgressFillPath = null;
+    let bottomBarProgressPathLength = 0;
 
     function isMobileViewport() {
         return window.matchMedia('(max-width: 768px)').matches;
@@ -268,15 +272,105 @@ document.addEventListener('DOMContentLoaded', function() {
         return currentViewMode === 'category' && !activeCategoryPage;
     }
 
+    function ensureBottomBarProgressLine() {
+        if (!bottomBar || bottomBarProgressSvg) {
+            return;
+        }
+
+        const svgNs = 'http://www.w3.org/2000/svg';
+        bottomBarProgressSvg = document.createElementNS(svgNs, 'svg');
+        bottomBarProgressSvg.classList.add('bottom-bar-progress-svg');
+        bottomBarProgressSvg.setAttribute('aria-hidden', 'true');
+        bottomBarProgressSvg.setAttribute('focusable', 'false');
+
+        bottomBarProgressTrackPath = document.createElementNS(svgNs, 'path');
+        bottomBarProgressTrackPath.classList.add('bottom-bar-progress-track');
+
+        bottomBarProgressFillPath = document.createElementNS(svgNs, 'path');
+        bottomBarProgressFillPath.classList.add('bottom-bar-progress-fill');
+
+        bottomBarProgressSvg.appendChild(bottomBarProgressTrackPath);
+        bottomBarProgressSvg.appendChild(bottomBarProgressFillPath);
+        bottomBar.prepend(bottomBarProgressSvg);
+    }
+
+    function updateBottomBarProgressPath() {
+        if (!bottomBar || !isMobileViewport()) {
+            return;
+        }
+
+        ensureBottomBarProgressLine();
+
+        if (!bottomBarProgressSvg || !bottomBarProgressTrackPath || !bottomBarProgressFillPath) {
+            return;
+        }
+
+        const rect = bottomBar.getBoundingClientRect();
+        const height = rect.height;
+        if (!height) {
+            return;
+        }
+
+        const styles = window.getComputedStyle(bottomBar);
+        const borderTopLeftRadius = parseFloat(styles.borderTopLeftRadius) || 0;
+        const borderBottomLeftRadius = parseFloat(styles.borderBottomLeftRadius) || 0;
+
+        const strokeWidth = 3;
+        const inset = strokeWidth / 2;
+        const topRadius = Math.max(0, Math.min((height / 2) - inset, borderTopLeftRadius - inset));
+        const bottomRadius = Math.max(0, Math.min((height / 2) - inset, borderBottomLeftRadius - inset));
+
+        const svgWidth = Math.max(40, Math.ceil(Math.max(topRadius, bottomRadius) + inset + 10));
+
+        bottomBarProgressSvg.setAttribute('viewBox', `0 0 ${svgWidth} ${height}`);
+        bottomBarProgressSvg.setAttribute('width', `${svgWidth}`);
+        bottomBarProgressSvg.setAttribute('height', `${height}`);
+
+        const startX = inset + topRadius;
+        const startY = inset;
+        const leftX = inset;
+        const verticalEndY = height - inset - bottomRadius;
+        const endY = height - inset;
+        const endX = inset + bottomRadius;
+
+        let pathData = `M ${startX} ${startY}`;
+        if (topRadius > 0) {
+            pathData += ` A ${topRadius} ${topRadius} 0 0 0 ${leftX} ${inset + topRadius}`;
+        } else {
+            pathData += ` L ${leftX} ${inset}`;
+        }
+
+        pathData += ` L ${leftX} ${verticalEndY}`;
+
+        if (bottomRadius > 0) {
+            pathData += ` A ${bottomRadius} ${bottomRadius} 0 0 0 ${endX} ${endY}`;
+        }
+
+        bottomBarProgressTrackPath.setAttribute('d', pathData);
+        bottomBarProgressFillPath.setAttribute('d', pathData);
+
+        bottomBarProgressPathLength = bottomBarProgressFillPath.getTotalLength();
+        bottomBarProgressFillPath.style.strokeDasharray = `0 ${bottomBarProgressPathLength}`;
+    }
+
     function updateBottomBarScrollProgress() {
         if (!bottomBar || !isMobileViewport()) {
             return;
         }
 
+        ensureBottomBarProgressLine();
+        updateBottomBarProgressPath();
+
         const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
         const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = maxScroll > 0 ? Math.min(100, Math.max(0, (scrollTop / maxScroll) * 100)) : 0;
-        bottomBar.style.setProperty('--scroll-progress', `${progress}%`);
+        const progressPercent = maxScroll > 0 ? Math.min(100, Math.max(0, (scrollTop / maxScroll) * 100)) : 0;
+
+        if (!bottomBarProgressFillPath || !bottomBarProgressPathLength) {
+            return;
+        }
+
+        const drawnLength = (bottomBarProgressPathLength * progressPercent) / 100;
+        bottomBarProgressFillPath.style.strokeDasharray = `${drawnLength} ${bottomBarProgressPathLength}`;
     }
 
     function setBottomBarActionText(nextText) {
@@ -618,9 +712,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     setupMobileBottomBarContent();
+    ensureBottomBarProgressLine();
+    updateBottomBarProgressPath();
     updateBottomBarScrollProgress();
     window.addEventListener('scroll', updateBottomBarScrollProgress, { passive: true });
-    window.addEventListener('resize', updateBottomBarScrollProgress);
+    window.addEventListener('resize', () => {
+        updateBottomBarProgressPath();
+        updateBottomBarScrollProgress();
+    });
+
+    if (bottomBar) {
+        bottomBar.addEventListener('transitionend', (event) => {
+            if (event.target !== bottomBar) {
+                return;
+            }
+            updateBottomBarProgressPath();
+            updateBottomBarScrollProgress();
+        });
+    }
 
     // Placeholder function for filter visibility management
     function updateFilterVisibility() {
