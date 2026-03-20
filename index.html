@@ -54,6 +54,10 @@
                     </span>
                     <input type="text" id="search-input" placeholder="Search products...">
                 </div>
+                <div class="mobile-filter-actions search-mobile-actions">
+                    <button id="picks-only-toggle-btn" class="mobile-picks-toggle-btn" type="button">B_Media Picks Only</button>
+                    <button id="reset-filters-mobile" class="reset-btn" type="button">Reset</button>
+                </div>
             </div>
 
             <!-- Filters Section -->
@@ -64,12 +68,13 @@
                 </div>
 
                 <div class="filter-controls">
-                    <div class="filter-item">
+                    <div class="filter-item category-filter-item">
                         <label for="category-filter">Category</label>
                         <select id="category-filter">
                             <option value="all">All Categories</option>
                             <!-- Options will be populated dynamically by JavaScript -->
                         </select>
+                        <div id="mobile-category-chips" class="mobile-category-chips" aria-label="Category filters"></div>
                     </div>
 
                     <div class="filter-item mobile-price-select">
@@ -102,10 +107,6 @@
                         </label>
                     </div>
 
-                    <div class="filter-item mobile-filter-actions">
-                        <button id="picks-only-toggle-btn" class="mobile-picks-toggle-btn" type="button">B_Media Picks Only</button>
-                        <button id="reset-filters-mobile" class="reset-btn" type="button">Reset</button>
-                    </div>
                 </div>
             </div>
 

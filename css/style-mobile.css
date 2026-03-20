@@ -69,7 +69,7 @@
     }
 
     .sidebar-section {
-        padding: 0.85rem 1rem;
+        padding: 0rem 1rem;
         border-bottom: none;
     }
 
@@ -79,6 +79,20 @@
 
     .filter-section {
         padding-top: 0rem;
+    }
+
+    .mobile-bottom-filters {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mobile-bottom-filters > .sidebar-section:first-child {
+        position: sticky;
+        top: 0;
+        z-index: 6;
+        background: var(--secondary-bg);
+        border-bottom: 1px solid var(--border-color);
+        padding-top: 0.75rem;
     }
 
     .section-header {
@@ -101,6 +115,11 @@
         gap: 0.875rem;
     }
 
+    .search-mobile-actions {
+        margin-top: 0.7rem;
+        margin-bottom: 0.7rem;
+    }
+
     .mobile-price-select {
         display: none;
     }
@@ -109,6 +128,39 @@
         display: flex;
         flex-direction: column;
         gap: 0.65rem;
+        order: 1;
+    }
+
+    .category-filter-item {
+        order: 2;
+    }
+
+    .category-filter-item select {
+        display: none;
+    }
+
+    .mobile-category-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+    }
+
+    .mobile-category-chip {
+        border: 1px solid var(--border-color);
+        background: var(--tertiary-bg);
+        color: var(--light-text);
+        border-radius: 10px;
+        padding: 0.42rem 0.75rem;
+        font-size: 0.74rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .mobile-category-chip.active {
+        background: var(--accent-color);
+        border-color: var(--accent-color);
+        color: white;
     }
 
     .mobile-filter-actions {

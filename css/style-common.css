@@ -870,6 +870,10 @@ main {
     display: none;
 }
 
+.mobile-category-chips {
+    display: none;
+}
+
 .mobile-price-range-slider {
     --price-handle-width: 50px;
     position: relative;

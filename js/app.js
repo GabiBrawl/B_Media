@@ -160,6 +160,26 @@ function populateCategoryFilter() {
     categoryFilter.appendChild(fragment);
 }
 
+function populateMobileCategoryChips() {
+    const chipsContainer = document.getElementById('mobile-category-chips');
+    if (!chipsContainer) {
+        return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    for (const categoryName of Object.keys(gearData)) {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'mobile-category-chip';
+        chip.textContent = categoryName;
+        chip.setAttribute('data-category', categoryName);
+        chip.setAttribute('aria-pressed', 'false');
+        fragment.appendChild(chip);
+    }
+
+    chipsContainer.replaceChildren(fragment);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     
     if (typeof gearData === 'undefined') {
@@ -245,6 +265,7 @@ document.addEventListener('DOMContentLoaded', function() {
     main = document.getElementById('main-content');
     const searchInput = document.getElementById('search-input');
     const categoryFilter = document.getElementById('category-filter');
+    const mobileCategoryChipsContainer = document.getElementById('mobile-category-chips');
     const priceFilter = document.getElementById('price-filter');
     const picksOnlyCheckbox = document.getElementById('show-picks-only');
     const resetButton = document.getElementById('reset-filters');
@@ -293,6 +314,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let priceBoundsLoaded = false;
     let selectedMinPrice = 0;
     let selectedMaxPrice = 0;
+    let selectedMobileCategories = new Set();
     let savedFiltersState = null;
     let filtersTemporarilyCleared = false;
     let applyFiltersDebounceTimeout = null;
@@ -302,8 +324,23 @@ document.addEventListener('DOMContentLoaded', function() {
             search: filters.search || '',
             category: filters.category || 'all',
             price: filters.price || 'all',
-            picksOnly: !!filters.picksOnly
+            picksOnly: !!filters.picksOnly,
+            mobileCategories: Array.from(selectedMobileCategories)
         };
+    }
+
+    function syncMobileCategoryChipsState() {
+        if (!mobileCategoryChipsContainer) {
+            return;
+        }
+
+        const chips = mobileCategoryChipsContainer.querySelectorAll('.mobile-category-chip');
+        chips.forEach((chip) => {
+            const categoryName = chip.getAttribute('data-category');
+            const isActive = !!categoryName && selectedMobileCategories.has(categoryName);
+            chip.classList.toggle('active', isActive);
+            chip.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
     }
 
     function syncSavedFiltersState() {
@@ -326,12 +363,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function setFiltersState(nextFilters, shouldRender = false) {
         currentFilters = cloneFilters(nextFilters);
+        selectedMobileCategories = new Set(nextFilters.mobileCategories || []);
 
         searchInput.value = currentFilters.search;
         categoryFilter.value = currentFilters.category;
         priceFilter.value = currentFilters.price;
         picksOnlyCheckbox.checked = currentFilters.picksOnly;
         syncPicksOnlyToggle();
+        syncMobileCategoryChipsState();
 
         const { min, max } = parsePriceBounds(currentFilters.price);
         if (Number.isFinite(min) && Number.isFinite(max)) {
@@ -1269,6 +1308,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Populate category filter dynamically
     populateCategoryFilter();
+    populateMobileCategoryChips();
+    syncMobileCategoryChipsState();
+
+    if (mobileCategoryChipsContainer) {
+        mobileCategoryChipsContainer.addEventListener('click', function(event) {
+            const chip = event.target.closest('.mobile-category-chip');
+            if (!chip) {
+                return;
+            }
+
+            const categoryName = chip.getAttribute('data-category');
+            if (!categoryName) {
+                return;
+            }
+
+            if (selectedMobileCategories.has(categoryName)) {
+                selectedMobileCategories.delete(categoryName);
+            } else {
+                selectedMobileCategories.add(categoryName);
+            }
+
+            filtersTemporarilyCleared = false;
+            syncSavedFiltersState();
+            syncMobileCategoryChipsState();
+            updateFilterVisibility();
+            queueApplyFilters();
+        });
+    }
 
     // Render all categories initially
     renderAllCategories();
@@ -1398,6 +1465,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     categoryFilter.addEventListener('change', function() {
         currentFilters.category = this.value;
+        if (!isMobileViewport()) {
+            selectedMobileCategories.clear();
+            syncMobileCategoryChipsState();
+        }
         filtersTemporarilyCleared = false;
         syncSavedFiltersState();
         updateFilterVisibility();
@@ -1519,8 +1590,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // Category filter
-            if (currentFilters.category !== 'all' && item.category !== currentFilters.category) {
-                return false;
+            if (isMobileViewport()) {
+                if (selectedMobileCategories.size > 0 && !selectedMobileCategories.has(item.category)) {
+                    return false;
+                }
+            } else {
+                if (currentFilters.category !== 'all' && item.category !== currentFilters.category) {
+                    return false;
+                }
             }
 
             // Price filter
@@ -1616,7 +1693,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function hasActiveFilters() {
         return (
             currentFilters.search ||
-            currentFilters.category !== 'all' ||
+            (isMobileViewport() ? selectedMobileCategories.size > 0 : currentFilters.category !== 'all') ||
             currentFilters.price !== 'all' ||
             currentFilters.picksOnly
         );
