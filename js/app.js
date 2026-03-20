@@ -311,6 +311,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let bottomBarProgressPathLength = 0;
     let availableMinPrice = 0;
     let availableMaxPrice = 0;
+    let priceDistribution = [];
     let priceBoundsLoaded = false;
     let selectedMinPrice = 0;
     let selectedMaxPrice = 0;
@@ -403,6 +404,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
 
+        priceDistribution = allPrices.slice().sort((a, b) => a - b);
+
         availableMinPrice = Math.floor(Math.min(...allPrices));
         availableMaxPrice = Math.ceil(Math.max(...allPrices));
         priceBoundsLoaded = true;
@@ -494,11 +497,71 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function priceToPercent(value) {
-        if (availableMaxPrice <= availableMinPrice) {
+        if (!priceDistribution.length) {
             return 0;
         }
 
-        return ((value - availableMinPrice) / (availableMaxPrice - availableMinPrice)) * 100;
+        if (priceDistribution.length === 1) {
+            return 0;
+        }
+
+        const lastIndex = priceDistribution.length - 1;
+        if (value <= priceDistribution[0]) {
+            return 0;
+        }
+
+        if (value >= priceDistribution[lastIndex]) {
+            return 100;
+        }
+
+        let low = 0;
+        let high = priceDistribution.length;
+        while (low < high) {
+            const mid = Math.floor((low + high) / 2);
+            if (priceDistribution[mid] <= value) {
+                low = mid + 1;
+            } else {
+                high = mid;
+            }
+        }
+
+        const upperIndex = Math.min(lastIndex, Math.max(1, low));
+        const lowerIndex = upperIndex - 1;
+        const lowerValue = priceDistribution[lowerIndex];
+        const upperValue = priceDistribution[upperIndex];
+
+        if (upperValue <= lowerValue) {
+            return (upperIndex / lastIndex) * 100;
+        }
+
+        const segmentRatio = (value - lowerValue) / (upperValue - lowerValue);
+        const distributionRatio = (lowerIndex + segmentRatio) / lastIndex;
+        return Math.max(0, Math.min(100, distributionRatio * 100));
+    }
+
+    function percentileToPrice(percentileRatio) {
+        if (!priceDistribution.length) {
+            return 0;
+        }
+
+        if (priceDistribution.length === 1) {
+            return priceDistribution[0];
+        }
+
+        const clampedRatio = Math.min(1, Math.max(0, percentileRatio));
+        const lastIndex = priceDistribution.length - 1;
+        const exactIndex = clampedRatio * lastIndex;
+        const lowerIndex = Math.floor(exactIndex);
+        const upperIndex = Math.ceil(exactIndex);
+
+        if (lowerIndex === upperIndex) {
+            return priceDistribution[lowerIndex];
+        }
+
+        const lowerValue = priceDistribution[lowerIndex];
+        const upperValue = priceDistribution[upperIndex];
+        const interpolation = exactIndex - lowerIndex;
+        return Math.round(lowerValue + ((upperValue - lowerValue) * interpolation));
     }
 
     function pointerToPrice(clientX) {
@@ -509,8 +572,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const rect = mobilePriceRangeSlider.getBoundingClientRect();
         const ratio = rect.width > 0 ? (clientX - rect.left) / rect.width : 0;
         const clampedRatio = Math.min(1, Math.max(0, ratio));
-        const price = availableMinPrice + (availableMaxPrice - availableMinPrice) * clampedRatio;
-        return Math.round(price);
+        return percentileToPrice(clampedRatio);
     }
 
     function updateMobilePriceSliderUI() {
