@@ -514,18 +514,41 @@ document.addEventListener('DOMContentLoaded', function() {
 
         handleElement.addEventListener('pointerdown', (event) => {
             event.preventDefault();
+            const activePointerId = event.pointerId;
+
+            try {
+                handleElement.setPointerCapture(activePointerId);
+            } catch (error) {
+                // Ignore pointer capture failures and fall back to normal events
+            }
 
             const onPointerMove = (moveEvent) => {
+                if (moveEvent.pointerId !== activePointerId) {
+                    return;
+                }
+                moveEvent.preventDefault();
                 updatePriceFromPointer(moveEvent.clientX, handleType);
             };
 
-            const onPointerUp = () => {
-                window.removeEventListener('pointermove', onPointerMove);
-                window.removeEventListener('pointerup', onPointerUp);
+            const onPointerUp = (upEvent) => {
+                if (upEvent.pointerId !== activePointerId) {
+                    return;
+                }
+
+                handleElement.removeEventListener('pointermove', onPointerMove);
+                handleElement.removeEventListener('pointerup', onPointerUp);
+                handleElement.removeEventListener('pointercancel', onPointerUp);
+
+                try {
+                    handleElement.releasePointerCapture(activePointerId);
+                } catch (error) {
+                    // Ignore pointer release failures
+                }
             };
 
-            window.addEventListener('pointermove', onPointerMove);
-            window.addEventListener('pointerup', onPointerUp);
+            handleElement.addEventListener('pointermove', onPointerMove);
+            handleElement.addEventListener('pointerup', onPointerUp);
+            handleElement.addEventListener('pointercancel', onPointerUp);
             updatePriceFromPointer(event.clientX, handleType);
         });
 
@@ -1426,10 +1449,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Preserve the quote banner
         const quoteBanner = main.querySelector('.quote-banner');
         const children = [];
+        const viewModeToggle = createViewModeToggleElement();
         if (quoteBanner) {
             children.push(quoteBanner.cloneNode(true));
         }
-        children.push(createViewModeToggleElement());
+        if (!isMobileViewport()) {
+            children.push(viewModeToggle);
+        }
 
         resetWishlistButtonText();
 
@@ -1451,6 +1477,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             categoryDiv.appendChild(itemsDiv);
             children.push(categoryDiv);
+        }
+
+        if (isMobileViewport()) {
+            children.push(viewModeToggle);
         }
 
         main.replaceChildren(...children);
@@ -1533,15 +1563,21 @@ document.addEventListener('DOMContentLoaded', function() {
         // Preserve the quote banner
         const quoteBanner = main.querySelector('.quote-banner');
         const children = [];
+        const viewModeToggle = createViewModeToggleElement();
         if (quoteBanner) {
             children.push(quoteBanner.cloneNode(true));
         }
-        children.push(createViewModeToggleElement());
+        if (!isMobileViewport()) {
+            children.push(viewModeToggle);
+        }
         resetWishlistButtonText();
 
         if (Object.keys(groupedItems).length === 0) {
             const noResults = createEmptyState('No products match your filters', 'Try adjusting your search criteria');
             children.push(noResults);
+            if (isMobileViewport()) {
+                children.push(viewModeToggle);
+            }
             main.replaceChildren(...children);
             updateBottomBarScrollProgress();
             
@@ -1566,6 +1602,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             categoryDiv.appendChild(itemsDiv);
             children.push(categoryDiv);
+        }
+
+        if (isMobileViewport()) {
+            children.push(viewModeToggle);
         }
 
         main.replaceChildren(...children);
@@ -1602,6 +1642,22 @@ document.addEventListener('DOMContentLoaded', function() {
         viewBar.innerHTML = `<button id="view-mode-toggle" class="view-mode-toggle-btn">${buttonText}</button>`;
         updateFilterVisibility();
         return viewBar;
+    }
+
+    function createMobileSocialLinksElement() {
+        if (!isMobileViewport()) {
+            return null;
+        }
+
+        const sidebarSocialLinks = document.querySelector('.sidebar-section.social-section .social-links');
+        if (!sidebarSocialLinks) {
+            return null;
+        }
+
+        const pageSocialSection = document.createElement('div');
+        pageSocialSection.className = 'page-social-section';
+        pageSocialSection.appendChild(sidebarSocialLinks.cloneNode(true));
+        return pageSocialSection;
     }
 
     function getCategoryIconSvg(categoryName) {
@@ -1659,28 +1715,34 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderCategoryOnlyCategories(groupedItems) {
         const quoteBanner = main.querySelector('.quote-banner');
         const children = [];
+        const viewModeToggle = createViewModeToggleElement();
         if (quoteBanner) {
             children.push(quoteBanner.cloneNode(true));
         }
-        children.push(createViewModeToggleElement());
+        if (!isMobileViewport()) {
+            children.push(viewModeToggle);
+        }
         resetWishlistButtonText();
 
         const categoryEntries = Object.entries(groupedItems);
         if (categoryEntries.length === 0) {
             const noResults = createEmptyState('No products match your filters', 'Try adjusting your search criteria');
             children.push(noResults);
+            if (isMobileViewport()) {
+                children.push(viewModeToggle);
+            }
             main.replaceChildren(...children);
             updateBottomBarScrollProgress();
             return;
         }
 
         if (activeCategoryPage) {
-            renderFocusedCategoryPage(activeCategoryPage, groupedItems[activeCategoryPage], children);
+            renderFocusedCategoryPage(activeCategoryPage, groupedItems[activeCategoryPage], children, viewModeToggle);
             return;
         }
 
         if (hasActiveFilters()) {
-            renderCategoryFilteredItems(groupedItems, children);
+            renderCategoryFilteredItems(groupedItems, children, viewModeToggle);
             return;
         }
 
@@ -1709,15 +1771,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         children.push(optionsGrid);
+        if (isMobileViewport()) {
+            const mobileSocialLinks = createMobileSocialLinksElement();
+            if (mobileSocialLinks) {
+                children.push(mobileSocialLinks);
+            }
+        }
+        if (isMobileViewport()) {
+            children.push(viewModeToggle);
+        }
         main.replaceChildren(...children);
         updateBottomBarScrollProgress();
     }
 
-    function renderCategoryFilteredItems(groupedItems, children) {
+    function renderCategoryFilteredItems(groupedItems, children, viewModeToggle = null) {
         const categoryEntries = Object.entries(groupedItems);
         if (categoryEntries.length === 0) {
             const noResults = createEmptyState('No products match your filters', 'Try adjusting your search criteria');
             children.push(noResults);
+            if (isMobileViewport() && viewModeToggle) {
+                children.push(viewModeToggle);
+            }
             main.replaceChildren(...children);
             updateBottomBarScrollProgress();
             return;
@@ -1741,17 +1815,24 @@ document.addEventListener('DOMContentLoaded', function() {
             children.push(categoryDiv);
         }
 
+        if (isMobileViewport() && viewModeToggle) {
+            children.push(viewModeToggle);
+        }
+
         main.replaceChildren(...children);
         updateBottomBarScrollProgress();
     }
 
-    function renderFocusedCategoryPage(categoryName, categoryItems, children) {
+    function renderFocusedCategoryPage(categoryName, categoryItems, children, viewModeToggle = null) {
         const itemCount = categoryItems ? categoryItems.length : 0;
         updateFilterVisibility();
 
         if (!categoryItems || categoryItems.length === 0) {
             const empty = createEmptyState('No products match your filters in this category', 'Go back or adjust your filters.', true);
             children.push(empty);
+            if (isMobileViewport() && viewModeToggle) {
+                children.push(viewModeToggle);
+            }
             main.replaceChildren(...children);
             updateBottomBarScrollProgress();
             return;
@@ -1787,6 +1868,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         filteredChildren.push(itemsDiv);
+        if (isMobileViewport() && viewModeToggle) {
+            filteredChildren.push(viewModeToggle);
+        }
         main.replaceChildren(...filteredChildren);
         updateBottomBarScrollProgress();
     }

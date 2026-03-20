@@ -131,6 +131,7 @@ main {
     border-radius: var(--radius-sm);
     padding: 0.62rem 0.95rem;
     font-size: 0.85rem;
+    margin-top: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -879,6 +880,7 @@ main {
     border-radius: var(--radius-sm);
     padding: 0 0.4rem;
     overflow: hidden;
+    touch-action: none;
 }
 
 .mobile-price-track,
@@ -922,6 +924,9 @@ main {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .mobile-price-handle:focus-visible {

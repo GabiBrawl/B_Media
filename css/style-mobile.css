@@ -30,7 +30,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        height: 65vh;
+        height: 55vh;
         border-radius: 24px 24px 0 0;
         box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.4);
     }
@@ -74,11 +74,11 @@
     }
 
     .sidebar-section:first-of-type {
-        padding-bottom: 0.4rem;
+        padding-bottom: 0;
     }
 
     .filter-section {
-        padding-top: 0.4rem;
+        padding-top: 0rem;
     }
 
     .section-header {
@@ -144,6 +144,14 @@
         margin-top: 0;
     }
 
+    .sidebar-section.social-section {
+        display: none;
+    }
+
+    .page-social-section {
+        margin-top: 1rem;
+    }
+
     .social-links {
         display: flex;
         flex-direction: row;
@@ -201,7 +209,7 @@
 
     .quote-banner {
         padding: 1.5rem 1.5rem;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
         border-radius: 10px;
     }
 
