@@ -1,0 +1,315 @@
+/* Mobile/tablet overrides [@media queries] */
+
+@media (max-width: 768px) {
+    /* Hide mobile header */
+    .mobile-header {
+        display: none !important;
+    }
+
+    /* Show new bottom bar */
+    .bottom-bar {
+        position: fixed;
+        bottom: 16px;
+        left: 16px;
+        right: 16px;
+        height: 70px;
+        display: flex !important;
+        flex-direction: column;
+        background: var(--secondary-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        z-index: 1001;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        user-select: none;
+        touch-action: pan-y;
+        overflow: hidden;
+        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .bottom-bar.active {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 65vh;
+        border-radius: 24px 24px 0 0;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .bottom-bar.active .bottom-bar-panel {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+
+    /* Hide desktop sidebar entirely on mobile */
+    .sidebar {
+        display: none !important;
+    }
+
+    /* Overlay when sidebar is open */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+
+    .sidebar-section {
+        padding: 1rem;
+    }
+
+    .section-header {
+        margin-bottom: 1rem;
+    }
+
+    .filter-controls {
+        gap: 0.875rem;
+    }
+
+    /* Social icons styling for mobile */
+    .social-section {
+        border-top: 2px solid var(--border-color);
+        padding: 1rem 1.25rem;
+        background: var(--tertiary-bg);
+    }
+
+    .social-links {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .social-row {
+        display: contents;
+    }
+
+    .social-row a {
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        color: var(--medium-text);
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        flex: 0 0 auto;
+    }
+
+    .social-row a svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .sidebar-footer {
+        padding: 1.25rem 1.25rem;
+        border-top: 2px solid var(--border-color);
+        background: var(--secondary-bg);
+    }
+
+    .sidebar-footer .disclaimer {
+        font-size: 0.75rem;
+    }
+
+    .sidebar-footer .last-updated p {
+        font-size: 0.7rem !important;
+        margin: 0;
+        padding: 0 0.5rem;
+    }
+
+    main {
+        margin-left: 0;
+        padding: 1rem;
+        overflow-x: hidden;
+        width: 100%;
+        padding-bottom: calc(1.5rem + 96px + env(safe-area-inset-bottom));
+    }
+
+    .quote-banner {
+        padding: 1.5rem 1.5rem;
+        margin-bottom: 2rem;
+        border-radius: 10px;
+    }
+
+    .quote-text {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .quote-author {
+        font-size: 1rem;
+    }
+
+    .category {
+        margin-bottom: 0.1rem;
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    .category h2 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        padding: 0 0.5rem;
+    }
+
+    .view-mode-bar {
+        margin: 0 0 1rem 0;
+        justify-content: stretch;
+    }
+
+    .view-mode-toggle-btn {
+        width: 100%;
+    }
+
+    .category-options-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.5rem;
+    }
+
+    .category-toggle-btn {
+        padding: 0.7rem 0.6rem;
+        min-height: 96px;
+        aspect-ratio: auto;
+    }
+
+    .category-toggle-content {
+        gap: 0.35rem;
+    }
+
+    .category-toggle-label {
+        font-size: 0.88rem;
+        line-height: 1.1;
+    }
+
+    .category-toggle-svg {
+        width: 30px;
+        height: 30px;
+    }
+
+    .category-page-header {
+        margin-bottom: 1rem;
+        padding: 0;
+        display: none;
+        background: transparent;
+        border: none;
+        flex-direction: column;
+    }
+
+    .category-page-title {
+        font-size: 1.2rem;
+    }
+
+    .category-page-items {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .items.category-page-items {
+        display: block;
+        overflow-x: visible;
+        overflow-y: visible;
+        scroll-snap-type: none;
+        padding: 0;
+    }
+
+    .items.category-page-items .item {
+        flex: 1 1 auto;
+        max-width: none;
+        margin-bottom: 1rem;
+    }
+
+    /* Horizontal scrolling container */
+    .items {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        gap: 1rem;
+        padding: 0.5rem;
+    }
+
+    .item {
+        flex: 0 0 280px;
+        scroll-snap-align: start;
+        max-width: 280px;
+    }
+
+    /* Scroll buttons container */
+    .category {
+        position: relative;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        padding: 0;
+    }
+
+    .sidebar-header {
+        padding: 1.25rem 0.75rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .sidebar-logo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .sidebar-header h1 {
+        font-size: 1.1rem;
+    }
+
+    main {
+        padding: 1rem;
+        padding-bottom: calc(1.5rem + 96px + env(safe-area-inset-bottom));
+    }
+
+    .category h2 {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .wishlist-btn {
+        width: 100%;
+    }
+
+    .share-link-container {
+        flex-direction: column;
+    }
+
+    .copy-btn {
+        width: 100%;
+    }
+
+    .social-row {
+        gap: 0.25rem;
+    }
+}

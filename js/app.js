@@ -1,3 +1,23 @@
+/*
+  Main Application Logic
+  
+  STRUCTURE:
+  ─────────
+  This file contains the main application logic that works for both desktop and mobile.
+  Device-specific code is marked with comments:
+  - [DESKTOP ONLY]: Code that only runs on desktop/PC (768px+)
+  - [MOBILE ONLY]: Code that only runs on mobile (max 768px)
+  - [SHARED]: Code that runs on all devices
+  
+  STYLING:
+  CSS is organized into:
+  - css/style-common.css: Base styles and shared components
+  - css/style-desktop.css: Desktop/PC specific layouts [DESKTOP ONLY]
+  - css/style-mobile.css: Mobile/tablet overrides [@media queries]
+*/
+
+
+// [SHARED] Global app state
 let allItems = [];
 let currentFilters = {
     search: '',
@@ -9,7 +29,7 @@ let main; // Main content element
 let currentViewMode = 'category';
 let activeCategoryPage = null;
 
-// Image loading observer
+// [SHARED] Image loading observer
 let imageObserver;
 
 // Initialize lazy image loading
@@ -31,7 +51,7 @@ function initImageObserver() {
     });
 }
 
-// Wishlist Management
+// [SHARED] Wishlist Management
 let wishlist = [];
 const WISHLIST_KEY = 'bmedia_wishlist';
 
@@ -240,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const copyLinkBtn = document.getElementById('copy-link-btn');
     const shareLinkInput = document.getElementById('share-link-input');
 
-    // Mobile filter controls
+    // [MOBILE ONLY] Mobile filter controls
     const sidebar = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebar-overlay');
     const sidebarClose = document.getElementById('sidebar-close');
@@ -250,7 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const bottomBarText = document.getElementById('bottom-bar-text');
     const wishlistBtn = document.getElementById('wishlist-btn');
 
-    // Modal state
+    // [SHARED] Modal state
     let filtersOpen = false;
     let bottomBarMode = 'filters';
     let mobileFiltersContainer = null;
@@ -261,6 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let bottomBarProgressFillPath = null;
     let bottomBarProgressPathLength = 0;
 
+    // [SHARED] Viewport helpers
     function isMobileViewport() {
         return window.matchMedia('(max-width: 768px)').matches;
     }
@@ -410,6 +431,7 @@ document.addEventListener('DOMContentLoaded', function() {
         bottomBarHead.classList.add('action-change-flash');
     }
 
+    // [MOBILE ONLY] Bottom bar content composition
     function setupMobileBottomBarContent() {
         if (!isMobileViewport() || !sidebar || !bottomBarPanel || bottomBarPanel.dataset.initialized === 'true') {
             return;
@@ -438,6 +460,7 @@ document.addEventListener('DOMContentLoaded', function() {
         bottomBarPanel.dataset.initialized = 'true';
     }
 
+    // [MOBILE ONLY] Mobile wishlist rendering/actions
     function renderMobileWishlistContent() {
         if (!mobileWishlistContainer) {
             return;
@@ -598,6 +621,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // [MOBILE ONLY] Mobile bottom bar mode switching
     function setMobileBottomBarMode(mode) {
         if (!isMobileViewport()) {
             return;
@@ -633,7 +657,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateFilterVisibility();
     }
 
-    // Toggle filters modal
+    // [SHARED] Toggle filters modal
     function toggleFiltersModal(mode = 'filters') {
         if (filtersOpen) {
             closeFiltersModal();
@@ -677,7 +701,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize filters
     loadWishlist();
 
-    // Bottom bar click opens filters
+    // [MOBILE ONLY] Bottom bar click opens filters
     if (bottomBarHead) {
         bottomBarHead.addEventListener('click', (e) => {
             if (e.target.closest('.bottom-bar-wishlist')) {
@@ -708,7 +732,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Wishlist button click
+    // [SHARED] Wishlist button click (mobile bottom bar / desktop modal)
     if (wishlistBtn) {
         wishlistBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -721,6 +745,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     openFiltersModal('wishlist');
                 }
             } else {
+                // [DESKTOP ONLY] Use wishlist modal on desktop
                 showWishlistModal();
             }
         });
@@ -817,7 +842,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupModalHandler(extraModal, extraModalClose);
     setupModalHandler(shareModal, shareModalClose);
     
-    // Setup wishlist modal
+    // [DESKTOP ONLY] Setup wishlist modal container
     const wishlistModal = document.getElementById('wishlist-modal');
     // Note: URL cleaning is handled in the modal close buttons for shared wishlists
 
@@ -1605,6 +1630,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // [DESKTOP ONLY] Wishlist modal renderer (mobile uses bottom-bar wishlist UI)
     function showWishlistModal(sharedItems = null, isShared = false) {
         const itemsToShow = isShared ? sharedItems : wishlist;
         

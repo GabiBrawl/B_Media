@@ -1,0 +1,25 @@
+/* Desktop/PC specific layouts [DESKTOP ONLY] */
+
+@media (min-width: 769px) {
+    .container {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        display: flex;
+    }
+
+    main {
+        margin-left: 280px;
+    }
+
+    .bottom-bar,
+    .mobile-header,
+    .sidebar-close-btn {
+        display: none !important;
+    }
+
+    .sidebar-overlay {
+        display: none !important;
+    }
+}
