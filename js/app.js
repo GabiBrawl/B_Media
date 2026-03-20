@@ -1343,7 +1343,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (bottomBarMode === 'info' && filtersOpen) {
-            setBottomBarActionText('Tap to close info');
+            setBottomBarActionText('Tap to close');
             return;
         }
 
@@ -1497,6 +1497,59 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Delegate click event for pick badges
     document.addEventListener('click', function(e) {
+        const socialRedirectBtn = e.target.closest('.mobile-social-redirect-btn');
+        if (socialRedirectBtn) {
+            e.preventDefault();
+            const href = socialRedirectBtn.getAttribute('data-href');
+            if (!href) {
+                return;
+            }
+
+            if (href.startsWith('mailto:')) {
+                window.location.href = href;
+                return;
+            }
+
+            window.open(href, '_blank', 'noopener,noreferrer');
+            return;
+        }
+
+        const socialLink = e.target.closest('.social-links a');
+        if (socialLink && isMobileViewport()) {
+            e.preventDefault();
+
+            const href = socialLink.getAttribute('href');
+            if (!href) {
+                return;
+            }
+
+            const platformName = socialLink.getAttribute('aria-label') || socialLink.getAttribute('title') || 'Social Link';
+            const customInfo = socialLink.getAttribute('data-social-info');
+            const isEmailLink = href.startsWith('mailto:');
+            const popupTitle = isEmailLink ? 'Business Inquiries' : `Official B_Media ${platformName}`;
+            const fallbackInfo = isEmailLink
+                ? 'Business Inquiries: this will open your default email app so you can contact B_Media directly.'
+                : `You are about to open the official B_Media ${platformName} page.`;
+
+            const actionLabel = isEmailLink ? 'Open Email App' : `Open Official ${platformName}`;
+            const detailsHtml = `
+                <div class="mobile-social-info">
+                    <div class="mobile-info-card">
+                        <h4>${escapeHtml(popupTitle)}</h4>
+                        <p>${escapeHtml(customInfo || fallbackInfo)}</p>
+                    </div>
+                    <div class="mobile-social-actions">
+                        <button type="button" class="action-btn primary mobile-social-redirect-btn" data-href="${escapeHtml(href)}">
+                            ${escapeHtml(actionLabel)}
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            openMobileInfoPanel(popupTitle, detailsHtml);
+            return;
+        }
+
         const viewToggleBtn = e.target.closest('[id^="view-mode-toggle"]');
         if (viewToggleBtn) {
             e.preventDefault();
@@ -1935,6 +1988,15 @@ document.addEventListener('DOMContentLoaded', function() {
         pageSocialSection.className = 'page-social-section';
         pageSocialSection.appendChild(sidebarSocialLinks.cloneNode(true));
         return pageSocialSection;
+    }
+
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
     }
 
     function getCategoryIconSvg(categoryName) {

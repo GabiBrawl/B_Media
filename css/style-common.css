@@ -1570,6 +1570,21 @@ button svg {
     gap: 0.35rem;
 }
 
+.mobile-social-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.mobile-social-actions {
+    display: flex;
+}
+
+.mobile-social-actions .action-btn {
+    width: 100%;
+    justify-content: center;
+}
+
 .mobile-wishlist-empty {
     color: var(--medium-text);
     font-size: 0.9rem;
