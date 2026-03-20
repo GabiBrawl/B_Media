@@ -19,12 +19,13 @@
 
 // [SHARED] Global app state
 let allItems = [];
-let currentFilters = {
+const DEFAULT_FILTERS = Object.freeze({
     search: '',
     category: 'all',
     price: 'all',
     picksOnly: false
-};
+});
+let currentFilters = { ...DEFAULT_FILTERS };
 let main; // Main content element
 let currentViewMode = 'category';
 let activeCategoryPage = null;
@@ -247,6 +248,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const priceFilter = document.getElementById('price-filter');
     const picksOnlyCheckbox = document.getElementById('show-picks-only');
     const resetButton = document.getElementById('reset-filters');
+    const resetButtonMobile = document.getElementById('reset-filters-mobile');
+    const picksOnlyToggleBtn = document.getElementById('picks-only-toggle-btn');
+    const mobilePriceRangeControl = document.getElementById('mobile-price-range-control');
+    const mobilePriceRangeSlider = document.getElementById('mobile-price-range-slider');
+    const mobilePriceRangeFill = document.getElementById('mobile-price-range-fill');
+    const mobilePriceMinHandle = document.getElementById('mobile-price-min-handle');
+    const mobilePriceMaxHandle = document.getElementById('mobile-price-max-handle');
     const modal = document.getElementById('pick-info-modal');
     const modalClose = modal.querySelector('.modal-close');
 
@@ -280,6 +288,312 @@ document.addEventListener('DOMContentLoaded', function() {
     let bottomBarProgressTrackPath = null;
     let bottomBarProgressFillPath = null;
     let bottomBarProgressPathLength = 0;
+    let availableMinPrice = 0;
+    let availableMaxPrice = 0;
+    let priceBoundsLoaded = false;
+    let selectedMinPrice = 0;
+    let selectedMaxPrice = 0;
+    let savedFiltersState = null;
+    let filtersTemporarilyCleared = false;
+    let applyFiltersDebounceTimeout = null;
+
+    function cloneFilters(filters) {
+        return {
+            search: filters.search || '',
+            category: filters.category || 'all',
+            price: filters.price || 'all',
+            picksOnly: !!filters.picksOnly
+        };
+    }
+
+    function syncSavedFiltersState() {
+        if (hasActiveFilters()) {
+            savedFiltersState = cloneFilters(currentFilters);
+        } else {
+            savedFiltersState = null;
+        }
+    }
+
+    function updateResetButtonsState() {
+        if (resetButton) {
+            resetButton.classList.toggle('has-active-filters', hasActiveFilters());
+        }
+
+        if (resetButtonMobile) {
+            resetButtonMobile.classList.toggle('has-active-filters', hasActiveFilters());
+        }
+    }
+
+    function setFiltersState(nextFilters, shouldRender = false) {
+        currentFilters = cloneFilters(nextFilters);
+
+        searchInput.value = currentFilters.search;
+        categoryFilter.value = currentFilters.category;
+        priceFilter.value = currentFilters.price;
+        picksOnlyCheckbox.checked = currentFilters.picksOnly;
+        syncPicksOnlyToggle();
+
+        const { min, max } = parsePriceBounds(currentFilters.price);
+        if (Number.isFinite(min) && Number.isFinite(max)) {
+            setPriceFilterBounds(min, max, false);
+        }
+
+        if (shouldRender) {
+            if (hasActiveFilters()) {
+                applyFilters();
+            } else {
+                renderAllCategories();
+            }
+        }
+    }
+
+    function formatPriceLabel(value) {
+        return `$${Math.round(value)}`;
+    }
+
+    function initializePriceBounds() {
+        if (priceBoundsLoaded) {
+            return true;
+        }
+
+        const allPrices = allItems
+            .map(item => item.price)
+            .filter(price => Number.isFinite(price) && price > 0);
+
+        if (allPrices.length === 0) {
+            return false;
+        }
+
+        availableMinPrice = Math.floor(Math.min(...allPrices));
+        availableMaxPrice = Math.ceil(Math.max(...allPrices));
+        priceBoundsLoaded = true;
+        return true;
+    }
+
+    function parsePriceBounds(priceValue) {
+        if (!priceBoundsLoaded && !initializePriceBounds()) {
+            return { min: 0, max: 0 };
+        }
+
+        if (!priceValue || priceValue === 'all') {
+            return {
+                min: availableMinPrice,
+                max: availableMaxPrice
+            };
+        }
+
+        const [minRaw, maxRaw] = priceValue.split('-');
+        let min = Number.parseInt(minRaw, 10);
+        let max = maxRaw ? Number.parseInt(maxRaw, 10) : availableMaxPrice;
+
+        if (!Number.isFinite(min)) {
+            min = availableMinPrice;
+        }
+        if (!Number.isFinite(max)) {
+            max = availableMaxPrice;
+        }
+
+        min = Math.max(availableMinPrice, Math.min(min, availableMaxPrice));
+        max = Math.max(availableMinPrice, Math.min(max, availableMaxPrice));
+        if (min > max) {
+            [min, max] = [max, min];
+        }
+
+        return { min, max };
+    }
+
+    function setPriceFilterBounds(min, max, shouldApply = true) {
+        if (!priceBoundsLoaded && !initializePriceBounds()) {
+            currentFilters.price = 'all';
+            return;
+        }
+
+        if (!Number.isFinite(min) || !Number.isFinite(max)) {
+            return;
+        }
+
+        let normalizedMin = Math.max(availableMinPrice, Math.min(min, availableMaxPrice));
+        let normalizedMax = Math.max(availableMinPrice, Math.min(max, availableMaxPrice));
+        if (normalizedMin > normalizedMax) {
+            [normalizedMin, normalizedMax] = [normalizedMax, normalizedMin];
+        }
+
+        const isAllRange = normalizedMin <= availableMinPrice && normalizedMax >= availableMaxPrice;
+        currentFilters.price = isAllRange ? 'all' : `${normalizedMin}-${normalizedMax}`;
+        selectedMinPrice = normalizedMin;
+        selectedMaxPrice = normalizedMax;
+
+        updateMobilePriceSliderUI();
+
+        if (currentFilters.price === 'all') {
+            priceFilter.value = 'all';
+        }
+
+        if (shouldApply) {
+            queueApplyFilters();
+        }
+    }
+
+    function queueApplyFilters(delay = 180) {
+        if (applyFiltersDebounceTimeout) {
+            clearTimeout(applyFiltersDebounceTimeout);
+        }
+
+        applyFiltersDebounceTimeout = setTimeout(() => {
+            applyFiltersDebounceTimeout = null;
+            applyFilters();
+        }, delay);
+    }
+
+    function cancelQueuedApplyFilters() {
+        if (!applyFiltersDebounceTimeout) {
+            return;
+        }
+
+        clearTimeout(applyFiltersDebounceTimeout);
+        applyFiltersDebounceTimeout = null;
+    }
+
+    function priceToPercent(value) {
+        if (availableMaxPrice <= availableMinPrice) {
+            return 0;
+        }
+
+        return ((value - availableMinPrice) / (availableMaxPrice - availableMinPrice)) * 100;
+    }
+
+    function pointerToPrice(clientX) {
+        if (!mobilePriceRangeSlider) {
+            return availableMinPrice;
+        }
+
+        const rect = mobilePriceRangeSlider.getBoundingClientRect();
+        const ratio = rect.width > 0 ? (clientX - rect.left) / rect.width : 0;
+        const clampedRatio = Math.min(1, Math.max(0, ratio));
+        const price = availableMinPrice + (availableMaxPrice - availableMinPrice) * clampedRatio;
+        return Math.round(price);
+    }
+
+    function updateMobilePriceSliderUI() {
+        if (!mobilePriceRangeSlider || !mobilePriceMinHandle || !mobilePriceMaxHandle || !mobilePriceRangeFill) {
+            return;
+        }
+
+        mobilePriceMinHandle.textContent = formatPriceLabel(selectedMinPrice);
+        mobilePriceMaxHandle.textContent = formatPriceLabel(selectedMaxPrice);
+
+        const minPercent = priceToPercent(selectedMinPrice);
+        const maxPercent = priceToPercent(selectedMaxPrice);
+        const minRatio = Math.min(1, Math.max(0, minPercent / 100));
+        const maxRatio = Math.min(1, Math.max(0, maxPercent / 100));
+
+        mobilePriceMinHandle.style.setProperty('--position', `${minRatio}`);
+        mobilePriceMaxHandle.style.setProperty('--position', `${maxRatio}`);
+        mobilePriceRangeFill.style.left = `calc((100% - var(--price-handle-width)) * ${minRatio} + (var(--price-handle-width) / 2))`;
+        mobilePriceRangeFill.style.width = `calc((100% - var(--price-handle-width)) * ${Math.max(0, maxRatio - minRatio)})`;
+    }
+
+    function refreshMobilePriceSliderUI() {
+        updateMobilePriceSliderUI();
+    }
+
+    function updatePriceFromPointer(clientX, handleType) {
+        const nextValue = pointerToPrice(clientX);
+
+        if (handleType === 'min') {
+            setPriceFilterBounds(Math.min(nextValue, selectedMaxPrice), selectedMaxPrice);
+        } else {
+            setPriceFilterBounds(selectedMinPrice, Math.max(nextValue, selectedMinPrice));
+        }
+    }
+
+    function bindPriceHandleDrag(handleElement, handleType) {
+        if (!handleElement) {
+            return;
+        }
+
+        handleElement.addEventListener('pointerdown', (event) => {
+            event.preventDefault();
+
+            const onPointerMove = (moveEvent) => {
+                updatePriceFromPointer(moveEvent.clientX, handleType);
+            };
+
+            const onPointerUp = () => {
+                window.removeEventListener('pointermove', onPointerMove);
+                window.removeEventListener('pointerup', onPointerUp);
+            };
+
+            window.addEventListener('pointermove', onPointerMove);
+            window.addEventListener('pointerup', onPointerUp);
+            updatePriceFromPointer(event.clientX, handleType);
+        });
+
+        handleElement.addEventListener('keydown', (event) => {
+            const step = event.shiftKey ? 10 : 1;
+            if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+                return;
+            }
+
+            event.preventDefault();
+            const delta = event.key === 'ArrowLeft' ? -step : step;
+            if (handleType === 'min') {
+                setPriceFilterBounds(selectedMinPrice + delta, selectedMaxPrice);
+            } else {
+                setPriceFilterBounds(selectedMinPrice, selectedMaxPrice + delta);
+            }
+        });
+    }
+
+    function syncPicksOnlyToggle() {
+        if (!picksOnlyToggleBtn) {
+            return;
+        }
+
+        picksOnlyToggleBtn.classList.toggle('active', picksOnlyCheckbox.checked);
+        picksOnlyToggleBtn.setAttribute('aria-pressed', picksOnlyCheckbox.checked ? 'true' : 'false');
+    }
+
+    function resetAllFilters() {
+        cancelQueuedApplyFilters();
+        setFiltersState(DEFAULT_FILTERS, false);
+        activeCategoryPage = null;
+        savedFiltersState = null;
+        filtersTemporarilyCleared = false;
+
+        updateResetButtonsState();
+        updateFilterVisibility();
+        renderAllCategories();
+    }
+
+    function initMobilePriceRangeFromData() {
+        if (!mobilePriceRangeControl || !mobilePriceRangeSlider || !mobilePriceMinHandle || !mobilePriceMaxHandle) {
+            return;
+        }
+
+        if (!initializePriceBounds()) {
+            mobilePriceRangeControl.style.display = 'none';
+            currentFilters.price = 'all';
+            return;
+        }
+
+        setPriceFilterBounds(availableMinPrice, availableMaxPrice, false);
+
+        bindPriceHandleDrag(mobilePriceMinHandle, 'min');
+        bindPriceHandleDrag(mobilePriceMaxHandle, 'max');
+
+        mobilePriceRangeSlider.addEventListener('pointerdown', (event) => {
+            if (event.target === mobilePriceMinHandle || event.target === mobilePriceMaxHandle) {
+                return;
+            }
+
+            const clickedPrice = pointerToPrice(event.clientX);
+            const distanceToMin = Math.abs(clickedPrice - selectedMinPrice);
+            const distanceToMax = Math.abs(clickedPrice - selectedMaxPrice);
+            const targetHandle = distanceToMin <= distanceToMax ? 'min' : 'max';
+            updatePriceFromPointer(event.clientX, targetHandle);
+        });
+    }
 
     // [SHARED] Viewport helpers
     function isMobileViewport() {
@@ -683,6 +997,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function closeFiltersModal() {
         filtersOpen = false;
 
+        if (isMobileViewport() && bottomBarMode === 'filters') {
+            filtersTemporarilyCleared = false;
+            syncSavedFiltersState();
+        }
+
         if (bottomBar) {
             bottomBar.classList.remove('active');
         }
@@ -728,6 +1047,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
+            if (isMobileViewport() && bottomBarMode === 'filters' && !filtersOpen) {
+                if (filtersTemporarilyCleared && savedFiltersState) {
+                    cancelQueuedApplyFilters();
+                    setFiltersState(savedFiltersState, true);
+                    filtersTemporarilyCleared = false;
+                    openFiltersModal('filters');
+                    return;
+                }
+
+                if (!filtersTemporarilyCleared && hasActiveFilters()) {
+                    cancelQueuedApplyFilters();
+                    savedFiltersState = cloneFilters(currentFilters);
+                    setFiltersState(DEFAULT_FILTERS, true);
+                    filtersTemporarilyCleared = true;
+                    updateFilterVisibility();
+                    return;
+                }
+            }
+
             toggleFiltersModal(bottomBarMode);
         });
     }
@@ -769,6 +1107,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('resize', () => {
         updateBottomBarProgressPath();
         updateBottomBarScrollProgress();
+        refreshMobilePriceSliderUI();
     });
 
     if (bottomBar) {
@@ -778,11 +1117,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             updateBottomBarProgressPath();
             updateBottomBarScrollProgress();
+            refreshMobilePriceSliderUI();
         });
     }
 
     // Placeholder function for filter visibility management
     function updateFilterVisibility() {
+        updateResetButtonsState();
+
         if (!bottomBarText) {
             return;
         }
@@ -802,6 +1144,18 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentViewMode === 'category' && !!activeCategoryPage) {
             setBottomBarActionText('Tap to go back to categories');
             return;
+        }
+
+        if (isMobileViewport() && !filtersOpen && bottomBarMode === 'filters') {
+            if (filtersTemporarilyCleared && savedFiltersState) {
+                setBottomBarActionText('Tap to open filters and restore');
+                return;
+            }
+
+            if (hasActiveFilters()) {
+                setBottomBarActionText('Tap to clear filters');
+                return;
+            }
         }
 
         if (filtersOpen) {
@@ -884,6 +1238,11 @@ document.addEventListener('DOMContentLoaded', function() {
             allItems.push(item);
         });
     }
+
+    initializePriceBounds();
+
+    initMobilePriceRangeFromData();
+    syncPicksOnlyToggle();
 
     // Populate category filter dynamically
     populateCategoryFilter();
@@ -1009,42 +1368,56 @@ document.addEventListener('DOMContentLoaded', function() {
     searchInput.addEventListener('input', function() {
         clearTimeout(searchTimeout);
         currentFilters.search = this.value.toLowerCase();
-        searchTimeout = setTimeout(() => applyFilters(), 500);
+        filtersTemporarilyCleared = false;
+        syncSavedFiltersState();
+        searchTimeout = setTimeout(() => queueApplyFilters(200), 250);
     });
 
     categoryFilter.addEventListener('change', function() {
         currentFilters.category = this.value;
+        filtersTemporarilyCleared = false;
+        syncSavedFiltersState();
         updateFilterVisibility();
-        applyFilters();
+        queueApplyFilters();
     });
 
     priceFilter.addEventListener('change', function() {
         currentFilters.price = this.value;
-        applyFilters();
+        const { min, max } = parsePriceBounds(this.value);
+        if (Number.isFinite(min) && Number.isFinite(max)) {
+            setPriceFilterBounds(min, max, false);
+        }
+        filtersTemporarilyCleared = false;
+        syncSavedFiltersState();
+        queueApplyFilters();
     });
 
     picksOnlyCheckbox.addEventListener('change', function() {
         currentFilters.picksOnly = this.checked;
-        applyFilters();
+        filtersTemporarilyCleared = false;
+        syncSavedFiltersState();
+        syncPicksOnlyToggle();
+        queueApplyFilters();
     });
 
-    resetButton.addEventListener('click', function() {
-        currentFilters = {
-            search: '',
-            category: 'all',
-            price: 'all',
-            picksOnly: false
-        };
-        activeCategoryPage = null;
-        searchInput.value = '';
-        categoryFilter.value = 'all';
-        priceFilter.value = 'all';
-        picksOnlyCheckbox.checked = false;
-        updateFilterVisibility();
-        renderAllCategories();
-    });
+    if (picksOnlyToggleBtn) {
+        picksOnlyToggleBtn.addEventListener('click', function() {
+            picksOnlyCheckbox.checked = !picksOnlyCheckbox.checked;
+            picksOnlyCheckbox.dispatchEvent(new Event('change'));
+        });
+    }
+
+    if (resetButton) {
+        resetButton.addEventListener('click', resetAllFilters);
+    }
+
+    if (resetButtonMobile) {
+        resetButtonMobile.addEventListener('click', resetAllFilters);
+    }
 
     function renderAllCategories() {
+        updateResetButtonsState();
+
         if (currentViewMode === 'category') {
             renderCategoryOnlyCategories(gearData);
             return;
@@ -1093,6 +1466,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function applyFilters() {
+        updateResetButtonsState();
+
         let minPrice = -Infinity;
         let maxPrice = Infinity;
         if (currentFilters.price !== 'all') {

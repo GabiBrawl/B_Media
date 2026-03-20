@@ -696,9 +696,21 @@ main {
     position: relative;
 }
 
+.search-icon {
+    position: absolute;
+    top: 50%;
+    left: 0.9rem;
+    transform: translateY(-50%);
+    color: var(--medium-text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
 .search-box input {
     width: 100%;
-    padding: 0.875rem 1.1rem;
+    padding: 0.875rem 1.1rem 0.875rem 2.5rem;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-sm);
     background: var(--tertiary-bg);
@@ -755,9 +767,20 @@ main {
 }
 
 .reset-btn:hover {
-    background: var(--accent-color);
-    color: white;
     border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.reset-btn.has-active-filters {
+    background: rgba(255, 107, 107, 0.12);
+    color: var(--pick-color);
+    border-color: var(--pick-color);
+}
+
+.reset-btn.has-active-filters:hover {
+    background: var(--pick-color);
+    color: white;
+    border-color: var(--pick-color);
 }
 
 .filter-controls {
@@ -839,6 +862,91 @@ main {
     color: white;
     font-size: 12px;
     font-weight: bold;
+}
+
+.mobile-price-range-control,
+.mobile-filter-actions {
+    display: none;
+}
+
+.mobile-price-range-slider {
+    --price-handle-width: 50px;
+    position: relative;
+    height: 44px;
+    margin-top: 0.35rem;
+    background: var(--tertiary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0 0.4rem;
+    overflow: hidden;
+}
+
+.mobile-price-track,
+.mobile-price-range-fill {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 6px;
+    border-radius: 999px;
+}
+
+.mobile-price-track {
+    left: 0.4rem;
+    right: 0.4rem;
+    background: var(--border-color);
+}
+
+.mobile-price-range-fill {
+    background: var(--accent-color);
+    left: 0;
+    width: 100%;
+}
+
+.mobile-price-handle {
+    --position: 0;
+    position: absolute;
+    top: 50%;
+    left: calc((100% - var(--price-handle-width)) * var(--position));
+    transform: translateY(-50%);
+    width: var(--price-handle-width);
+    height: calc(100% - 2px);
+    border-radius: 8px;
+    border: 1px solid var(--accent-color);
+    background: var(--card-bg);
+    color: var(--light-text);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-price-handle:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(38, 198, 165, 0.35), 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.mobile-picks-toggle-btn {
+    border: 1px solid var(--border-color);
+    background: white;
+    color: #101114;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    padding: 0.7rem 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mobile-picks-toggle-btn.active {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
 }
 
 /* Modal for pick badge info */

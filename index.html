@@ -46,12 +46,18 @@
             <!-- Quick Search -->
             <div class="sidebar-section">
                 <div class="search-box">
+                    <span class="search-icon" aria-hidden="true">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </span>
                     <input type="text" id="search-input" placeholder="Search products...">
                 </div>
             </div>
 
             <!-- Filters Section -->
-            <div class="sidebar-section">
+            <div class="sidebar-section filter-section">
                 <div class="section-header">
                     <h3>Filters</h3>
                     <button id="reset-filters" class="reset-btn">Reset</button>
@@ -66,7 +72,7 @@
                         </select>
                     </div>
 
-                    <div class="filter-item">
+                    <div class="filter-item mobile-price-select">
                         <label for="price-filter">Price Range</label>
                         <select id="price-filter">
                             <option value="all">All Prices</option>
@@ -78,12 +84,27 @@
                         </select>
                     </div>
 
+                    <div class="filter-item mobile-price-range-control" id="mobile-price-range-control">
+                        <label>Price Range</label>
+                        <div class="mobile-price-range-slider" id="mobile-price-range-slider" aria-label="Price range slider">
+                            <div class="mobile-price-track"></div>
+                            <div class="mobile-price-range-fill" id="mobile-price-range-fill"></div>
+                            <button type="button" id="mobile-price-min-handle" class="mobile-price-handle" aria-label="Minimum price"></button>
+                            <button type="button" id="mobile-price-max-handle" class="mobile-price-handle" aria-label="Maximum price"></button>
+                        </div>
+                    </div>
+
                     <div class="filter-item">
                         <label class="checkbox-label">
                             <input type="checkbox" id="show-picks-only">
                             <span class="checkmark"></span>
                             B_Media Picks Only
                         </label>
+                    </div>
+
+                    <div class="filter-item mobile-filter-actions">
+                        <button id="picks-only-toggle-btn" class="mobile-picks-toggle-btn" type="button">B_Media Picks Only</button>
+                        <button id="reset-filters-mobile" class="reset-btn" type="button">Reset</button>
                     </div>
                 </div>
             </div>
@@ -160,7 +181,7 @@
                     <p>Last updated: <span id="last-updated-date">Loading...</span></p>
                 </div>
                 <div class="disclaimer">
-                    <p><strong>Disclaimer:</strong> This webpage is NOT affiliated with B_Media. All data displayed has been directly sourced from B_Media's official Linktree.</p>
+                    <p><strong>Disclaimer:</strong> This webpage is NOT affiliated with B_Media. All data has been directly sourced from B_Media's official Linktree.</p>
                     <p>Created with 💙 by <a href="https://www.gabibrawl.dev" target="_blank">𝕲𝖆𝖇𝖎𝕭𝖗𝖆𝖜𝖑</a></p>
                 </div>
             </div>

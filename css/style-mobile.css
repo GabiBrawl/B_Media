@@ -69,22 +69,79 @@
     }
 
     .sidebar-section {
-        padding: 1rem;
+        padding: 0.85rem 1rem;
+        border-bottom: none;
+    }
+
+    .sidebar-section:first-of-type {
+        padding-bottom: 0.4rem;
+    }
+
+    .filter-section {
+        padding-top: 0.4rem;
     }
 
     .section-header {
         margin-bottom: 1rem;
     }
 
+    .filter-section .section-header h3 {
+        display: none;
+    }
+
+    .filter-section .section-header {
+        justify-content: flex-end;
+    }
+
+    .filter-section .section-header #reset-filters {
+        display: none;
+    }
+
     .filter-controls {
         gap: 0.875rem;
     }
 
-    /* Social icons styling for mobile */
+    .mobile-price-select {
+        display: none;
+    }
+
+    .mobile-price-range-control {
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+    }
+
+    .mobile-filter-actions {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 0.6rem;
+        align-items: center;
+    }
+
+    .mobile-filter-actions .reset-btn {
+        padding: 0.7rem 0.85rem;
+        font-size: 0.74rem;
+        white-space: nowrap;
+    }
+
+    .mobile-filter-actions .reset-btn.has-active-filters,
+    .mobile-filter-actions .reset-btn.has-active-filters:hover {
+        background: var(--pick-color);
+        color: white;
+        border-color: var(--pick-color);
+    }
+
+    .filter-item .checkbox-label {
+        display: none;
+    }
+
+    /* Social area follows the same unified section styling */
+    .sidebar-section.social-section,
     .social-section {
-        border-top: 2px solid var(--border-color);
-        padding: 1rem 1.25rem;
-        background: var(--tertiary-bg);
+        border-top: 1px solid var(--border-color);
+        padding: 0.85rem 1rem;
+        background: var(--secondary-bg);
+        margin-top: 0;
     }
 
     .social-links {
@@ -119,9 +176,9 @@
     }
 
     .sidebar-footer {
-        padding: 1.25rem 1.25rem;
-        border-top: 2px solid var(--border-color);
-        background: var(--secondary-bg);
+        padding: 0.85rem 1rem 1rem 1rem;
+        border-top: none;
+        background: transparent;
     }
 
     .sidebar-footer .disclaimer {
