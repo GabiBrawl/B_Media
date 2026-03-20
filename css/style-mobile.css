@@ -295,6 +295,17 @@
         width: 100%;
     }
 
+    .mobile-view-mode-toggle-item {
+        margin-top: 0.5rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .mobile-view-mode-toggle-item .view-mode-toggle-btn {
+        margin-top: 0;
+        background: var(--card-bg);
+    }
+
     .category-options-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));

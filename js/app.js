@@ -304,7 +304,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let bottomBarMode = 'filters';
     let mobileFiltersContainer = null;
     let mobileWishlistContainer = null;
+    let mobileInfoContainer = null;
     let mobileSharedWishlistItems = null;
+    let mobileInfoPayload = null;
     let bottomBarProgressSvg = null;
     let bottomBarProgressTrackPath = null;
     let bottomBarProgressFillPath = null;
@@ -887,6 +889,12 @@ document.addEventListener('DOMContentLoaded', function() {
             bottomBarPanel.appendChild(mobileWishlistContainer);
         }
 
+        if (!mobileInfoContainer) {
+            mobileInfoContainer = document.createElement('div');
+            mobileInfoContainer.className = 'mobile-bottom-info';
+            bottomBarPanel.appendChild(mobileInfoContainer);
+        }
+
         const sidebarContent = sidebar.querySelectorAll('.sidebar-section, .sidebar-footer');
         sidebarContent.forEach((node) => {
             if (node.classList.contains('sidebar-section') && (node.querySelector('#show-wishlist-btn') || node.querySelector('#share-wishlist-btn'))) {
@@ -895,7 +903,55 @@ document.addEventListener('DOMContentLoaded', function() {
             mobileFiltersContainer.appendChild(node);
         });
 
+        ensureMobileViewModeToggleElement();
+
         bottomBarPanel.dataset.initialized = 'true';
+    }
+
+    function renderMobileInfoContent() {
+        if (!mobileInfoContainer || !mobileInfoPayload) {
+            return;
+        }
+
+        if (bottomBarText && filtersOpen && bottomBarMode === 'info') {
+            setBottomBarActionText('Tap to close info');
+        }
+
+        const panel = document.createElement('div');
+        panel.className = 'mobile-info-panel';
+
+        const title = document.createElement('h3');
+        title.className = 'mobile-info-title';
+        if (mobileInfoPayload.titleHtml) {
+            title.innerHTML = mobileInfoPayload.titleHtml;
+        } else {
+            title.textContent = mobileInfoPayload.title;
+        }
+
+        const content = document.createElement('div');
+        content.className = 'mobile-info-content';
+        content.innerHTML = mobileInfoPayload.bodyHtml;
+
+        panel.appendChild(title);
+        panel.appendChild(content);
+        mobileInfoContainer.replaceChildren(panel);
+    }
+
+    function openMobileInfoPanel(title, bodyHtml, titleHtml = '') {
+        if (!isMobileViewport()) {
+            return false;
+        }
+
+        setupMobileBottomBarContent();
+        mobileInfoPayload = { title, bodyHtml, titleHtml };
+
+        if (filtersOpen) {
+            setMobileBottomBarMode('info');
+        } else {
+            openFiltersModal('info');
+        }
+
+        return true;
     }
 
     // [MOBILE ONLY] Mobile wishlist rendering/actions
@@ -1076,8 +1132,25 @@ document.addEventListener('DOMContentLoaded', function() {
             if (mobileWishlistContainer) {
                 mobileWishlistContainer.style.display = 'block';
             }
+            if (mobileInfoContainer) {
+                mobileInfoContainer.style.display = 'none';
+            }
             if (bottomBar) {
                 bottomBar.classList.add('wishlist-mode');
+            }
+        } else if (mode === 'info') {
+            renderMobileInfoContent();
+            if (mobileFiltersContainer) {
+                mobileFiltersContainer.style.display = 'none';
+            }
+            if (mobileWishlistContainer) {
+                mobileWishlistContainer.style.display = 'none';
+            }
+            if (mobileInfoContainer) {
+                mobileInfoContainer.style.display = 'block';
+            }
+            if (bottomBar) {
+                bottomBar.classList.remove('wishlist-mode');
             }
         } else {
             mobileSharedWishlistItems = null;
@@ -1086,6 +1159,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             if (mobileWishlistContainer) {
                 mobileWishlistContainer.style.display = 'none';
+            }
+            if (mobileInfoContainer) {
+                mobileInfoContainer.style.display = 'none';
             }
             if (bottomBar) {
                 bottomBar.classList.remove('wishlist-mode');
@@ -1248,6 +1324,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Placeholder function for filter visibility management
     function updateFilterVisibility() {
         updateResetButtonsState();
+        ensureMobileViewModeToggleElement();
 
         if (!bottomBarText) {
             return;
@@ -1262,6 +1339,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (bottomBarMode === 'wishlist' && filtersOpen) {
             setBottomBarActionText(`Tap to close wishlist - ${wishlist.length} item(s)`);
+            return;
+        }
+
+        if (bottomBarMode === 'info' && filtersOpen) {
+            setBottomBarActionText('Tap to close info');
             return;
         }
 
@@ -1466,7 +1548,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (e.target.classList.contains('pick-badge')) {
             e.preventDefault();
-            modal.classList.add('show');
+            const aboutPicksHtml = `
+                <div class="mobile-picks-info">
+                    <p class="mobile-picks-lead">These are products that <strong>Axel</strong> would personally choose based on his experience and preferences.</p>
+                    <div class="mobile-info-card">
+                        <h4>Important</h4>
+                        <p>Audio is subjective. A B_Media pick does not mean a product is objectively better for everyone.</p>
+                    </div>
+                    <div class="mobile-info-card">
+                        <h4>Before you decide</h4>
+                        <ul class="mobile-info-list">
+                            <li>Match the product to your preferred sound signature</li>
+                            <li>Consider your real-world use case</li>
+                            <li>Set a budget that makes sense for you</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            const aboutPicksTitleHtml = 'About <span class="pick-badge pick-badge-inline">B_Media Pick</span>';
+            if (!openMobileInfoPanel('About B_Media Pick', aboutPicksHtml, aboutPicksTitleHtml)) {
+                modal.classList.add('show');
+            }
         }
     });
 
@@ -1774,13 +1877,48 @@ document.addEventListener('DOMContentLoaded', function() {
     function createViewModeToggleElement() {
         const viewBar = document.createElement('div');
         viewBar.className = 'view-mode-bar';
-        const buttonText = currentViewMode === 'category'
-            ? 'Switch to Classic View'
-            : 'Switch to Category View';
+        const buttonText = getViewModeToggleButtonText();
 
         viewBar.innerHTML = `<button id="view-mode-toggle" class="view-mode-toggle-btn">${buttonText}</button>`;
         updateFilterVisibility();
         return viewBar;
+    }
+
+    function getViewModeToggleButtonText() {
+        return currentViewMode === 'category'
+            ? 'Switch to Classic View'
+            : 'Switch to Category View';
+    }
+
+    function ensureMobileViewModeToggleElement() {
+        if (!isMobileViewport() || !mobileFiltersContainer) {
+            return;
+        }
+
+        let mobileToggleItem = mobileFiltersContainer.querySelector('.mobile-view-mode-toggle-item');
+        if (!mobileToggleItem) {
+            const categoryFilterItem = mobileFiltersContainer.querySelector('.category-filter-item');
+            const filterControls = categoryFilterItem ? categoryFilterItem.closest('.filter-controls') : null;
+            if (!categoryFilterItem || !filterControls) {
+                return;
+            }
+
+            mobileToggleItem = document.createElement('div');
+            mobileToggleItem.className = 'filter-item mobile-view-mode-toggle-item';
+            mobileToggleItem.innerHTML = `<button id="view-mode-toggle-mobile" class="view-mode-toggle-btn">${getViewModeToggleButtonText()}</button>`;
+
+            const categoryChips = categoryFilterItem.querySelector('#mobile-category-chips');
+            if (categoryChips) {
+                categoryChips.insertAdjacentElement('afterend', mobileToggleItem);
+            } else {
+                categoryFilterItem.insertAdjacentElement('afterend', mobileToggleItem);
+            }
+        }
+
+        const mobileToggleButton = mobileToggleItem.querySelector('#view-mode-toggle-mobile');
+        if (mobileToggleButton) {
+            mobileToggleButton.textContent = getViewModeToggleButtonText();
+        }
     }
 
     function createMobileSocialLinksElement() {
@@ -1867,9 +2005,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (categoryEntries.length === 0) {
             const noResults = createEmptyState('No products match your filters', 'Try adjusting your search criteria');
             children.push(noResults);
-            if (isMobileViewport()) {
-                children.push(viewModeToggle);
-            }
             main.replaceChildren(...children);
             updateBottomBarScrollProgress();
             return;
@@ -1916,9 +2051,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 children.push(mobileSocialLinks);
             }
         }
-        if (isMobileViewport()) {
-            children.push(viewModeToggle);
-        }
         main.replaceChildren(...children);
         updateBottomBarScrollProgress();
     }
@@ -1928,7 +2060,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (categoryEntries.length === 0) {
             const noResults = createEmptyState('No products match your filters', 'Try adjusting your search criteria');
             children.push(noResults);
-            if (isMobileViewport() && viewModeToggle) {
+            if (!isMobileViewport() && viewModeToggle) {
                 children.push(viewModeToggle);
             }
             main.replaceChildren(...children);
@@ -1954,7 +2086,7 @@ document.addEventListener('DOMContentLoaded', function() {
             children.push(categoryDiv);
         }
 
-        if (isMobileViewport() && viewModeToggle) {
+        if (!isMobileViewport() && viewModeToggle) {
             children.push(viewModeToggle);
         }
 
@@ -1969,7 +2101,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!categoryItems || categoryItems.length === 0) {
             const empty = createEmptyState('No products match your filters in this category', 'Go back or adjust your filters.', true);
             children.push(empty);
-            if (isMobileViewport() && viewModeToggle) {
+            if (!isMobileViewport() && viewModeToggle) {
                 children.push(viewModeToggle);
             }
             main.replaceChildren(...children);
@@ -1982,6 +2114,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const categoryHeader = document.createElement('div');
         categoryHeader.className = 'category-page-header';
+        const headerToggleHtml = isMobileViewport()
+            ? ''
+            : '<button id="view-mode-toggle-in-header" class="view-mode-toggle-btn">Switch to Classic View</button>';
         categoryHeader.innerHTML = `
             <div class="category-header-left">
                 <button class="category-page-back" type="button">← Back to Categories</button>
@@ -1993,7 +2128,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </h2>
             </div>
             <div class="category-header-right">
-                <button id="view-mode-toggle-in-header" class="view-mode-toggle-btn">Switch to Classic View</button>
+                ${headerToggleHtml}
             </div>
         `;
         filteredChildren.push(categoryHeader);
@@ -2007,7 +2142,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         filteredChildren.push(itemsDiv);
-        if (isMobileViewport() && viewModeToggle) {
+        if (!isMobileViewport() && viewModeToggle) {
             filteredChildren.push(viewModeToggle);
         }
         main.replaceChildren(...filteredChildren);
@@ -2035,7 +2170,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (data.tiktoks && data.tiktoks.length > 0) {
             html += '<div class="extra-tiktoks">';
-            html += `<a href="${data.tiktoks[0]}" target="_blank" class="tiktok-link">B_Media Video on TikTok</a>`;
+            html += `<a href="${data.tiktoks[0]}" target="_blank" class="tiktok-link">Watch TikTok Video</a>`;
             html += '</div>';
         }
 
@@ -2047,6 +2182,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 html += `<h4>${key.charAt(0).toUpperCase() + key.slice(1)}</h4><p>${data[key]}</p>`;
             });
             html += '</div>';
+        }
+
+        if (openMobileInfoPanel(`More about ${itemName}`, html)) {
+            return;
         }
 
         content.innerHTML = html;

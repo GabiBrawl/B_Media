@@ -456,6 +456,24 @@ main {
     transform: scale(1.05);
 }
 
+.pick-badge-inline {
+    position: static;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    margin-left: 0.35rem;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.25px;
+    box-shadow: 0 2px 6px rgba(255, 107, 107, 0.35);
+    cursor: default;
+}
+
+.mobile-info-title .pick-badge-inline,
+.modal-content h3 .pick-badge-inline {
+    transform: none !important;
+}
+
 .item-price {
     color: var(--success-color);
     font-size: 1.1rem;
@@ -1479,6 +1497,77 @@ button svg {
 .mobile-bottom-wishlist {
     display: none;
     padding: 0.75rem 1rem 1rem;
+}
+
+.mobile-bottom-info {
+    display: none;
+    padding: 0.75rem 1rem 1rem;
+}
+
+.mobile-info-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.mobile-info-title {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--light-text);
+}
+
+.mobile-info-content {
+    color: var(--light-text);
+}
+
+.mobile-info-content p {
+    margin: 0 0 0.75rem;
+    line-height: 1.55;
+}
+
+.mobile-info-content p:last-child {
+    margin-bottom: 0;
+}
+
+.mobile-picks-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.mobile-picks-lead {
+    margin: 0;
+    color: var(--light-text);
+    line-height: 1.6;
+}
+
+.mobile-info-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 0.75rem 0.85rem;
+}
+
+.mobile-info-card h4 {
+    margin: 0 0 0.45rem;
+    color: var(--light-text);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.mobile-info-card p {
+    margin: 0;
+    color: var(--medium-text);
+    line-height: 1.55;
+}
+
+.mobile-info-list {
+    margin: 0;
+    padding-left: 1.15rem;
+    color: var(--medium-text);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
 }
 
 .mobile-wishlist-empty {
