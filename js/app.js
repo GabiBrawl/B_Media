@@ -235,6 +235,18 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             text: "I have never gooned for a cable before",
             author: "Axel Bostrom"
+        },
+        {
+            text: "hopes and dreams are illusions just like free will",
+            author: "Aspen"
+        },
+        {
+            text: "I'm gonna win because I'm hopes n dreams",
+            author: "hopes and dramiku"
+        },
+        {
+            text: "I am still the ultimate soda glazer",
+            author: "Katumi, #1 Tanchjim Soda Fan"
         }
     ];
 
