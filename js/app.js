@@ -30,6 +30,63 @@ let main; // Main content element
 let currentViewMode = 'category';
 let activeCategoryPage = null;
 
+function hasOwnItemEntry(dataSource, itemName) {
+    return !!dataSource && Object.prototype.hasOwnProperty.call(dataSource, itemName);
+}
+
+function hasAnyExtraInfo(itemName) {
+    const hasLegacyExtraData = hasOwnItemEntry(extraData, itemName);
+    const hasExtendedExtraDetails = typeof extraDetails !== 'undefined' && hasOwnItemEntry(extraDetails, itemName);
+    return hasLegacyExtraData || hasExtendedExtraDetails;
+}
+
+function formatExtraDetailValue(value) {
+    if (Array.isArray(value)) {
+        return value.join(' • ');
+    }
+
+    if (value && typeof value === 'object') {
+        return Object.entries(value)
+            .map(([nestedKey, nestedValue]) => `${formatExtraDetailKey(nestedKey)}: ${nestedValue}`)
+            .join(' • ');
+    }
+
+    return String(value);
+}
+
+function buildExtraDetailsHtml(itemName) {
+    if (typeof extraDetails === 'undefined') {
+        return '';
+    }
+
+    const detailsRows = extraDetails[itemName];
+    if (!Array.isArray(detailsRows) || detailsRows.length === 0) {
+        return '';
+    }
+
+    const rows = detailsRows.filter(row => {
+        if (!row || typeof row !== 'object') return false;
+        if (typeof row.property !== 'string' || row.property.trim() === '') return false;
+        const value = row.value;
+        if (value === null || value === undefined) return false;
+        if (typeof value === 'string') return value.trim() !== '';
+        if (Array.isArray(value)) return value.length > 0;
+        if (typeof value === 'object') return Object.keys(value).length > 0;
+        return true;
+    });
+
+    if (rows.length === 0) {
+        return '';
+    }
+
+    let html = '<div class="extra-details-table-wrap"><table class="extra-details-table"><tbody>';
+    rows.forEach(row => {
+        html += `<tr><th scope="row">${row.property}</th><td>${formatExtraDetailValue(row.value)}</td></tr>`;
+    });
+    html += '</tbody></table></div>';
+    return html;
+}
+
 // [SHARED] Image loading observer
 let imageObserver;
 const MOBILE_FILTER_HINT_SEEN_KEY = 'bmedia_mobile_filter_hint_seen_v1';
@@ -2358,7 +2415,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showExtraData(itemName) {
         const data = extraData[itemName];
-        if (!data) return;
+        const detailsHtml = buildExtraDetailsHtml(itemName);
+
+        if (!data && !detailsHtml) return;
 
         const title = document.getElementById('extra-data-title');
         const content = document.getElementById('extra-data-content');
@@ -2367,7 +2426,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let html = '';
 
-        if (data.images && data.images.length > 0) {
+        if (data && data.images && data.images.length > 0) {
             html += '<div class="extra-images">';
             data.images.forEach(img => {
                 html += `<img src="${img}" alt="Extra image" class="extra-image">`;
@@ -2375,14 +2434,16 @@ document.addEventListener('DOMContentLoaded', function() {
             html += '</div>';
         }
 
-        if (data.tiktoks && data.tiktoks.length > 0) {
+        html += detailsHtml;
+
+        if (data && data.tiktoks && data.tiktoks.length > 0) {
             html += '<div class="extra-tiktoks">';
             html += `<a href="${data.tiktoks[0]}" target="_blank" class="tiktok-link">Watch TikTok Video</a>`;
             html += '</div>';
         }
 
         // Add other stuff
-        const otherKeys = Object.keys(data).filter(key => key !== 'images' && key !== 'tiktoks');
+        const otherKeys = data ? Object.keys(data).filter(key => key !== 'images' && key !== 'tiktoks') : [];
         if (otherKeys.length > 0) {
             html += '<div class="extra-notes">';
             otherKeys.forEach(key => {
@@ -2390,6 +2451,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             html += '</div>';
         }
+
+        if (!html.trim()) return;
 
         if (openMobileInfoPanel(`More about ${itemName}`, html)) {
             return;
@@ -2418,7 +2481,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const priceText = item.price ? `$${item.price}` : 'Check Price';
 
         // Check if extra data exists
-        const hasExtraData = extraData.hasOwnProperty(item.name);
+        const hasExtraData = hasAnyExtraInfo(item.name);
         const extraButton = hasExtraData ? `<a href="#" class="extra-data-btn" data-item-name="${item.name}" title="Extra Data">i</a>` : '';
 
         // Check if item is in wishlist (only for personal wishlist)

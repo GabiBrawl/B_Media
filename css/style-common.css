@@ -1386,6 +1386,47 @@ button svg {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+.extra-details-table-wrap {
+    margin: 0 0 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.extra-details-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.extra-details-table th,
+.extra-details-table td {
+    padding: 0.45rem 0.6rem;
+    font-size: 0.86rem;
+    line-height: 1.3;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: top;
+}
+
+.extra-details-table tr:last-child th,
+.extra-details-table tr:last-child td {
+    border-bottom: none;
+}
+
+.extra-details-table th {
+    width: 38%;
+    color: var(--light-text);
+    font-weight: 600;
+    text-align: left;
+    background: var(--secondary-bg);
+}
+
+.extra-details-table td {
+    color: var(--medium-text);
+    background: var(--card-bg);
+    word-break: break-word;
+}
+
 .extra-tiktoks {
     margin-bottom: 1.5rem;
     text-align: center;
