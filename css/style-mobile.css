@@ -40,6 +40,60 @@
         flex-direction: column;
     }
 
+    .bottom-bar-hint {
+        position: fixed;
+        left: 50%;
+        bottom: calc(16px + 70px + 10px + env(safe-area-inset-bottom));
+        transform: translate(-50%, 8px);
+        opacity: 0;
+        border: 1px solid var(--accent-color);
+        background: var(--accent-color);
+        color: white;
+        border-radius: 999px;
+        padding: 0.45rem 0.7rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.78rem;
+        font-weight: 600;
+        z-index: 1003;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+        pointer-events: auto;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .bottom-bar-hint.show {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+
+    .bottom-bar-hint-arrow {
+        color: white;
+        animation: mobileBottomBarHintArrow 1s ease-in-out infinite;
+    }
+
+    @keyframes mobileBottomBarHintArrow {
+        0%,
+        100% {
+            transform: translateY(0);
+            opacity: 0.6;
+        }
+        50% {
+            transform: translateY(2px);
+            opacity: 1;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .bottom-bar-hint {
+            transition: none;
+        }
+
+        .bottom-bar-hint-arrow {
+            animation: none;
+        }
+    }
+
     .container {
         flex-direction: column;
     }

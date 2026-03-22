@@ -32,6 +32,7 @@ let activeCategoryPage = null;
 
 // [SHARED] Image loading observer
 let imageObserver;
+const MOBILE_FILTER_HINT_SEEN_KEY = 'bmedia_mobile_filter_hint_seen_v1';
 
 // Initialize lazy image loading
 function initImageObserver() {
@@ -333,6 +334,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let savedFiltersState = null;
     let filtersTemporarilyCleared = false;
     let applyFiltersDebounceTimeout = null;
+    let bottomBarHintElement = null;
+    let bottomBarHintDelayTimeout = null;
 
     function cloneFilters(filters) {
         return {
@@ -776,6 +779,126 @@ document.addEventListener('DOMContentLoaded', function() {
         bottomBarProgressSvg.style.display = shouldShowBottomBarProgressLine() ? 'block' : 'none';
     }
 
+    function hasSeenMobileFilterHint() {
+        try {
+            return localStorage.getItem(MOBILE_FILTER_HINT_SEEN_KEY) === '1';
+        } catch (error) {
+            return false;
+        }
+    }
+
+    function markMobileFilterHintSeen() {
+        try {
+            localStorage.setItem(MOBILE_FILTER_HINT_SEEN_KEY, '1');
+        } catch (error) {
+            // Ignore localStorage write failures
+        }
+    }
+
+    function clearBottomBarHintTimers() {
+        if (bottomBarHintDelayTimeout) {
+            clearTimeout(bottomBarHintDelayTimeout);
+            bottomBarHintDelayTimeout = null;
+        }
+    }
+
+    function removeBottomBarHint(markAsSeen = false) {
+        clearBottomBarHintTimers();
+
+        if (markAsSeen) {
+            markMobileFilterHintSeen();
+        }
+
+        if (!bottomBarHintElement) {
+            return;
+        }
+
+        const hintToRemove = bottomBarHintElement;
+        bottomBarHintElement = null;
+        hintToRemove.classList.remove('show');
+
+        setTimeout(() => {
+            hintToRemove.remove();
+        }, 180);
+    }
+
+    function showBottomBarHint() {
+        if (!isMobileViewport() || !bottomBar || hasSeenMobileFilterHint() || bottomBarHintElement) {
+            return;
+        }
+
+        const hint = document.createElement('button');
+        hint.type = 'button';
+        hint.className = 'bottom-bar-hint';
+        hint.setAttribute('aria-label', 'Open filters');
+        hint.innerHTML = '<span>Filters are here</span><span class="bottom-bar-hint-arrow" aria-hidden="true">↓</span>';
+
+        hint.addEventListener('click', () => {
+            removeBottomBarHint(true);
+            openFiltersModal('filters');
+        });
+
+        document.body.appendChild(hint);
+        bottomBarHintElement = hint;
+
+        requestAnimationFrame(() => {
+            if (bottomBarHintElement === hint) {
+                hint.classList.add('show');
+            }
+        });
+    }
+
+    function scheduleBottomBarHint() {
+        if (!isMobileViewport() || hasSeenMobileFilterHint() || bottomBarHintElement || bottomBarHintDelayTimeout) {
+            return;
+        }
+
+        bottomBarHintDelayTimeout = setTimeout(() => {
+            bottomBarHintDelayTimeout = null;
+
+            if (!shouldShowBottomBarAttentionCue() || hasSeenMobileFilterHint()) {
+                return;
+            }
+
+            showBottomBarHint();
+        }, 850);
+    }
+
+    function shouldShowBottomBarAttentionCue() {
+        if (!isMobileViewport() || filtersOpen || bottomBarMode !== 'filters') {
+            return false;
+        }
+
+        if (currentViewMode === 'category' && !!activeCategoryPage) {
+            return false;
+        }
+
+        if (currentViewMode === 'category' && !isCategorySelectionScreen()) {
+            return false;
+        }
+
+        if (!filtersTemporarilyCleared && hasActiveFilters()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    function updateBottomBarAttentionState() {
+        if (!bottomBar) {
+            return;
+        }
+
+        const shouldShowAttentionCue = shouldShowBottomBarAttentionCue();
+        bottomBar.classList.toggle('needs-attention', shouldShowAttentionCue);
+
+        if (shouldShowAttentionCue) {
+            scheduleBottomBarHint();
+        } else {
+            removeBottomBarHint();
+        }
+    }
+
     function updateBottomBarProgressPath() {
         if (!bottomBar || !isMobileViewport()) {
             return;
@@ -1196,6 +1319,7 @@ document.addEventListener('DOMContentLoaded', function() {
         filtersOpen = true;
 
         if (isMobileViewport()) {
+            removeBottomBarHint(mode === 'filters');
             setMobileBottomBarMode(mode);
             bottomBar.classList.add('active');
         } else {
@@ -1315,10 +1439,12 @@ document.addEventListener('DOMContentLoaded', function() {
     ensureBottomBarProgressLine();
     updateBottomBarProgressPath();
     updateBottomBarScrollProgress();
+    updateBottomBarAttentionState();
     window.addEventListener('scroll', updateBottomBarScrollProgress, { passive: true });
     window.addEventListener('resize', () => {
         updateBottomBarProgressPath();
         updateBottomBarScrollProgress();
+        updateBottomBarAttentionState();
         refreshMobilePriceSliderUI();
     });
 
@@ -1343,6 +1469,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         updateBottomBarProgressVisibility();
+        updateBottomBarAttentionState();
 
         if (bottomBarMode === 'wishlist-shared' && filtersOpen) {
             setBottomBarActionText('Someone shared their wishlist!');
