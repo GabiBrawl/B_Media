@@ -1,4 +1,11 @@
 const gearData = {
+    "My Audio Collection / Collabs": [
+        { name: "Kiwi Ears x B_Media: Terras", price: 46, url: "https://www.linsoul.com/products/kiwi-ears-x-b_media-terras?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_x_B_Media_Terras.jpg" },
+        { name: "Shanling UA7", price: 270, url: "https://www.linsoul.com/products/shanling-ua7?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Shanling_UA7.jpg" },
+        { name: "HiBy R6 III 2025", price: 400, url: "https://www.linsoul.com/products/hiby-r6-iii-2025?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/HiBy_R6_III_2025.jpg" },
+        { name: "SIVGA Peng", price: 500, url: "https://www.linsoul.com/products/sivga-peng?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/SIVGA_Peng.jpg" },
+        { name: "XENNS Mangird Top Pro", price: 500, url: "https://www.linsoul.com/products/xenns-mangird-top-pro?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/XENNS_Mangird_Top_Pro.jpg" }
+    ],
     "IEMs": [
         { name: "Truthear Gate", price: 20, url: "https://amzn.to/3UzzHSQ", pick: false, image: "images/Truthear_Gate.png" },
         { name: "7hz x Crinacle Zero 2", price: 25, url: "https://www.linsoul.com/products/7hz-x-crinacle-zero-2?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/7hz_x_Crinacle_Zero_2.png" },
@@ -14,7 +21,6 @@ const gearData = {
         { name: "SIMGOT EW300", price: 80, url: "https://www.linsoul.com/products/simgot-ew300?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/SIMGOT_EW300.jpg" },
         { name: "JUZEAR x Z Reviews Defiant", price: 90, url: "https://hifigo.com/products/juzear-x-z-reviews-defiant?rfsn=8882848.207d9c&variant=46359559897327", pick: false, image: "images/JUZEAR_x_Z_Reviews_Defiant.jpg" },
         { name: "MOONDROP RAYS", price: 100, url: "https://www.linsoul.com/products/moondrop-rays?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/MOONDROP_RAYS.jpg" },
-        { name: "Moondrop Aria 2", price: 100, url: "https://www.linsoul.com/products/moondrop-aria2?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Moondrop_Aria_2.png" },
         { name: "Fosi Audio IM4", price: 100, url: "https://fosiaudioshop.com/products/fosi-audio-im4?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: true, image: "images/Fosi_Audio_IM4.jpg" },
         { name: "TINHIFI T6", price: 105, url: "https://amzn.to/4srJ1HK", pick: false, image: "images/TINHIFI_T6.jpg" },
         { name: "TINHIFI P1 MAX II", price: 110, url: "https://amzn.to/4bzXbkw", pick: false, image: "images/TINHIFI_P1_MAX_II.jpg" },
