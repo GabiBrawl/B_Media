@@ -34,32 +34,112 @@ function hasOwnItemEntry(dataSource, itemName) {
     return !!dataSource && Object.prototype.hasOwnProperty.call(dataSource, itemName);
 }
 
-function hasAnyExtraInfo(itemName) {
+function normalizeExtraDetailsRows(detailsRows) {
+    return Array.isArray(detailsRows) ? detailsRows : [];
+}
+
+function normalizeExtraDetailsTemplate(templateRows) {
+    if (!Array.isArray(templateRows)) {
+        return [];
+    }
+
+    return templateRows.filter(row => {
+        return !!row
+            && typeof row === 'object'
+            && typeof row.key === 'string'
+            && row.key.trim() !== ''
+            && typeof row.property === 'string'
+            && row.property.trim() !== '';
+    });
+}
+
+function formatExtraDetailKey(key) {
+    return String(key)
+        .replace(/[_-]+/g, ' ')
+        .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .replace(/\b\w/g, char => char.toUpperCase());
+}
+
+function getExtraDetailRows(itemName, categoryName) {
+    if (typeof extraDetails === 'undefined' || !extraDetails) {
+        return [];
+    }
+
+    // Backward compatibility: old flat shape by product name
+    if (Array.isArray(extraDetails[itemName])) {
+        return normalizeExtraDetailsRows(extraDetails[itemName]);
+    }
+
+    const byItemEntry = extraDetails.byItem?.[itemName];
+
+    if (Array.isArray(byItemEntry)) {
+        return normalizeExtraDetailsRows(byItemEntry);
+    }
+
+    if (!byItemEntry || typeof byItemEntry !== 'object') {
+        return [];
+    }
+
+    const template = normalizeExtraDetailsTemplate(extraDetails.propertiesByCategory?.[categoryName]);
+    const rows = [];
+    const usedKeys = new Set();
+
+    template.forEach(row => {
+        const key = row.key;
+        const value = byItemEntry[key];
+        usedKeys.add(key);
+        rows.push({ property: row.property, value });
+    });
+
+    // Any additional custom keys still render, auto-formatted.
+    Object.entries(byItemEntry).forEach(([key, value]) => {
+        if (usedKeys.has(key)) {
+            return;
+        }
+
+        rows.push({ property: formatExtraDetailKey(key), value });
+    });
+
+    return rows;
+}
+
+function hasAnyExtraInfo(itemName, categoryName) {
     const hasLegacyExtraData = hasOwnItemEntry(extraData, itemName);
-    const hasExtendedExtraDetails = typeof extraDetails !== 'undefined' && hasOwnItemEntry(extraDetails, itemName);
+    const hasExtendedExtraDetails = getExtraDetailRows(itemName, categoryName).length > 0;
     return hasLegacyExtraData || hasExtendedExtraDetails;
+}
+
+function escapeExtraDetailHtml(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
 }
 
 function formatExtraDetailValue(value) {
     if (Array.isArray(value)) {
-        return value.join(' • ');
+        return value
+            .filter(entry => entry !== null && entry !== undefined && String(entry).trim() !== '')
+            .map(entry => `<div class="extra-details-line">${escapeExtraDetailHtml(entry)}</div>`)
+            .join('');
     }
 
     if (value && typeof value === 'object') {
         return Object.entries(value)
-            .map(([nestedKey, nestedValue]) => `${formatExtraDetailKey(nestedKey)}: ${nestedValue}`)
-            .join(' • ');
+            .filter(([, nestedValue]) => nestedValue !== null && nestedValue !== undefined && String(nestedValue).trim() !== '')
+            .map(([nestedKey, nestedValue]) => `<div class="extra-details-line"><strong>${escapeExtraDetailHtml(formatExtraDetailKey(nestedKey))}:</strong> ${escapeExtraDetailHtml(nestedValue)}</div>`)
+            .join('');
     }
 
-    return String(value);
+    return escapeExtraDetailHtml(value);
 }
 
-function buildExtraDetailsHtml(itemName) {
-    if (typeof extraDetails === 'undefined') {
-        return '';
-    }
-
-    const detailsRows = extraDetails[itemName];
+function buildExtraDetailsHtml(itemName, categoryName) {
+    const detailsRows = getExtraDetailRows(itemName, categoryName);
     if (!Array.isArray(detailsRows) || detailsRows.length === 0) {
         return '';
     }
@@ -81,7 +161,7 @@ function buildExtraDetailsHtml(itemName) {
 
     let html = '<div class="extra-details-table-wrap"><table class="extra-details-table"><tbody>';
     rows.forEach(row => {
-        html += `<tr><th scope="row">${row.property}</th><td>${formatExtraDetailValue(row.value)}</td></tr>`;
+        html += `<tr><th scope="row">${escapeExtraDetailHtml(row.property)}</th><td>${formatExtraDetailValue(row.value)}</td></tr>`;
     });
     html += '</tbody></table></div>';
     return html;
@@ -1861,7 +1941,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (extraBtn) {
             e.preventDefault();
             const itemName = extraBtn.getAttribute('data-item-name');
-            showExtraData(itemName);
+            const itemCategory = extraBtn.getAttribute('data-item-category');
+            showExtraData(itemName, itemCategory);
         }
     });
 
@@ -2437,9 +2518,9 @@ document.addEventListener('DOMContentLoaded', function() {
         updateBottomBarScrollProgress();
     }
 
-    function showExtraData(itemName) {
+    function showExtraData(itemName, categoryName) {
         const data = extraData[itemName];
-        const detailsHtml = buildExtraDetailsHtml(itemName);
+        const detailsHtml = buildExtraDetailsHtml(itemName, categoryName);
 
         if (!data && !detailsHtml) return;
 
@@ -2505,8 +2586,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const priceText = item.price ? `$${item.price}` : 'Check Price';
 
         // Check if extra data exists
-        const hasExtraData = hasAnyExtraInfo(item.name);
-        const extraButton = hasExtraData ? `<a href="#" class="extra-data-btn" data-item-name="${item.name}" title="Extra Data">i</a>` : '';
+        const hasExtraData = hasAnyExtraInfo(item.name, item.category);
+        const extraButton = hasExtraData ? `<a href="#" class="extra-data-btn" data-item-name="${item.name}" data-item-category="${item.category}" title="Extra Data">i</a>` : '';
 
         // Check if item is in wishlist (only for personal wishlist)
         const inWishlist = !isShared && isInWishlist(item.name);

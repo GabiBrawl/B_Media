@@ -46,6 +46,7 @@ GLOBAL_BLACKLIST = [
 # Category display name overrides
 # Maps category keys to custom display names
 CATEGORY_DISPLAY_NAMES = {
+    'my-audio-collection-/-collabs': 'My Audio Collection / Collabs',
     'iem-recommendations': 'IEMs',
     'headphone-recommendations': 'Headphones',
     'portable-dac/amp-recommendations': 'Portable DAC/AMP',
@@ -56,6 +57,20 @@ CATEGORY_DISPLAY_NAMES = {
     'iem-cables/eartips': 'IEM Cables & Eartips',
     'headphone-cables-and-interconnects-by-hart-audio': 'Cables & Interconnects by Hart Audio'
 }
+
+DISPLAY_NAME_TO_CATEGORY_KEY = {display: key for key, display in CATEGORY_DISPLAY_NAMES.items()}
+
+def normalize_display_name_to_category_key(display_name):
+    """Convert a display category name from data.js into a category key used by Linktree parsing."""
+    if display_name in DISPLAY_NAME_TO_CATEGORY_KEY:
+        return DISPLAY_NAME_TO_CATEGORY_KEY[display_name]
+
+    normalized = display_name.strip().lower()
+    normalized = re.sub(r'\s*/\s*', '/', normalized)
+    normalized = re.sub(r'\s+', '-', normalized)
+    normalized = re.sub(r'[^a-z0-9\-/]', '', normalized)
+    normalized = re.sub(r'-{2,}', '-', normalized).strip('-')
+    return normalized
 
 def download_image(image_url, filename):
     """Download an image from a URL to a local file."""
@@ -177,10 +192,29 @@ def find_matching_item(name, items_dict, threshold=0.90):
     Find a matching item in the dictionary using fuzzy matching.
     Returns the key of the matching item or None.
     """
+    if not items_dict:
+        return None
+
+    # Exact match first
+    if name in items_dict:
+        return name
+
+    # Case-insensitive exact match second
+    normalized_name = name.lower().strip()
     for key in items_dict:
-        if fuzzy_match_name(name, key, threshold):
+        if key.lower().strip() == normalized_name:
             return key
-    return None
+
+    # Fuzzy fallback: choose the best score above threshold
+    best_match = None
+    best_score = 0.0
+    for key in items_dict:
+        score = SequenceMatcher(None, normalized_name, key.lower().strip()).ratio()
+        if score >= threshold and score > best_score:
+            best_score = score
+            best_match = key
+
+    return best_match
 
 def parse_linktree(url):
     """Parse the Linktree page and extract product data organized by category."""
@@ -246,16 +280,16 @@ def parse_product_text(text, url):
     if not text or 'previous' in text.lower() or 'next' in text.lower():
         return None
     
-    # Extract price
-    price_match = re.match(r'\$(\d+)', text)
-    price = int(price_match.group(1)) if price_match else None
+    # Extract leading price (supports formats like $20, $1,950, $199.99, $50-ish)
+    leading_price_pattern = r'^\$(\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?(?:-ish)?\s*'
+    price_match = re.match(leading_price_pattern, text)
+    price = int(price_match.group(1).replace(',', '')) if price_match else None
     
     # Check if it's a B_Media pick
     pick = '*B_Media Pick*' in text or 'B_Media Pick' in text
     
-    # Extract product name (remove price and pick indicator and other tags)
-    name = re.sub(r'^\$\d+(?:-ish)?\s*', '', text)  # Remove price
-    name = re.sub(r'\$\d+(?:\.\d+)?\s*', '', name)  # Remove price variations
+    # Extract product name (remove leading price, pick indicator, and other tags)
+    name = re.sub(leading_price_pattern, '', text)
     name = re.sub(r'\*B_Media Pick\*', '', name)  # Remove pick indicator
     name = re.sub(r'\*[^*]+\*', '', name)  # Remove other tags like *Gaming*, *Basshead*, etc.
     name = name.strip()
@@ -281,15 +315,15 @@ def parse_existing_data_js(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    # Extract each category array - handle both quoted and unquoted keys
+    # Extract each quoted display category array from data.js
     categories = {}
     
-    # Find all category arrays - match category names with optional quotes and hyphens
-    pattern = r'(?:")?([a-z]+(?:-[a-z]+)*)(?:")?\s*:\s*\[(.*?)\](?=\s*,?\s*(?:(?:")?[a-z]+(?:-[a-z]+)*(?:")?\s*:|};))'
-    matches = re.finditer(pattern, content, re.DOTALL)
+    pattern = r'^\s*"([^"]+)"\s*:\s*\[(.*?)\](?=\s*,\s*\n\s*"[^"]+"\s*:|\s*\n\s*};)'
+    matches = re.finditer(pattern, content, re.DOTALL | re.MULTILINE)
     
     for match in matches:
-        category = match.group(1)
+        display_name = match.group(1).strip()
+        category = normalize_display_name_to_category_key(display_name)
         items_str = match.group(2)
         
         # Parse individual items
@@ -501,16 +535,11 @@ def update_data_js(linktree_data, data_file_path, images_dir):
         
         updated_categories[category] = updated_items
     
-    # Check if there are categories in existing data that are not in Linktree
+    # Drop categories that are no longer present on Linktree
     for category in existing_data.keys():
         if category not in updated_categories:
-            # Skip single letter categories
-            if len(category) == 1:
-                print(f"\n--- Category: {category} --- (SKIPPED - Single letter)")
-                continue
             print(f"\n--- Category: {category} ---")
-            print(f"  ⚠ Category exists in data.js but not on Linktree (keeping all items)")
-            updated_categories[category] = existing_data[category]
+            print(f"  ⚠ Category exists in data.js but not on Linktree (dropping)")
     
     if changes_made or not existing_data:
         print(f"\n{'='*60}")

@@ -17,8 +17,8 @@ const gearData = {
         { name: "Questyle Sigma", price: 600, url: "https://amzn.to/4uHWywq", pick: false, image: "images/Questyle_Sigma.jpg" },
         { name: "but constantly on sale Focal HADENYS", price: 750, url: "https://amzn.to/4lMy80L", pick: false, image: "images/but_constantly_on_sale_Focal_HADENYS.jpg" },
         { name: "LETSHUOER Mystic 8", price: 990, url: "https://letshuoer.net/products/letshuoer-mystic-8-wired-iem-hifi-earphones-8-ba-drivers-in-ear-monitor?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_Mystic_8.jpg" },
-        { name: ",700 Audeze MM-500", price: 1, url: "https://amzn.to/40Pa83z", pick: false, image: "images/700_Audeze_MM-500.jpg" },
-        { name: ",950 Audeze LCD-3", price: 1, url: "https://www.audeze.com/products/lcd-3?ar_clx=yes&ar_campaign=21899048795&ar_ad=720970113491&ar_adgroup=170863597872&ar_channel=google&gad_source=1&gad_campaignid=21899048795&gclid=Cj0KCQjwpv7NBhCzARIsADkIfWzyEqfL9JjexUQ5b0NaGKQwSllGZ-f5apqhCaO6OHELyp0UYIlw4McaAhoeEALw_wcB", pick: false, image: "images/950_Audeze_LCD-3.jpg" }
+        { name: "Audeze MM-500", price: 1700, url: "https://amzn.to/40Pa83z", pick: false, image: "images/Audeze_MM-500.jpg" },
+        { name: "Audeze LCD-3", price: 1950, url: "https://www.audeze.com/products/lcd-3?ar_clx=yes&ar_campaign=21899048795&ar_ad=720970113491&ar_adgroup=170863597872&ar_channel=google&gad_source=1&gad_campaignid=21899048795&gclid=Cj0KCQjwpv7NBhCzARIsADkIfWzyEqfL9JjexUQ5b0NaGKQwSllGZ-f5apqhCaO6OHELyp0UYIlw4McaAhoeEALw_wcB", pick: false, image: "images/Audeze_LCD-3.jpg" }
     ],
     "IEMs": [
         { name: "Truthear Gate", price: 20, url: "https://amzn.to/3UzzHSQ", pick: false, image: "images/Truthear_Gate.png" },
@@ -58,7 +58,7 @@ const gearData = {
         { name: "XENNS Mangird Tea Pro", price: 360, url: "https://www.linsoul.com/products/xenns-mangird-tea-pro?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/XENNS_Mangird_Tea_Pro.jpg" },
         { name: "Kiwi Ears x HBB Punch", price: 450, url: "https://www.linsoul.com/products/kiwi-ears-x-hbb-punch?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_x_HBB_Punch.jpg" },
         { name: "Yanyin Baker", price: 500, url: "https://www.linsoul.com/products/yanyin-baker?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Yanyin_Baker.jpg" },
-        { name: "XENNS Mangird Top Pro", price: 500, url: "https://www.linsoul.com/products/xenns-mangird-top-pro?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/XENNS_Mangird_Top_Pro.jpg" },
+        { name: "XENNS Mangird Top Pro", price: 500, url: "https://www.linsoul.com/products/xenns-mangird-top-pro?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/XENNS_Mangird_Tea_Pro.jpg" },
         { name: "LETSHUOER Ember", price: 500, url: "https://letshuoer.net/products/letshuoer-ember-14-8mm-large-flagship-planar-magnetic-hi-fi-in-ear-monitors?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_Ember.jpg" },
         { name: "LETSHUOER Mystic 8", price: 990, url: "https://letshuoer.net/products/letshuoer-mystic-8-wired-iem-hifi-earphones-8-ba-drivers-in-ear-monitor?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_Mystic_8.jpg" }
     ],
@@ -67,7 +67,7 @@ const gearData = {
         { name: "FiiO Jade Audio JT3", price: 70, url: "https://amzn.to/4qDkwqe", pick: true, image: "images/FiiO_Jade_Audio_JT3.jpg" },
         { name: "Kiwi Ears Altruva", price: 70, url: "https://www.linsoul.com/products/kiwi-ears-altruva?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Altruva.jpg" },
         { name: "Simgot EP5", price: 98, url: "https://www.linsoul.com/products/simgot-ep5?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Simgot_EP5.png" },
-        { name: "FiiO JadeAudio JT7", price: 120, url: "https://apos.audio/products/fiio-jadeaudio-jt7-open-back-planar-headphones?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/FiiO_JadeAudio_JT7.jpg" },
+        { name: "FiiO JadeAudio JT7", price: 120, url: "https://apos.audio/products/fiio-jadeaudio-jt7-open-back-planar-headphones?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/FiiO_Jade_Audio_JT3.jpg" },
         { name: "FiiO FT1", price: 160, url: "https://www.linsoul.com/products/fiio-ft1?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/FiiO_FT1.png" },
         { name: "Gaming Headset DROP PC38X", price: 200, url: "https://amzn.to/3HhZLiJ", pick: false, image: "images/Gaming_Headset_DROP_PC38X.png" },
         { name: "FiiO FT1 Pro", price: 220, url: "https://apos.audio/products/fiio-ft1-pro-open-back?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/FiiO_FT1_Pro.jpg" },
@@ -98,7 +98,7 @@ const gearData = {
         { name: "CrinEar Protocol Max", price: 90, url: "https://www.linsoul.com/products/crinear-protocol-max?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/CrinEar_Protocol_Max.jpg" },
         { name: "FiiO KA15", price: 95, url: "https://www.linsoul.com/products/fiio-ka15?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/FiiO_KA15.png" },
         { name: "Fosi Audio DS3", price: 100, url: "https://fosiaudioshop.com/products/fosi-audio-ds3?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: false, image: "images/Fosi_Audio_DS3.jpg" },
-        { name: "Fosi Audio MD3", price: 120, url: "https://fosiaudio-inc.kckb.me/8c7ba633", pick: false, image: "images/Fosi_Audio_MD3.jpg" },
+        { name: "Fosi Audio MD3", price: 120, url: "https://fosiaudio-inc.kckb.me/8c7ba633", pick: false, image: "images/Fosi_Audio_DS3.jpg" },
         { name: "Questyle M15i", price: 250, url: "https://amzn.to/4evROCA", pick: false, image: "images/Questyle_M15i.png" },
         { name: "Shanling UA7 ITS GOT A TUBE", price: 270, url: "https://www.linsoul.com/products/shanling-ua7?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/Shanling_UA7_ITS_GOT_A_TUBE.jpg" },
         { name: "Questyle Sigma", price: 600, url: "https://amzn.to/3Npc92M", pick: false, image: "images/Questyle_Sigma.jpg" }
@@ -124,7 +124,7 @@ const gearData = {
         { name: "HiBy R4", price: 250, url: "https://www.linsoul.com/products/hiby-r4?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/HiBy_R4.jpg" },
         { name: "FiiO M21", price: 330, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB0F8HVKTB9%2Fref%3Dcm_sw_r_as_gl_api_gl_i_3AE8XXTMSQ46W1HFYXMR%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3Dabcb6e8f945a52f32b302ca17fd8eb8c&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/FiiO_M21.jpg" },
         { name: "Hiby R6 III", price: 440, url: "https://www.linsoul.com/products/hiby-r6-iii-2025?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Hiby_R6_III.jpg" },
-        { name: "Shanling M3 Plus", price: 469, url: "https://www.linsoul.com/products/shanling-m3-plus?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Shanling_M3_Plus.jpg" },
+        { name: "Shanling M3 Plus", price: 469, url: "https://www.linsoul.com/products/shanling-m3-plus?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Shanling_M1_Plus.jpg" },
         { name: "FiiO M23", price: 720, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB0D14PGZV1%2Fref%3Dcm_sw_r_as_gl_api_gl_i_TK9CDFZVGYHMD8H3WVQX%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3D98aa5a3055150f1c4be2bcfc78367188&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/FiiO_M23.jpg" }
     ],
     "Wireless Earbuds": [
