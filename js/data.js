@@ -1,10 +1,24 @@
 const gearData = {
     "My Audio Collection / Collabs": [
-        { name: "Kiwi Ears x B_Media: Terras", price: 46, url: "https://www.linsoul.com/products/kiwi-ears-x-b_media-terras?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_x_B_Media_Terras.jpg" },
+        { name: "FiiO EH11", price: 35, url: "https://www.linsoul.com/products/fiio-eh11?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/FiiO_EH11.jpg" },
+        { name: "B_Media Terras Cable", price: 46, url: "https://www.linsoul.com/products/kiwi-ears-x-b_media-terras?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/B_Media_Terras_Cable.jpg" },
+        { name: "SoundPEATS Clip1", price: 70, url: "https://amzn.to/47Z9zrG", pick: false, image: "images/SoundPEATS_Clip1.jpg" },
+        { name: "Apos x Community Gremlin Tube Amp", price: 120, url: "https://apos.audio/products/apos-x-community-gremlin-diy-tube-amp?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Apos_x_Community_Gremlin_Tube_Amp.jpg" },
+        { name: "SHANLING M0 Pro", price: 145, url: "https://amzn.to/4rJkOvp", pick: false, image: "images/SHANLING_M0_Pro.jpg" },
+        { name: "Apos x Community Druid R2R DAC", price: 160, url: "https://apos.audio/products/apos-x-community-druid-r2r-dac?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Apos_x_Community_Druid_R2R_DAC.jpg" },
+        { name: "LETSHUOER Astralis", price: 180, url: "https://letshuoer.net/products/letshuoer-astralis-hifi-in-ear-earphones-15-5mm-5th-generation-planar-diaphragm-driver?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_Astralis.jpg" },
+        { name: "Fosi Audio ZH3", price: 200, url: "https://fosiaudioshop.com/products/zh3-dac-headphone-amp-preamp?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: false, image: "images/Fosi_Audio_ZH3.jpg" },
+        { name: "but constantly on sale Sennheiser HD 599", price: 240, url: "https://amzn.to/4bKO5QD", pick: false, image: "images/but_constantly_on_sale_Sennheiser_HD_599.jpg" },
         { name: "Shanling UA7", price: 270, url: "https://www.linsoul.com/products/shanling-ua7?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Shanling_UA7.jpg" },
         { name: "HiBy R6 III 2025", price: 400, url: "https://www.linsoul.com/products/hiby-r6-iii-2025?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/HiBy_R6_III_2025.jpg" },
         { name: "SIVGA Peng", price: 500, url: "https://www.linsoul.com/products/sivga-peng?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/SIVGA_Peng.jpg" },
-        { name: "XENNS Mangird Top Pro", price: 500, url: "https://www.linsoul.com/products/xenns-mangird-top-pro?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/XENNS_Mangird_Top_Pro.jpg" }
+        { name: "LETSHUOER Ember", price: 500, url: "https://letshuoer.net/products/letshuoer-ember-14-8mm-large-flagship-planar-magnetic-hi-fi-in-ear-monitors?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_Ember.jpg" },
+        { name: "XENNS Mangird Top Pro", price: 500, url: "https://www.linsoul.com/products/xenns-mangird-top-pro?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/XENNS_Mangird_Top_Pro.jpg" },
+        { name: "Questyle Sigma", price: 600, url: "https://amzn.to/4uHWywq", pick: false, image: "images/Questyle_Sigma.jpg" },
+        { name: "but constantly on sale Focal HADENYS", price: 750, url: "https://amzn.to/4lMy80L", pick: false, image: "images/but_constantly_on_sale_Focal_HADENYS.jpg" },
+        { name: "LETSHUOER Mystic 8", price: 990, url: "https://letshuoer.net/products/letshuoer-mystic-8-wired-iem-hifi-earphones-8-ba-drivers-in-ear-monitor?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_Mystic_8.jpg" },
+        { name: ",700 Audeze MM-500", price: 1, url: "https://amzn.to/40Pa83z", pick: false, image: "images/700_Audeze_MM-500.jpg" },
+        { name: ",950 Audeze LCD-3", price: 1, url: "https://www.audeze.com/products/lcd-3?ar_clx=yes&ar_campaign=21899048795&ar_ad=720970113491&ar_adgroup=170863597872&ar_channel=google&gad_source=1&gad_campaignid=21899048795&gclid=Cj0KCQjwpv7NBhCzARIsADkIfWzyEqfL9JjexUQ5b0NaGKQwSllGZ-f5apqhCaO6OHELyp0UYIlw4McaAhoeEALw_wcB", pick: false, image: "images/950_Audeze_LCD-3.jpg" }
     ],
     "IEMs": [
         { name: "Truthear Gate", price: 20, url: "https://amzn.to/3UzzHSQ", pick: false, image: "images/Truthear_Gate.png" },
@@ -27,13 +41,11 @@ const gearData = {
         { name: "Kiwi Ears Étude", price: 120, url: "https://www.linsoul.com/products/kiwi-ears-etude?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Étude.jpg" },
         { name: "SIMGOT EM6L", price: 125, url: "https://www.linsoul.com/products/simgot-em6l?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/SIMGOT_EM6L.jpg" },
         { name: "7Hz x Crinacle: Divine", price: 150, url: "https://www.linsoul.com/products/7hz-x-crinacle-divine?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/7Hz_x_Crinacle_Divine.jpg" },
-        { name: "7Hz x Crinacle: Diablo", price: 150, url: "https://www.linsoul.com/products/7hz-x-crinacle-diablo?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/7Hz_x_Crinacle_Diablo.jpg" },
         { name: "Crinear Daybreak", price: 170, url: "https://www.linsoul.com/products/crinear-daybreak?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Crinear_Daybreak.jpg" },
-        { name: "LETSHUOER S12 Ultra", price: 170, url: "https://letshuoer.net/products/letshuoer-s12-ultra?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_S12_Ultra.jpg" },
+        { name: "LETSHUOER Astralis", price: 180, url: "https://letshuoer.net/products/letshuoer-astralis-hifi-in-ear-earphones-15-5mm-5th-generation-planar-diaphragm-driver?sca_ref=9494666.Bbv8z0WcOh", pick: true, image: "images/LETSHUOER_Astralis.jpg" },
         { name: "TANCHJIM FOLA", price: 200, url: "https://www.linsoul.com/products/tanchjim-fola?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/TANCHJIM_FOLA.jpg" },
         { name: "NICEHCK NX8", price: 200, url: "https://nicehck.com/products/nicehck-nx8-in-ear-monitor-with-1dd-6ba-1pzt-8-unit-hybrid-earphone?sca_ref=9185017.bnGYqsxONg", pick: false, image: "images/NICEHCK_NX8.png" },
         { name: "Hidizs MP145 PRO", price: 210, url: "https://www.kickstarter.com/projects/hidizs/mp145-pro-145mm-ultra-precision-nano-grade-planar-hifi-iems", pick: false, image: "images/Hidizs_MP145_PRO.jpg" },
-        { name: "7HZ Timeless II", price: 230, url: "https://www.linsoul.com/products/7hz-timeless-ii?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/7HZ_Timeless_II.jpg" },
         { name: "ZiiGaat x Hangout.Audio: Odyssey 2", price: 250, url: "https://www.linsoul.com/products/ziigaat-x-hangout-audio-odyssey-2?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/ZiiGaat_x_HangoutAudio_Odyssey_2.jpg" },
         { name: "NICEHCK NX8 SE", price: 250, url: "https://nicehck.com/products/nicehck-nx8-se-nx8-special-edition-iems?sca_ref=9185017.bnGYqsxONg", pick: true, image: "images/NICEHCK_NX8_SE.jpg" },
         { name: "Kiwi Ears Septet", price: 270, url: "https://www.linsoul.com/products/kiwi-ears-septet?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Septet.jpg" },
@@ -126,6 +138,7 @@ const gearData = {
         { name: "Soundpeats Air5 Pro+", price: 130, url: "https://amzn.to/4aByvYz", pick: false, image: "images/Soundpeats_Air5_Pro.jpg" }
     ],
     "Wireless Headphones": [
+        { name: "FiiO EH11", price: 35, url: "https://www.linsoul.com/products/fiio-eh11?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/FiiO_EH11.jpg" },
         { name: "1Mii Y8+", price: 60, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB0DZHNWPKD%2Fref%3Dcm_sw_r_as_gl_api_gl_i_8N6015E1PEBPS034B4P8%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3D8803c8bc5823c050876f4707611b1a71&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/1Mii_Y8.jpg" },
         { name: "Moondrop Edge", price: 90, url: "https://www.linsoul.com/products/moondrop-edge?_pos=10&_sid=2605a58ec&_ss=r&sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Moondrop_Edge.jpg" },
         { name: "CMF by Nothing Headphone Pro", price: 100, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB0FKG6TDRR%2Fref%3Dcm_sw_r_as_gl_api_gl_i_10TV6G03W2PC25HEMKE4%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3D8cc5f836f5310ef8f0690b0d272abf92&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/CMF_by_Nothing_Headphone_Pro.jpg" },
