@@ -328,6 +328,11 @@
         font-size: 1rem;
     }
 
+    .recommended-count-banner {
+        margin: 0.5rem 0 0.9rem;
+        font-size: 0.9rem;
+    }
+
     .category {
         margin-bottom: 0.1rem;
         overflow-x: hidden;

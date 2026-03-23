@@ -101,6 +101,37 @@ main {
     z-index: 1;
 }
 
+.recommended-count-banner {
+    margin: 0.75rem 0 1rem;
+    color: var(--medium-text);
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: 0.1px;
+}
+
+.recommended-count-number {
+    position: relative;
+    display: inline-block;
+    color: var(--light-text);
+    font-weight: 700;
+    padding: 0 0.35rem;
+    z-index: 0;
+}
+
+.recommended-count-number::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    left: -0.12rem;
+    right: -0.12rem;
+    top: 52%;
+    height: 1.08em;
+    border-radius: 0.28rem;
+    background: var(--accent-color);
+    transform: translateY(-50%) rotate(-2deg);
+}
+
 .sidebar-footer .last-updated {
     margin-bottom: 0rem;
     font-size: 0.2rem !important;

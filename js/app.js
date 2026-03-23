@@ -238,6 +238,29 @@ function populateMobileCategoryChips() {
     chipsContainer.replaceChildren(fragment);
 }
 
+function getRecommendedProductsCount() {
+    let totalRecommendedProducts = 0;
+
+    for (const items of Object.values(gearData)) {
+        if (!Array.isArray(items)) {
+            continue;
+        }
+
+        totalRecommendedProducts += items.length;
+    }
+
+    return totalRecommendedProducts;
+}
+
+function createRecommendedCountElement() {
+    const recommendedCount = getRecommendedProductsCount();
+
+    const banner = document.createElement('div');
+    banner.className = 'recommended-count-banner';
+    banner.innerHTML = `As of date, B_Media recommends <span class="recommended-count-number">${recommendedCount}</span> products!`;
+    return banner;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     
     if (typeof gearData === 'undefined') {
@@ -2309,6 +2332,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         children.push(optionsGrid);
+        children.push(createRecommendedCountElement());
         if (isMobileViewport()) {
             const mobileSocialLinks = createMobileSocialLinksElement();
             if (mobileSocialLinks) {
