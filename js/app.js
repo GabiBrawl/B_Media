@@ -1523,11 +1523,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            if (isMobileViewport() && currentViewMode === 'category' && activeCategoryPage) {
-                if (filtersOpen) {
-                    closeFiltersModal();
-                }
-
+            if (isMobileViewport() && currentViewMode === 'category' && activeCategoryPage && !filtersOpen) {
                 activeCategoryPage = null;
                 updateFilterVisibility();
 
@@ -2397,14 +2393,17 @@ document.addEventListener('DOMContentLoaded', function() {
             categoryDiv.className = 'category category-collapsible';
             categoryDiv.id = categoryName.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
 
-            const countSuffix = showCounts ? ` (${items.length})` : '';
+            const countLabel = `${items.length} items`;
             const categoryIcon = getCategoryIconSvg(categoryName);
 
             categoryDiv.innerHTML = `
                 <button class="category-toggle-btn" data-category="${categoryName}">
                     <span class="category-toggle-content">
                         <span class="category-toggle-svg">${categoryIcon}</span>
-                        <span class="category-toggle-label">${categoryName}${countSuffix}</span>
+                        <span class="category-toggle-text">
+                            <span class="category-toggle-label">${categoryName}</span>
+                            ${showCounts ? `<span class="category-toggle-count">${countLabel}</span>` : ''}
+                        </span>
                     </span>
                 </button>
             `;
@@ -2587,7 +2586,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Check if extra data exists
         const hasExtraData = hasAnyExtraInfo(item.name, item.category);
-        const extraButton = hasExtraData ? `<a href="#" class="extra-data-btn" data-item-name="${item.name}" data-item-category="${item.category}" title="Extra Data">i</a>` : '';
+        const extraButton = hasExtraData ? `<a href="#" class="extra-data-btn" data-item-name="${item.name}" data-item-category="${item.category}" title="Extra Data" aria-label="Extra Data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="11" x2="12" y2="16"></line><circle cx="12" cy="8" r="1.2" fill="currentColor" stroke="none"></circle></svg></a>` : '';
 
         // Check if item is in wishlist (only for personal wishlist)
         const inWishlist = !isShared && isInWishlist(item.name);
@@ -2638,7 +2637,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h3>${item.name}</h3>
                 </div>
                 <div class="item-buttons">
-                    <a href="${item.url}" target="_blank">View Product</a>
+                    <a class="item-buttons-product" href="${item.url}" target="_blank">View Product</a>
                     ${favoriteButton}
                     ${extraButton}
                 </div>
