@@ -120,6 +120,44 @@ const extraDetails = {
             diaphragmMaterial: "Carbon LCP Dome Composite",
             impedance: "28Ω±15%@1kHz"
         },
+        "7hz x Crinacle Zero 2": {
+            drivers: "1x 10mm Dynamic",
+            driverConfig: "Dual-cavity dynamic driver",
+            connector: "Detachable 0.78mm 2-pin",
+            cableTermination: "3.5mm / Type-C",
+            impedance: "32Ω",
+            frequencyResponse: "10Hz-20kHz",
+            diaphragmMaterial: "PU + Metal composite"
+        },
+        "Kiwi Ears Belle": {
+            drivers: "1x 10mm Dynamic",
+            driverConfig: "Custom-tuned DLC dynamic driver",
+            cableTermination: "3.5mm / Type-C",
+            impedance: "32Ω (±1Ω)",
+            sensitivity: "103dB (±1dB) @ 1kHz",
+            frequencyResponse: "20Hz-20kHz",
+            shellMaterial: "CNC metal faceplates",
+            diaphragmMaterial: "DLC"
+        },
+        "Kiwi Ears x B_Media Chorus": {
+            drivers: "1x Single DLC Dynamic Driver",
+            driverConfig: "Custom DLC dynamic driver",
+            connector: "0.78mm 2-pin",
+            cableTermination: "3.5mm / Type-C",
+            impedance: "32Ω (±1Ω)",
+            sensitivity: "103dB (±1dB) @ 1kHz",
+            frequencyResponse: "20Hz-20kHz",
+            shellMaterial: "CNC metal faceplate",
+            diaphragmMaterial: "DLC"
+        },
+        "NICEHCK Tears": {
+            drivers: "1x Dual-Magnet Dynamic",
+            driverConfig: "Acoustic labyrinth chamber, open-back acoustic design",
+            cableTermination: "3.5mm / Type-C",
+            impedance: "20Ω @ 1kHz",
+            sensitivity: "127dB/Vrms @ 1kHz",
+            frequencyResponse: "20Hz-20kHz"
+        },
         "Kiwi Ears Astral": {
             drivers: ["1x Dynamic (10mm)", "6x Balanced Armature"]
         }
