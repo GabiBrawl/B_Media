@@ -1,6 +1,7 @@
 const gearData = {
     "My Audio Collection / Collabs": [
         { name: "FiiO EH11", price: 35, url: "https://www.linsoul.com/products/fiio-eh11?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/FiiO_EH11.jpg" },
+        { name: "Kiwi Ears x B_Media Chorus", price: 40, url: "https://www.linsoul.com/products/kiwi-ears-x-b_media-chorus?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_x_B_Media_Chorus.jpg" },
         { name: "B_Media Terras Cable", price: 46, url: "https://www.linsoul.com/products/kiwi-ears-x-b_media-terras?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/B_Media_Terras_Cable.jpg" },
         { name: "SoundPEATS Clip1", price: 70, url: "https://amzn.to/47Z9zrG", pick: false, image: "images/SoundPEATS_Clip1.jpg" },
         { name: "Apos x Community Gremlin Tube Amp", price: 120, url: "https://apos.audio/products/apos-x-community-gremlin-diy-tube-amp?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Apos_x_Community_Gremlin_Tube_Amp.jpg" },
@@ -23,8 +24,9 @@ const gearData = {
     "IEMs": [
         { name: "Truthear Gate", price: 20, url: "https://amzn.to/3UzzHSQ", pick: false, image: "images/Truthear_Gate.png" },
         { name: "7hz x Crinacle Zero 2", price: 25, url: "https://www.linsoul.com/products/7hz-x-crinacle-zero-2?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/7hz_x_Crinacle_Zero_2.png" },
-        { name: "Kiwi Ears Belle", price: 30, url: "https://www.linsoul.com/products/kiwi-ears-belle?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/Kiwi_Ears_Belle.jpg" },
+        { name: "Kiwi Ears Belle", price: 30, url: "https://www.linsoul.com/products/kiwi-ears-belle?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Belle.jpg" },
         { name: "NICEHCK Tears", price: 30, url: "https://nicehck.com/products/tears?sca_ref=9185017.bnGYqsxONg", pick: false, image: "images/NICEHCK_Tears.jpg" },
+        { name: "Kiwi Ears x B_Media Chorus", price: 40, url: "https://www.linsoul.com/products/kiwi-ears-x-b_media-chorus?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/Kiwi_Ears_x_B_Media_Chorus.jpg" },
         { name: "Kiwi Ears Cadenza II", price: 50, url: "https://www.linsoul.com/products/kiwi-ears-cadenza-ii?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_Cadenza_II.jpg" },
         { name: "Kefine Klean", price: 50, url: "https://www.linsoul.com/products/kefine-klean?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/Kefine_Klean.png" },
         { name: "INAWAKEN DAWN Ms", price: 50, url: "https://www.linsoul.com/products/inawaken-dawn-ms?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/INAWAKEN_DAWN_Ms.jpg" },
