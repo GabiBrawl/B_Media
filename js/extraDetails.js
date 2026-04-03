@@ -150,6 +150,60 @@ const extraDetails = {
             shellMaterial: "CNC metal faceplate",
             diaphragmMaterial: "DLC"
         },
+        "Kiwi Ears Cadenza II": {
+            drivers: "1x 10mm Titanium Dynamic",
+            driverConfig: "10mm Titanium Dynamic Driver with KARS 2.0",
+            connector: "0.78mm 2-pin detachable",
+            cableTermination: "3.5mm",
+            impedance: "18Ω (±1Ω)",
+            sensitivity: "106dB (±1dB) @ 1kHz",
+            frequencyResponse: "10Hz-29kHz",
+            shellMaterial: "Polycarbonate composite shell with CNC aluminum faceplate",
+            diaphragmMaterial: "PET with titanium coating"
+        },
+        "Kefine Klean": {
+            drivers: "1x 10mm Dynamic",
+            driverConfig: "Dual-cavity driver structure",
+            connector: "0.78mm 2-pin detachable",
+            cableTermination: "3.5mm / Type-C / 4.4mm",
+            impedance: "32Ω ±15%",
+            sensitivity: "107dB ±3dB",
+            frequencyResponse: "20Hz-20kHz",
+            shellMaterial: "Alloy casting / metal injection housing",
+            diaphragmMaterial: "DLC"
+        },
+        "INAWAKEN DAWN Ms": {
+            drivers: "1x 11.2mm Dynamic",
+            driverConfig: "Custom 11.2mm sputter deposition purple-gold diaphragm driver",
+            connector: "0.78mm 2-pin",
+            cableTermination: "3.5mm mini jack",
+            impedance: "32Ω @ 1kHz",
+            sensitivity: "110dB/mW @ 1kHz",
+            frequencyResponse: "20Hz-20kHz",
+            shellMaterial: "Medical-grade transparent resin shell with CNC aluminum panel",
+            diaphragmMaterial: "Sputter deposition purple-gold diaphragm"
+        },
+        "Moondrop LAN II": {
+            drivers: "1x 10mm Dynamic",
+            driverConfig: "10mm double-cavity high-performance dynamic driver",
+            connector: "0.78mm 2-pin",
+            cableTermination: "4.4mm balanced + 3.5mm adapter",
+            impedance: "30Ω +15% @ 1kHz",
+            sensitivity: "118dB/Vrms @ 1kHz",
+            frequencyResponse: "20Hz-20kHz (effective), 12Hz-60kHz",
+            shellMaterial: "MIM powder stainless steel housing",
+            diaphragmMaterial: "0.05mm glass dome composite"
+        },
+        "Apos x Community Rock Lobster IEMs": {
+            drivers: "1x 10mm Dynamic",
+            driverConfig: "10mm liquid crystal polymer (LCP) dynamic driver",
+            connector: "0.78mm 2-pin",
+            cableTermination: "3.5mm / 4.4mm",
+            impedance: "32Ω",
+            sensitivity: "105dB",
+            frequencyResponse: "20Hz-20kHz",
+            diaphragmMaterial: "LCP"
+        },
         "NICEHCK Tears": {
             drivers: "1x Dual-Magnet Dynamic",
             driverConfig: "Acoustic labyrinth chamber, open-back acoustic design",
