@@ -85,7 +85,8 @@ const gearData = {
         { name: "Fosi Audio i5", price: 550, url: "https://fosiaudioshop.com/products/i5-headphones?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: true, image: "images/Fosi_Audio_i5.jpg" },
         { name: "Focal Azurys", price: 600, url: "https://amzn.to/4evNOSA", pick: false, image: "images/Focal_Azurys.png" },
         { name: "Focal Hadenys", price: 750, url: "https://amzn.to/4oxjjj6", pick: true, image: "images/Focal_Hadenys.png" },
-        { name: "Meze 109 Pro", price: 800, url: "https://apos.audio/products/meze-audio-109-pro?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Meze_109_Pro.png" }
+        { name: "Meze 109 Pro", price: 800, url: "https://apos.audio/products/meze-audio-109-pro?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Meze_109_Pro.png" },
+        { name: "Audeze MM-500", price: 1700, url: "https://amzn.to/40Pa83z", pick: false, image: "images/Audeze_MM-500.jpg" }
     ],
     "Portable DAC/AMP": [
         { name: "Kiwi Ears AD1", price: 10, url: "https://www.linsoul.com/products/kiwi-ears-ad1?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_AD1.jpg" },
@@ -163,6 +164,8 @@ const gearData = {
         { name: "Hart Audio", price: null, url: "https://hartaudiocables.com/?srsltid=AfmBOorgjh48BSZb8D_oMEq1M8iBLxZtShzNSawmyPz1jcFDVez2CGKQ", pick: false, image: "images/Hart_Audio.jpg" }
     ],
     "Tech I Use": [
+        { name: "Keychron M6 8K Wireless Gaming Mouse", price: null, url: "https://amzn.to/4sjqEEb", pick: false, image: "images/Keychron_M6_8K_Wireless_Gaming_Mouse.jpg" },
+        { name: "Keychron Q1 Ultra 8K 75% Wireless Mechanical Keyboard", price: null, url: "https://amzn.to/4mba2Nk", pick: false, image: "images/Keychron_Q1_Ultra_8K_75_Wireless_Mechanical_Keyboard.jpg" },
         { name: "SENNHEISER MKE 400 + Mobile Kit", price: null, url: "https://amzn.to/4qx1hPm", pick: false, image: "images/SENNHEISER_MKE_400__Mobile_Kit.jpg" },
         { name: "Anker 555 USB-C Hub (8-in-1)", price: null, url: "https://amzn.to/4qGGrN6", pick: false, image: "images/Anker_555_USB-C_Hub_8-in-1.jpg" },
         { name: "Anker 140W MAX 4-Port GaN USB C Charger", price: null, url: "https://amzn.to/4qBUvHq", pick: false, image: "images/Anker_140W_MAX_4-Port_GaN_USB_C_Charger.jpg" },
