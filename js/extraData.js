@@ -254,6 +254,13 @@ const extraData = {
         ],
         "otherStuff": "Here could go some additional information about the Kiwi Ears Astral. This is a temporary placeholder."
     },
+    "Kiwi Ears x B_Media Chorus": {
+        "images": [
+            "images/extraData/kiwi_ears_x_b_media_chorus_graph.png"
+        ],
+        "tiktoks": [],
+        "otherStuff": "Here could go some additional information about the Kiwi Ears x B_Media Chorus. This is a temporary placeholder."
+    },
     "Punch Audio Martilo": {
         "images": [
             "images/extraData/punch_audio_martilo_graph.png"
