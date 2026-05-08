@@ -61,6 +61,7 @@ const gearData = {
         { name: "CrinEar Reference", price: 350, url: "https://www.linsoul.com/products/crinear-reference?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/CrinEar_Reference.jpg" },
         { name: "INAWAKEN Twilight-DS", price: 350, url: "https://www.linsoul.com/products/inawaken-twilight-ds?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/INAWAKEN_Twilight-DS.jpg" },
         { name: "XENNS Mangird Tea Pro", price: 360, url: "https://www.linsoul.com/products/xenns-mangird-tea-pro?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/XENNS_Mangird_Tea_Pro.jpg" },
+        { name: "NICEHCK NX8Ti Limited Edition", price: 400, url: "https://nicehck.com/products/nicehck-hifi-iem-nx8ti-limited-edition?sca_ref=9185017.bnGYqsxONg", pick: false, image: "images/NICEHCK_NX8Ti_Limited_Edition.jpg" },
         { name: "Kiwi Ears x HBB Punch", price: 450, url: "https://www.linsoul.com/products/kiwi-ears-x-hbb-punch?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kiwi_Ears_x_HBB_Punch.jpg" },
         { name: "Yanyin Baker", price: 500, url: "https://www.linsoul.com/products/yanyin-baker?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Yanyin_Baker.jpg" },
         { name: "XENNS Mangird Top Pro", price: 500, url: "https://www.linsoul.com/products/xenns-mangird-top-pro?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/XENNS_Mangird_Tea_Pro.jpg" },
@@ -130,6 +131,7 @@ const gearData = {
     "Digital Audio Players": [
         { name: "FiiO SNOWSKY Echo Mini", price: 55, url: "https://www.linsoul.com/products/fiio-snowsky-echo-mini?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/FiiO_SNOWSKY_Echo_Mini.jpg" },
         { name: "HiBy R1", price: 85, url: "https://www.linsoul.com/products/hiby-r1?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/HiBy_R1.jpg" },
+        { name: "SHANLING M0s", price: 100, url: "https://amzn.to/4nc3D54", pick: false, image: "images/SHANLING_M0s.jpg" },
         { name: "SHANLING M0 Pro", price: 140, url: "https://amzn.to/3N9oPLH", pick: false, image: "images/SHANLING_M0_Pro.jpg" },
         { name: "HIDIZS x Linsoul AP80 PRO MAX", price: 190, url: "https://www.linsoul.com/products/hidizs-x-linsoul-ap80pro-max?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/HIDIZS_x_Linsoul_AP80_PRO_MAX.jpg" },
         { name: "Shanling M1 Plus", price: 210, url: "https://www.linsoul.com/products/shanling-m1-plus?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Shanling_M1_Plus.jpg" },
