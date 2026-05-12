@@ -562,8 +562,9 @@ def update_data_js(linktree_data, data_file_path, images_dir):
 
 if __name__ == "__main__":
     url = "https://linktr.ee/BostromMediaStrategies"
-    data_file = os.path.expanduser("~/Documents/GitHub/B_Media/js/data.js")
-    images_dir = os.path.expanduser("~/Documents/GitHub/B_Media/images")
+    repo_root = os.path.dirname(os.path.abspath(__file__))
+    data_file = os.path.join(repo_root, "js", "data.js")
+    images_dir = os.path.join(repo_root, "images")
     os.makedirs(images_dir, exist_ok=True)
     
     # Fetch and parse Linktree data
