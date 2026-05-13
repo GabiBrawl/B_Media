@@ -2038,9 +2038,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (quoteBanner) {
             children.push(quoteBanner.cloneNode(true));
         }
-        if (!isMobileViewport()) {
-            children.push(viewModeToggle);
-        }
 
         resetWishlistButtonText();
 
@@ -2064,7 +2061,7 @@ document.addEventListener('DOMContentLoaded', function() {
             children.push(categoryDiv);
         }
 
-        if (isMobileViewport()) {
+        if (!isMobileViewport()) {
             children.push(viewModeToggle);
         }
 
@@ -2158,15 +2155,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (quoteBanner) {
             children.push(quoteBanner.cloneNode(true));
         }
-        if (!isMobileViewport()) {
-            children.push(viewModeToggle);
-        }
         resetWishlistButtonText();
 
         if (Object.keys(groupedItems).length === 0) {
             const noResults = createEmptyState('No products match your filters', 'Try adjusting your search criteria');
             children.push(noResults);
-            if (isMobileViewport()) {
+            if (!isMobileViewport()) {
                 children.push(viewModeToggle);
             }
             main.replaceChildren(...children);
@@ -2195,9 +2189,7 @@ document.addEventListener('DOMContentLoaded', function() {
             children.push(categoryDiv);
         }
 
-        if (isMobileViewport()) {
-            children.push(viewModeToggle);
-        }
+        children.push(viewModeToggle);
 
         main.replaceChildren(...children);
         updateBottomBarScrollProgress();
@@ -2360,15 +2352,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (quoteBanner) {
             children.push(quoteBanner.cloneNode(true));
         }
-        if (!isMobileViewport()) {
-            children.push(viewModeToggle);
-        }
         resetWishlistButtonText();
 
         const categoryEntries = Object.entries(groupedItems);
         if (categoryEntries.length === 0) {
             const noResults = createEmptyState('No products match your filters', 'Try adjusting your search criteria');
             children.push(noResults);
+            children.push(viewModeToggle);
             main.replaceChildren(...children);
             updateBottomBarScrollProgress();
             return;
@@ -2418,6 +2408,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (mobileSocialLinks) {
                 children.push(mobileSocialLinks);
             }
+        }
+        if (!isMobileViewport()) {
+            children.push(viewModeToggle);
         }
         main.replaceChildren(...children);
         updateBottomBarScrollProgress();
@@ -2482,9 +2475,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const categoryHeader = document.createElement('div');
         categoryHeader.className = 'category-page-header';
-        const headerToggleHtml = isMobileViewport()
-            ? ''
-            : '<button id="view-mode-toggle-in-header" class="view-mode-toggle-btn">Switch to Classic View</button>';
         categoryHeader.innerHTML = `
             <div class="category-header-left">
                 <button class="category-page-back" type="button">← Back to Categories</button>
@@ -2496,7 +2486,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 </h2>
             </div>
             <div class="category-header-right">
-                ${headerToggleHtml}
             </div>
         `;
         filteredChildren.push(categoryHeader);
