@@ -11,13 +11,13 @@
     --secondary-bg: #14161a;
     --tertiary-bg: #1f1f1f;
     --card-bg: var(--tertiary-bg);
-    --accent-bg: #232832;
+    --accent-bg: #201818;
     --light-text: #f3f5f8;
     --medium-text: #b8c0cf;
     --dark-text: #7b8392;
     --border-color: #2c313a;
-    --accent-color: #26c6a5;
-    --accent-hover: #2fd2b0;
+    --accent-color: #b22222;
+    --accent-hover: #e04b3b;
     --success-color: var(--accent-color);
     --success-hover: var(--accent-hover);
     --shadow-color: rgba(0, 0, 0, 0.35);
@@ -1343,7 +1343,7 @@ button svg {
     height: 80px;
     border-radius: 8px;
     object-fit: cover;
-    border: 2px solid rgba(11, 187, 152, 0.2);
+    border: 2px solid rgba(178, 34, 34, 0.2);
     transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -1351,7 +1351,7 @@ button svg {
 .wishlist-modal-content .item:hover .item-image {
     transform: scale(1.08) rotate(1deg);
     border-color: var(--accent-color);
-    box-shadow: 0 8px 20px rgba(11, 187, 152, 0.2);
+    box-shadow: 0 8px 20px rgba(178, 34, 34, 0.2);
 }
 
 .wishlist-modal-content .item-info {
