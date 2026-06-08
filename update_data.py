@@ -18,7 +18,8 @@ BLACKLISTED_CATEGORIES = [
     'bostrommediastrategies@gmail.com',
     'cookie-preferences',
     'explore-related-linktrees',
-    'explore-other-linktrees'
+    'explore-other-linktrees',
+    'more-from-linktree'
 ]
 
 # Items to blacklist within specific categories
