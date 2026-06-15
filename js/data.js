@@ -193,6 +193,7 @@ const gearData = {
         { name: "Hart Audio", price: null, url: "https://hartaudiocables.com/?srsltid=AfmBOorgjh48BSZb8D_oMEq1M8iBLxZtShzNSawmyPz1jcFDVez2CGKQ", pick: false, image: "images/Hart_Audio.jpg" }
     ],
     "Tech I Use": [
+        { name: "DJI Osmo Pocket 3 Creator Combo", price: null, url: "https://amzn.to/4ehvFtn", pick: false, image: "images/DJI_Osmo_Pocket_3_Creator_Combo.jpg" },
         { name: "Keychron M6 8K Wireless Gaming Mouse", price: null, url: "https://amzn.to/4sjqEEb", pick: false, image: "images/Keychron_M6_8K_Wireless_Gaming_Mouse.jpg" },
         { name: "Keychron Q1 Ultra 8K 75% Wireless Mechanical Keyboard", price: null, url: "https://amzn.to/4mba2Nk", pick: false, image: "images/Keychron_Q1_Ultra_8K_75_Wireless_Mechanical_Keyboard.jpg" },
         { name: "SENNHEISER MKE 400 + Mobile Kit", price: null, url: "https://amzn.to/4qx1hPm", pick: false, image: "images/SENNHEISER_MKE_400__Mobile_Kit.jpg" },
