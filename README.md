@@ -17,7 +17,7 @@ A user-friendly static website showcasing audiophile gear recommendations from B
 - **Search**: Find recommended products by name
 - **Category**: Filter by specific gear type
 - **Price Range**: Filter by price brackets ($0-50, $50-100, etc.)
-- ** B_MediaPicks**: Show only recommended products
+- **B_Media Picks**: Show only recommended products
 
 No dependencies or servers required - a static page with pure HTML, CSS, and JavaScript!
 
