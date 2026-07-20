@@ -18,7 +18,8 @@ BLACKLISTED_CATEGORIES = [
     'bostrommediastrategies@gmail.com',
     'cookie-preferences',
     'explore-related-linktrees',
-    'explore-other-linktrees'
+    'explore-other-linktrees',
+    'more-from-linktree'
 ]
 
 # Items to blacklist within specific categories
@@ -71,6 +72,15 @@ def normalize_display_name_to_category_key(display_name):
     normalized = re.sub(r'[^a-z0-9\-/]', '', normalized)
     normalized = re.sub(r'-{2,}', '-', normalized).strip('-')
     return normalized
+
+def generate_item_id(name):
+    """Generate a clean, uniform lowercase kebab-case ID string from a product name."""
+    normalized = name.strip().lower()
+    # Strip everything except alpha-numerics, whitespace, and hyphens
+    normalized = re.sub(r'[^a-z0-9\s-]', '', normalized)
+    # Compress spaces or multiple hyphens into single hyphens
+    normalized = re.sub(r'[\s-]+', '-', normalized)
+    return normalized.strip('-')
 
 def download_image(image_url, filename):
     """Download an image from a URL to a local file."""
@@ -168,23 +178,17 @@ def fuzzy_match_name(name1, name2, threshold=0.90):
     """
     Compare two product names using fuzzy matching.
     Returns True if they're similar enough to be considered the same product.
-    Uses a higher threshold to avoid false matches like "HiBy R1" vs "HiBy R4".
     """
-    # Normalize names for comparison
     n1 = name1.lower().strip()
     n2 = name2.lower().strip()
     
-    # Exact match
     if n1 == n2:
         return True
     
-    # Remove common variations
     n1 = re.sub(r'\s+', ' ', n1)
     n2 = re.sub(r'\s+', ' ', n2)
     
-    # Check similarity ratio
     ratio = SequenceMatcher(None, n1, n2).ratio()
-    
     return ratio >= threshold
 
 def find_matching_item(name, items_dict, threshold=0.90):
@@ -195,17 +199,14 @@ def find_matching_item(name, items_dict, threshold=0.90):
     if not items_dict:
         return None
 
-    # Exact match first
     if name in items_dict:
         return name
 
-    # Case-insensitive exact match second
     normalized_name = name.lower().strip()
     for key in items_dict:
         if key.lower().strip() == normalized_name:
             return key
 
-    # Fuzzy fallback: choose the best score above threshold
     best_match = None
     best_score = 0.0
     for key in items_dict:
@@ -218,9 +219,7 @@ def find_matching_item(name, items_dict, threshold=0.90):
 
 def parse_linktree(url):
     """Parse the Linktree page and extract product data organized by category."""
-    # Scrape the page to get categories and links with images
     scraped_categories = scrape_linktree_with_selenium(url)
-    
     categories = {}
     
     print(f"\nParsing products from Linktree...")
@@ -230,7 +229,6 @@ def parse_linktree(url):
             print(f"\n--- Category: {category_name} --- (SKIPPED - Blacklisted)")
             continue
         
-        # Skip single letter categories
         if len(category_name) == 1:
             print(f"\n--- Category: {category_name} --- (SKIPPED - Single letter)")
             continue
@@ -239,16 +237,13 @@ def parse_linktree(url):
         products = []
         
         for link in links:
-            # Parse the product text to extract price, name, pick
             product = parse_product_text(link['text'], link['url'])
             if product:
-                # Check if this item is blacklisted for this category
                 category_blacklist = BLACKLISTED_ITEMS.get(category_name, [])
                 if product['name'] in category_blacklist:
                     print(f"  ✗ Skipped (Blacklisted): {product['name']}")
                     continue
                     
-                # Add image URL from scraping
                 product['image_url'] = link.get('image_url')
                 products.append(product)
                 print(f"  ✓ Parsed: {product['name']} (${product['price']}) - Pick: {product['pick']}")
@@ -259,7 +254,6 @@ def parse_linktree(url):
             categories[category_name] = products
             print(f"  Total products in {category_name}: {len(products)}")
     
-    # Print summary
     print("\nParsed products by category:")
     total_products = 0
     for cat, items in categories.items():
@@ -268,37 +262,29 @@ def parse_linktree(url):
         total_products += len(items)
     
     print(f"\nTotal products parsed: {total_products}")
-    
     return categories
 
 def parse_product_text(text, url):
     """Parse a product text like '$20 Truthear Gate' or '$50 *B_Media Pick* Kefine Klean'"""
-    # Remove markdown image syntax
     text = re.sub(r'\[Image:.*?\]', '', text).strip()
     
-    # Skip non-product links
     if not text or 'previous' in text.lower() or 'next' in text.lower():
         return None
     
-    # Extract leading price (supports formats like $20, $1,950, $199.99, $50-ish)
     leading_price_pattern = r'^\$(\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?(?:-ish)?\s*'
     price_match = re.match(leading_price_pattern, text)
     price = int(price_match.group(1).replace(',', '')) if price_match else None
     
-    # Check if it's a B_Media pick
     pick = '*B_Media Pick*' in text or 'B_Media Pick' in text
     
-    # Extract product name (remove leading price, pick indicator, and other tags)
     name = re.sub(leading_price_pattern, '', text)
-    name = re.sub(r'\*B_Media Pick\*', '', name)  # Remove pick indicator
-    name = re.sub(r'\*[^*]+\*', '', name)  # Remove other tags like *Gaming*, *Basshead*, etc.
+    name = re.sub(r'\*B_Media Pick\*', '', name)
+    name = re.sub(r'\*[^*]+\*', '', name)
     name = name.strip()
     
-    # Skip empty names or category headers
     if not name or 'Recommendation' in name or 'Players' in name:
         return None
     
-    # Skip globally blacklisted items
     if name in GLOBAL_BLACKLIST:
         return None
     
@@ -307,258 +293,207 @@ def parse_product_text(text, url):
         'price': price,
         'url': url,
         'pick': pick,
-        'image_url': None  # Images will be handled separately
+        'image_url': None
     }
 
 def parse_existing_data_js(file_path):
-    """Parse the existing data.js file and extract the gearData object."""
+    """Parse the existing data.js file, extracting the master book and layout relations."""
+    if not os.path.exists(file_path):
+        return {}, {}
+
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    # Extract each quoted display category array from data.js
-    categories = {}
+    catalog = {}
+    relations = {}
     
-    pattern = r'^\s*"([^"]+)"\s*:\s*\[(.*?)\](?=\s*,\s*\n\s*"[^"]+"\s*:|\s*\n\s*};)'
-    matches = re.finditer(pattern, content, re.DOTALL | re.MULTILINE)
-    
-    for match in matches:
-        display_name = match.group(1).strip()
-        category = normalize_display_name_to_category_key(display_name)
-        items_str = match.group(2)
-        
-        # Parse individual items
-        items = []
-        item_pattern = r'\{\s*name:\s*"([^"]+)",\s*price:\s*(null|\d+),\s*url:\s*"([^"]+)",\s*pick:\s*(true|false),\s*image:\s*"([^"]+)"\s*\}'
-        
-        for item_match in re.finditer(item_pattern, items_str):
-            items.append({
-                'name': item_match.group(1),
-                'price': int(item_match.group(2)) if item_match.group(2) != 'null' else None,
-                'url': item_match.group(3),
-                'pick': item_match.group(4) == 'true',
-                'image': item_match.group(5)
-            })
-        
-        categories[category] = items
-    
-    return categories
+    # 1. Parse itemsCatalog block
+    catalog_match = re.search(r'const itemsCatalog = \{(.*?)\};', content, re.DOTALL)
+    if catalog_match:
+        catalog_block = catalog_match.group(1)
+        item_pattern = r'"([^"]+)"\s*:\s*\{\s*name:\s*"([^"]+)",\s*price:\s*(null|\d+),\s*url:\s*"([^"]+)",\s*pick:\s*(true|false),\s*image:\s*"([^"]+)"\s*\}'
+        for match in re.finditer(item_pattern, catalog_block):
+            item_id = match.group(1)
+            catalog[item_id] = {
+                'name': match.group(2),
+                'price': int(match.group(3)) if match.group(3) != 'null' else None,
+                'url': match.group(4),
+                'pick': match.group(5) == 'true',
+                'image': match.group(6)
+            }
+            
+    # 2. Parse gearData relations block
+    geardata_match = re.search(r'const gearData = \{(.*?)\};', content, re.DOTALL)
+    if geardata_match:
+        geardata_block = geardata_match.group(1)
+        cat_pattern = r'"([^"]+)"\s*:\s*\[(.*?)\]'
+        for match in re.finditer(cat_pattern, geardata_block, re.DOTALL):
+            display_name = match.group(1).strip()
+            cat_key = normalize_display_name_to_category_key(display_name)
+            ids_str = match.group(2)
+            item_ids = [id_str.strip().strip('"') for id_str in ids_str.split(',') if id_str.strip()]
+            relations[cat_key] = item_ids
+            
+    return catalog, relations
 
-def write_data_js(file_path, categories):
-    """Write the updated data back to the data.js file using display names."""
-    lines = ['const gearData = {']
+def write_normalized_data_js(file_path, catalog, relations):
+    """Write the updated item book and category listings cleanly back to data.js."""
+    lines = ['// Master registry of unique items (The "Book of Items")', 'const itemsCatalog = {']
     
-    # Use categories in the order they appear
-    ordered_categories = list(categories.keys())
+    sorted_catalog_keys = sorted(list(catalog.keys()))
+    for idx, item_id in enumerate(sorted_catalog_keys):
+        item = catalog[item_id]
+        price_val = item['price'] if item['price'] is not None else 'null'
+        pick_val = 'true' if item['pick'] else 'false'
+        
+        item_line = f'    "{item_id}": {{ name: "{item["name"]}", price: {price_val}, url: "{item["url"]}", pick: {pick_val}, image: "{item["image"]}" }}'
+        if idx < len(sorted_catalog_keys) - 1:
+            item_line += ','
+        lines.append(item_line)
+        
+    lines.append('};\n')
+    lines.append('// Layout mapping arrays fetching from catalog book rows to minimize page duplication footprint')
+    lines.append('const gearData = {')
     
-    for cat_idx, category in enumerate(ordered_categories):
-        items = categories[category]
-        
-        # Get display name from CATEGORY_DISPLAY_NAMES, or format the category key as fallback
-        display_name = CATEGORY_DISPLAY_NAMES.get(
-            category, 
-            category.replace('-', ' ').title()
-        )
-        
-        # Always use quotes for category names
+    ordered_categories = list(relations.keys())
+    for cat_idx, cat_key in enumerate(ordered_categories):
+        display_name = CATEGORY_DISPLAY_NAMES.get(cat_key, cat_key.replace('-', ' ').title())
         lines.append(f'    "{display_name}": [')
         
-        for idx, item in enumerate(items):
-            price_val = item['price'] if item['price'] is not None else 'null'
-            pick_val = 'true' if item['pick'] else 'false'
+        ids = relations[cat_key]
+        # Chunk identifiers across readable subrows
+        chunk_size = 4
+        for i in range(0, len(ids), chunk_size):
+            chunk = ids[i:i+chunk_size]
+            formatted_chunk = ', '.join([f'"{id_str}"' for id_str in chunk])
+            if i + chunk_size < len(ids):
+                formatted_chunk += ','
+            lines.append(f'        {formatted_chunk}')
             
-            item_line = f'        {{ name: "{item["name"]}", price: {price_val}, url: "{item["url"]}", pick: {pick_val}, image: "{item["image"]}" }}'
-            
-            if idx < len(items) - 1:
-                item_line += ','
-            
-            lines.append(item_line)
+        end_bracket = '    ],' if cat_idx < len(ordered_categories) - 1 else '    ]'
+        lines.append(end_bracket)
         
-        if cat_idx < len(ordered_categories) - 1:
-            lines.append('    ],')
-        else:
-            lines.append('    ]')
-    
     lines.append('};')
     
     with open(file_path, 'w', encoding='utf-8') as f:
         f.write('\n'.join(lines))
 
 def update_data_js(linktree_data, data_file_path, images_dir):
-    """Compare Linktree data with existing data.js and update as needed using fuzzy matching."""
+    """Compare Linktree arrays with book state records and regenerate structural data.js file."""
     print(f"\n{'='*60}")
-    print("Comparing Linktree data with existing data.js (using fuzzy matching)...")
+    print("Comparing Linktree tracking data within relational catalog layouts...")
     print(f"{'='*60}")
     
-    # Parse existing data
     try:
-        existing_data = parse_existing_data_js(data_file_path)
+        existing_catalog, _ = parse_existing_data_js(data_file_path)
     except:
-        print("Warning: Could not parse existing data.js, will recreate from Linktree")
-        existing_data = {}
-    
-    updated_categories = {}
+        print("Warning: Could not read existing normalized database structure. Building from scratch.")
+        existing_catalog = {}
+        
+    updated_catalog = dict(existing_catalog)
+    updated_relations = {}
     changes_made = False
     
-    # Process all categories from Linktree (Linktree is the source of truth)
+    # Maintain a clear string-to-id cross-reference check map
+    catalog_by_name = {item['name']: item_id for item_id, item in updated_catalog.items()}
+    
     for category in linktree_data.keys():
         print(f"\n--- Category: {category} ---")
+        category_item_ids = []
         
-        existing_items = {item['name']: item for item in existing_data.get(category, [])}
-        linktree_items = {item['name']: item for item in linktree_data.get(category, [])}
-        
-        updated_items = []
-        matched_existing = set()
-        
-        # Check each item from Linktree using fuzzy matching
-        for lt_name, lt_item in linktree_items.items():
-            # Try to find a matching item in existing data
-            matched_name = find_matching_item(lt_name, existing_items, threshold=0.90) if existing_items else None
+        for lt_item in linktree_data[category]:
+            lt_name = lt_item['name']
+            matched_name = find_matching_item(lt_name, catalog_by_name, threshold=0.90)
             
             if matched_name:
-                matched_existing.add(matched_name)
-                ex_item = existing_items[matched_name]
+                item_id = catalog_by_name[matched_name]
+                ex_item = updated_catalog[item_id]
                 
-                # Check for differences
+                # Check metrics adjustments
                 price_changed = ex_item['price'] != lt_item['price']
                 url_changed = ex_item['url'] != lt_item['url']
                 pick_changed = ex_item['pick'] != lt_item['pick']
                 name_changed = matched_name != lt_name
                 
-                # Check if image file exists
                 image_path = ex_item['image']
-                image_exists = os.path.exists(image_path)
+                image_exists = os.path.exists(os.path.join(os.path.dirname(data_file_path), '..', image_path) if '/' in image_path else image_path)
                 
                 if price_changed or url_changed or pick_changed or name_changed or not image_exists:
                     changes_made = True
-                    print(f"  ⟳ Updating: {matched_name}")
+                    print(f"  ⟳ Updating Book Registry: [{item_id}] {matched_name}")
                     if name_changed:
                         print(f"    Name: {matched_name} → {lt_name}")
-                    if price_changed:
-                        print(f"    Price: {ex_item['price']} → {lt_item['price']}")
-                    if url_changed:
-                        print(f"    URL changed")
-                    if pick_changed:
-                        print(f"    Pick: {ex_item['pick']} → {lt_item['pick']}")
                     
-                    # Handle missing image
                     if not image_exists and lt_item.get('image_url'):
                         print(f"    Image missing, downloading...")
-                        # Generate new image filename based on name
                         safe_name = re.sub(r'[^\w\s-]', '', lt_name).strip().replace(' ', '_')
                         img_url = lt_item['image_url']
-                        ext = '.jpg'  # default
-                        if '.png' in img_url.lower():
-                            ext = '.png'
-                        elif '.webp' in img_url.lower():
-                            ext = '.webp'
-                        elif '.gif' in img_url.lower():
-                            ext = '.gif'
-                        
+                        ext = '.png' if '.png' in img_url.lower() else '.jpg'
                         image_filename = f"{safe_name}{ext}"
                         image_path = f"images/{image_filename}"
-                        full_image_path = os.path.join(images_dir, image_filename)
+                        download_image(img_url, os.path.join(images_dir, image_filename))
                         
-                        if download_image(img_url, full_image_path):
-                            print(f"    Image saved: {image_path}")
-                        else:
-                            print(f"    Image download failed")
-                    
-                    updated_items.append({
-                        'name': lt_name,  # Use Linktree name as canonical
+                    updated_catalog[item_id] = {
+                        'name': lt_name,
                         'price': lt_item['price'],
                         'url': lt_item['url'],
                         'pick': lt_item['pick'],
                         'image': image_path
-                    })
+                    }
+                    if name_changed:
+                        del catalog_by_name[matched_name]
+                        catalog_by_name[lt_name] = item_id
                 else:
-                    print(f"  ✓ No changes: {lt_name}")
-                    updated_items.append({
-                        'name': lt_name,  # Normalize to Linktree name
-                        'price': ex_item['price'],
-                        'url': ex_item['url'],
-                        'pick': ex_item['pick'],
-                        'image': ex_item['image']
-                    })
+                    print(f"  ✓ Validated book item matching exact metrics: {lt_name}")
             else:
-                # New item from Linktree (not in data.js)
+                # Insert unique record configuration to the itemsCatalog registry
                 changes_made = True
-                print(f"  + New item: {lt_name}")
+                print(f"  + Writing New Book Registration: {lt_name}")
                 
-                # Generate image filename based on name
-                safe_name = re.sub(r'[^\w\s-]', '', lt_name).strip().replace(' ', '_')
-                
-                # Try to download the image if URL is available
-                image_path = None
-                if lt_item.get('image_url'):
-                    # Determine file extension from URL
-                    img_url = lt_item['image_url']
-                    ext = '.jpg'  # default
-                    if '.png' in img_url.lower():
-                        ext = '.png'
-                    elif '.webp' in img_url.lower():
-                        ext = '.webp'
-                    elif '.gif' in img_url.lower():
-                        ext = '.gif'
+                item_id = generate_item_id(lt_name)
+                # Avoid collision variants
+                counter = 1
+                base_id = item_id
+                while item_id in updated_catalog:
+                    item_id = f"{base_id}-{counter}"
+                    counter += 1
                     
+                safe_name = re.sub(r'[^\w\s-]', '', lt_name).strip().replace(' ', '_')
+                image_path = f"images/{safe_name}.jpg"
+                
+                if lt_item.get('image_url'):
+                    img_url = lt_item['image_url']
+                    ext = '.png' if '.png' in img_url.lower() else '.jpg'
                     image_filename = f"{safe_name}{ext}"
                     image_path = f"images/{image_filename}"
-                    full_image_path = os.path.join(images_dir, image_filename)
+                    download_image(img_url, os.path.join(images_dir, image_filename))
                     
-                    # Download the image
-                    if download_image(img_url, full_image_path):
-                        print(f"    Image saved: {image_path}")
-                    else:
-                        print(f"    Image download failed, using placeholder: {image_path}")
-                else:
-                    # No image URL available
-                    image_filename = f"{safe_name}.jpg"
-                    image_path = f"images/{image_filename}"
-                    print(f"    No image URL available: {image_path} (needs manual download)")
-                
-                updated_items.append({
+                updated_catalog[item_id] = {
                     'name': lt_name,
                     'price': lt_item['price'],
                     'url': lt_item['url'],
                     'pick': lt_item['pick'],
                     'image': image_path
-                })
+                }
+                catalog_by_name[lt_name] = item_id
+                
+            category_item_ids.append(item_id)
+            
+        updated_relations[category] = category_item_ids
         
-        # Check for items that exist in data.js but not in Linktree
-        # Keep them instead of removing
-        for ex_name in existing_items:
-            if ex_name not in matched_existing:
-                # Try fuzzy match to see if it's in Linktree with different name
-                matched_lt = find_matching_item(ex_name, linktree_items, threshold=0.90)
-                if not matched_lt:
-                    print(f"  ⚠ Item in data.js but not on Linktree: {ex_name} (keeping)")
-                    updated_items.append(existing_items[ex_name])
+    if changes_made or not existing_catalog:
+        print(f"\n{'='*60}\nWriting records to normalized data.js topology structures...")
+        write_normalized_data_js(data_file_path, updated_catalog, updated_relations)
         
-        updated_categories[category] = updated_items
-    
-    # Drop categories that are no longer present on Linktree
-    for category in existing_data.keys():
-        if category not in updated_categories:
-            print(f"\n--- Category: {category} ---")
-            print(f"  ⚠ Category exists in data.js but not on Linktree (dropping)")
-    
-    if changes_made or not existing_data:
-        print(f"\n{'='*60}")
-        print("Writing updates to data.js...")
-        write_data_js(data_file_path, updated_categories)
-        
-        # Write last updated timestamp
         from datetime import datetime
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC")
         with open(os.path.join(os.path.dirname(data_file_path), 'last_updated.js'), 'w') as f:
             f.write(f'const lastUpdated = "{timestamp}";\n')
-        
-        print("✓ Update complete!")
+            
+        print("✓ Synchronization complete!")
     else:
-        print(f"\n{'='*60}")
-        print("✓ No changes needed - all entries match!")
-    
+        print(f"\n{'='*60}\n✓ Catalog definitions match Linktree distributions exactly. No rewrites forced.")
     print(f"{'='*60}\n")
-
 
 if __name__ == "__main__":
     url = "https://linktr.ee/BostromMediaStrategies"
@@ -570,5 +505,5 @@ if __name__ == "__main__":
     # Fetch and parse Linktree data
     linktree_data = parse_linktree(url)
     
-    # Update the data.js file
+    # Update the data.js file using normalized layout mechanisms
     update_data_js(linktree_data, data_file, images_dir)
