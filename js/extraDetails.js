@@ -116,9 +116,12 @@ const extraDetails = {
     },
     byItem: {
         "Truthear Gate": {
-            drivers: "1x 10mm Dynamic",
-            diaphragmMaterial: "Carbon LCP Dome Composite",
-            impedance: "28Ω±15%@1kHz"
+            drivers: "10mm Dynamic Driver",
+            impedance: "28Ω±15%@1kHz",
+            sensitivity: "122dB/Nrms@1KHz",
+            frequencyResponse: "10-45kHz (IEC61094, Free Field)",
+            shellMaterial: "Carbon LCP Dome Composite Ultra-thin PU Diaphragm",
+            diaphragmMaterial: "Carbon LCP Dome Composite"
         },
         "7hz x Crinacle Zero 2": {
             drivers: "1x 10mm Dynamic",
@@ -303,25 +306,28 @@ const extraDetails = {
             diaphragmMaterial: "0.05mm glass dome composite"
         },
         "Apos x Community Rock Lobster IEMs": {
-            drivers: "1x 10mm Dynamic",
+            drivers: "10mm liquid crystal polymer (LCP) dynamic driver",
             driverConfig: "10mm liquid crystal polymer (LCP) dynamic driver",
-            connector: "0.78mm 2-pin",
+            connector: "3.5mm wired, 4.4mm wired",
             cableTermination: "3.5mm / 4.4mm",
             impedance: "32Ω",
             sensitivity: "105dB",
-            frequencyResponse: "20Hz-20kHz",
+            frequencyResponse: "20Hz - 20kHz",
             diaphragmMaterial: "LCP"
         },
         "NICEHCK Tears": {
             drivers: "1x Dual-Magnet Dynamic",
             driverConfig: "Acoustic labyrinth chamber, open-back acoustic design",
             cableTermination: "3.5mm / Type-C",
-            impedance: "20Ω @ 1kHz",
-            sensitivity: "127dB/Vrms @ 1kHz",
-            frequencyResponse: "20Hz-20kHz"
+            impedance: "20Ω @ 1 kHz",
+            sensitivity: "127dB/Vrms @ 1 kHz",
+            frequencyResponse: "20 Hz - 20 kHz"
         },
         "Kiwi Ears Astral": {
-            drivers: ["1x Dynamic (10mm)", "6x Balanced Armature"]
+            drivers: [
+                "1x Dynamic (10mm)",
+                "6x Balanced Armature"
+            ]
         }
     ,
         "FiiO EH11": {
@@ -440,7 +446,7 @@ const extraDetails = {
             keySpecs: [
                 "50 mm Dynamic Driver",
                 "34 Ω ± 15 %",
-                "20 Hz–40 kHz",
+                "20 Hz-40 kHz",
                 "102 dB ± 3 dB",
                 "1.33 kg"
             ],
@@ -455,7 +461,8 @@ const extraDetails = {
         }
 ,
         "XENNS Mangird Top Pro": {
-            productType: "10 Driver Hybrid IEM"
+            drivers: "",
+            cableTermination: ""
         }
 ,
         "LETSHUOER Mystic 8": {
@@ -484,7 +491,10 @@ const extraDetails = {
         }
 ,
         "Audeze LCD-3": {
-            notes: "Beautiful zebrawood rings handcrafted in U.S.A.; LCD-3 sounds best when paired with a high-quality headphone or integrated amplifier, either vacuum-tube or solid-state."
+            impedance: "110Ω",
+            sensitivity: "101dB/1mW (at Drum Reference Point)",
+            frequencyResponse: "10Hz - 50kHz",
+            weight: "635g"
         }
 ,
         "Kefine Delci": {
@@ -509,7 +519,12 @@ const extraDetails = {
 ,
         "JUZEAR x Z Reviews Defiant": {
             drivers: "1DD +3BA",
-            driverConfig: "Hybrid IEMs"
+            driverConfig: "Hybrid IEMs",
+            connector: "0.78mm 2-Pin Connectors.",
+            cableTermination: "3.5mm+4.4mm.",
+            impedance: "32Ω.",
+            sensitivity: "109dB±1dB.",
+            frequencyResponse: "20Hz~20kHz."
         }
 ,
         "MOONDROP RAYS": {
@@ -519,7 +534,7 @@ const extraDetails = {
             cableTermination: "0.78mm 2-pin",
             impedance: "30Ω ±15% @ 1kHz",
             sensitivity: "120dB/Vrms @ 1kHz",
-            frequencyResponse: "7Hz – 39kHz",
+            frequencyResponse: "7Hz - 39kHz",
             shellMaterial: "medical-grade resin",
             diaphragmMaterial: "Sapphire-Plated"
         }
@@ -534,12 +549,18 @@ const extraDetails = {
             connector: [
                 "4.4mm Balanced",
                 "3.5mm with Mic"
-            ]
+            ],
+            impedance: "",
+            sensitivity: "",
+            frequencyResponse: "",
+            shellMaterial: "",
+            diaphragmMaterial: ""
         }
 ,
         "Kiwi Ears Étude": {
             drivers: "Beryllium DD + 3BA + Vibration Transducer",
-            driverConfig: "Beryllium DD + 3BA + Vibration Transducer"
+            driverConfig: "Beryllium DD + 3BA + Vibration Transducer",
+            diaphragmMaterial: ""
         }
 ,
         "SIMGOT EM6L": {
@@ -561,7 +582,7 @@ const extraDetails = {
             cableTermination: "2-pin",
             impedance: "18Ω",
             sensitivity: "107dB/V @ 1kHz",
-            frequencyResponse: "10–20,000Hz",
+            frequencyResponse: "10-20,000Hz",
             shellMaterial: "CNC-machined aerospace-grade aluminum",
             diaphragmMaterial: "high-purity copper"
         }
@@ -576,7 +597,7 @@ const extraDetails = {
             ],
             impedance: "20Ω @1kHz",
             sensitivity: "105dB/mW @1kHz",
-            frequencyResponse: "2Hz – 40,000Hz",
+            frequencyResponse: "2Hz - 40,000Hz",
             shellMaterial: "Fully-filled medical-grade resin"
         }
 ,
@@ -587,7 +608,7 @@ const extraDetails = {
             cableTermination: "Custom Copper-Plated Thick Silver Cable with Interchangeable Plugs",
             impedance: "16Ω ±5%",
             sensitivity: "126dB/Vrms",
-            frequencyResponse: "2Hz – 48kHz",
+            frequencyResponse: "2Hz - 48kHz",
             shellMaterial: "Aluminum Alloy Housing with Sapphire Glass Faceplate",
             diaphragmMaterial: "PU suspended edge, DLC dome composite diaphragm"
         }
@@ -595,7 +616,10 @@ const extraDetails = {
         "NICEHCK NX8": {
             drivers: "1DD+6BA+1PZT 8-unit Hybrid",
             driverConfig: "8-unit Hybrid",
-            cableTermination: "2 Pin Detachable"
+            cableTermination: "3.5mm / 4.4mm Balanced",
+            impedance: "19Ω",
+            sensitivity: "111dB/mW",
+            frequencyResponse: "20 Hz - 30 kHz"
         }
 ,
         "ZiiGaat x Hangout.Audio: Odyssey 2": {
@@ -609,14 +633,18 @@ const extraDetails = {
             cableTermination: "Interchangeable 3.5mm & 4.4mm",
             impedance: "20 Ohms",
             sensitivity: "105 dB",
-            frequencyResponse: "20 Hz – 25 kHz",
+            frequencyResponse: "20 Hz - 25 kHz",
             shellMaterial: "Aluminum alloy",
             diaphragmMaterial: "Bio-cellulose"
         }
 ,
         "NICEHCK NX8 SE": {
             drivers: "8 Driver Hybrid",
-            driverConfig: "Hybrid"
+            driverConfig: "Hybrid",
+            cableTermination: "3.5mm",
+            impedance: "19Ω",
+            sensitivity: "109dB/mW",
+            frequencyResponse: "20-30KHz"
         }
 ,
         "Kiwi Ears Septet": {
@@ -625,12 +653,13 @@ const extraDetails = {
         }
 ,
         "ZiiGaat x Fresh Reviews Arete II": {
+            drivers: "",
             driverConfig: "1DD + Knowles 29689 ×2 + Knowles 31736",
             connector: "0.78mm 2-pin cable",
             cableTermination: "3.5mm single-ended and 4.4mm balanced modular plugs",
             impedance: "24Ω",
             sensitivity: "104dB",
-            frequencyResponse: "20Hz–40kHz",
+            frequencyResponse: "20Hz-40kHz",
             shellMaterial: "aerospace-grade aluminum",
             diaphragmMaterial: [
                 "composite diaphragm",
@@ -661,7 +690,7 @@ const extraDetails = {
             cableTermination: "2-pin",
             impedance: "24Ω",
             sensitivity: "102dB",
-            frequencyResponse: "20Hz–35kHz",
+            frequencyResponse: "20Hz-35kHz",
             shellMaterial: "medical-grade resin"
         }
 ,
@@ -671,7 +700,7 @@ const extraDetails = {
             cableTermination: "4.4mm balanced plug",
             impedance: "17Ω @1kHz",
             sensitivity: "106dB/mW @1kHz",
-            frequencyResponse: "20Hz–20kHz",
+            frequencyResponse: "20Hz-20kHz",
             shellMaterial: [
                 "titanium alloy",
                 "Damascus steel",
@@ -691,7 +720,8 @@ const extraDetails = {
 ,
         "Kiwi Ears x HBB Punch": {
             drivers: "1DD + 2BA + 2EST",
-            driverConfig: "1DD + 2BA + 2EST"
+            driverConfig: "1DD + 2BA + 2EST",
+            connector: ""
         }
 ,
         "Yanyin Baker": {
@@ -701,6 +731,87 @@ const extraDetails = {
             impedance: "8Ω",
             sensitivity: "104dB",
             shellMaterial: "Aluminum Alloy, Damascus Steel"
+        },
+        "Truthear x Crinacle Zero Blue 2": {
+            drivers: "10mm + 7.8mm Dynamic Drivers",
+            diaphragmMaterial: "",
+            impedance: "5.8Ω±15%@1kHz",
+            sensitivity: "119.5dB/Vrms @1kHz",
+            frequencyResponse: "9-41kHz (IEC61094, Free Field)"
+        },
+        "TINHIFI P1 MAX II": {
+            drivers: "Ф14.2mm Planar Magnetic drive",
+            sensitivity: "98+3dB @1kHz 0.126V",
+            frequencyResponse: "10-20kHz",
+            impedance: "16Ω±15%",
+            connector: "Gold-plated 2P connector",
+            cableTermination: "3.5mm gold plated plug carbon fiber tube"
+        },
+        "NICEHCK NX8Ti Limited Edition": {
+            impedance: "18Ω",
+            frequencyResponse: "20Hz-30Khz",
+            sensitivity: "112.3dB/mW@1kHz",
+            cableTermination: "3.5mm/4.4mm",
+            drivers: "Hybrid"
+        },
+        "IOAUDIO CIELO": {
+            drivers: "sixteen balanced armature drivers",
+            sensitivity: "119.5dB/Vrms (@1kHz)",
+            impedance: "15.30+10%(@1kHz)",
+            frequencyResponse: "10Hz-30kHz (IEC61094, Free Field)",
+            shellMaterial: "8-Strand Pure Silver Teflon Self-Twisted cable"
+        },
+        "MOONDROP Old Fashioned": {
+            connector: ""
+        },
+        "Simgot EP5": {
+            impedance: "",
+            sensitivity: ""
+        },
+        "FiiO JadeAudio JT7": {
+            frequencyResponse: "7Hz-40kHz",
+            impedance: "18Ω @ 1kHz",
+            sensitivity: "92dB/mW @ 1kHz / 109dB/Vrms @ 1kHz",
+            weight: "0.70 lb (about 318g)",
+            connector: "Dual 3.5mm TRS",
+            driverSize: "95x86mm"
+        },
+        "FiiO FT1 Pro": {
+            impedance: "20Ω",
+            weight: "374g"
+        },
+        "Hifiman Sundara": {
+            frequencyResponse: "6Hz - 75kHz",
+            impedance: "37Ω",
+            sensitivity: "94dB",
+            weight: "13.1oz (372g)",
+            connector: "3.5mm"
+        },
+        "Fosi Audio i5": {
+            frequencyResponse: "10 - 50,000 Hz; THD: < 1% @100dBSPL",
+            sensitivity: "98dB/mW @1kHz; Nominal Impedance: 28 Ω"
+        },
+        "FiiO FT7": {
+            frequencyResponse: "5Hz-40kHz",
+            impedance: "25Ω±15%",
+            sensitivity: "94dB/mW@1kHz~110dB/Vrms",
+            connector: "Dual 3.5mm TS",
+            weight: "15oz"
+        },
+        "Moondrop Skyland": {
+            impedance: "60Ω ±15%",
+            sensitivity: "96dB/Vrms",
+            frequencyResponse: "8 Hz-34 kHz (20 Hz-20 kHz effective, -3 dB)"
+        },
+        "Meze 109 Pro": {
+            frequencyResponse: "5Hz - 30kHz",
+            sensitivity: "112B SPI @1kHz, 1mW",
+            impedance: "40Ω",
+            weight: "13oz (375g) without cables",
+            driverType: "dynamic"
+        },
+        "NICEHCK BlackWheat IEM w/mic": {
+            connector: ""
         }
-}
+    }
 };

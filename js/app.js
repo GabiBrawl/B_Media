@@ -106,7 +106,7 @@ function getExtraDetailRows(itemName, categoryName) {
 }
 
 function hasAnyExtraInfo(itemName, categoryName) {
-    const hasLegacyExtraData = hasOwnItemEntry(extraData, itemName);
+    const hasLegacyExtraData = typeof extraData !== 'undefined' && hasOwnItemEntry(extraData, itemName);
     const hasExtendedExtraDetails = getExtraDetailRows(itemName, categoryName).length > 0;
     return hasLegacyExtraData || hasExtendedExtraDetails;
 }
@@ -218,11 +218,11 @@ function saveWishlist() {
     }
 }
 
-// Toggle item in wishlist
-function toggleWishlist(itemName) {
-    const index = wishlist.indexOf(itemName);
+// Toggle item in wishlist (Supports both catalog ID and legacy item name)
+function toggleWishlist(identifier) {
+    const index = wishlist.indexOf(identifier);
     if (index === -1) {
-        wishlist.push(itemName);
+        wishlist.push(identifier);
     } else {
         wishlist.splice(index, 1);
     }
@@ -230,8 +230,8 @@ function toggleWishlist(itemName) {
 }
 
 // Check if item is in wishlist
-function isInWishlist(itemName) {
-    return wishlist.includes(itemName);
+function isInWishlist(identifier) {
+    return wishlist.includes(identifier);
 }
 
 // Update wishlist count display
@@ -287,7 +287,6 @@ function populateCategoryFilter() {
     categoryFilter.innerHTML = '<option value="all">All Categories</option>';
     
     // Add options for each category in gearData
-    // Category names in gearData are now display names from Python
     const fragment = document.createDocumentFragment();
     for (const categoryName of Object.keys(gearData)) {
         const option = document.createElement('option');
@@ -343,8 +342,8 @@ function createRecommendedCountElement() {
 
 document.addEventListener('DOMContentLoaded', function() {
     
-    if (typeof gearData === 'undefined') {
-        console.error('gearData is not defined! Check if data.js is loaded.');
+    if (typeof gearData === 'undefined' || typeof itemsCatalog === 'undefined') {
+        console.error('gearData or itemsCatalog is not defined! Check if data.js is loaded.');
         return;
     }
 
@@ -353,62 +352,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Array of random quotes
     const quotes = [
-        {
-            text: "In Pursuit of Audio Perfection",
-            author: "sam!, Discord Server Admin"
-        },
-        {
-            text: "i wish to eat my oats",
-            author: "hazumi, MW Venus Fan"
-        },
-        {
-            text: "pianos should just explode",
-            author: "hazumi, MW Venus Fan"
-        },
-        {
-            text: "What the nerds up 2?",
-            author: "AudioMan"
-        },
-        {
-            text: "yall did auntie forget to take her special candy today?",
-            author: "Aspenumi"
-        },
-        {
-            text: "When will you all realize that I am perfect and not capable of mistakes. If I typed 'fro' it will be in the dictionary by tomorrow.",
-            author: "Axel Bostrom"
-        },
-        {
-            text: "We listen & We judge!",
-            author: "sam!, Discord Server Admin"
-        },
-        {
-            text: "Derp Durp",
-            author: "Bellumi 🥭🍒🥥🍊🍍🍎🫐🍋 🥝🍌🍇"
-        },
-        {
-            text: "legit my fav tiktoker",
-            author: "Aiden, aka A_Media"
-        },
-        {
-            text: "Will you add garlic to it?",
-            author: "Punnyumi, A Luxury High Tech Washing Machine"
-        },
-        {
-            text: "I have never gooned for a cable before",
-            author: "Axel Bostrom"
-        },
-        {
-            text: "hopes and dreams are illusions just like free will",
-            author: "Aspen"
-        },
-        {
-            text: "I'm gonna win because I'm hopes n dreams",
-            author: "hopes and dramiku"
-        },
-        {
-            text: "I am still the ultimate soda glazer",
-            author: "Katumi, #1 Tanchjim Soda Fan"
-        }
+        { text: "In Pursuit of Audio Perfection", author: "sam!, Discord Server Admin" },
+        { text: "i wish to eat my oats", author: "hazumi, MW Venus Fan" },
+        { text: "pianos should just explode", author: "hazumi, MW Venus Fan" },
+        { text: "What the nerds up 2?", author: "AudioMan" },
+        { text: "yall did auntie forget to take her special candy today?", author: "Aspenumi" },
+        { text: "When will you all realize that I am perfect and not capable of mistakes. If I typed 'fro' it will be in the dictionary by tomorrow.", author: "Axel Bostrom" },
+        { text: "We listen & We judge!", author: "sam!, Discord Server Admin" },
+        { text: "Derp Durp", author: "Bellumi 🥭🍒🥥🍊🍍🍎🫐🍋 🥝🍌🍇" },
+        { text: "legit my fav tiktoker", author: "Aiden, aka A_Media" },
+        { text: "Will you add garlic to it?", author: "Punnyumi, A Luxury High Tech Washing Machine" },
+        { text: "I have never gooned for a cable before", author: "Axel Bostrom" },
+        { text: "hopes and dreams are illusions just like free will", author: "Aspen" },
+        { text: "I'm gonna win because I'm hopes n dreams", author: "hopes and dramiku" },
+        { text: "I am still the ultimate soda glazer", author: "Katumi, #1 Tanchjim Soda Fan" }
     ];
 
     // Function to set random quote
@@ -797,7 +754,7 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 handleElement.setPointerCapture(activePointerId);
             } catch (error) {
-                // Ignore pointer capture failures and fall back to normal events
+                // Ignore pointer capture failures
             }
 
             const onPointerMove = (moveEvent) => {
@@ -1276,7 +1233,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 : 'Your wishlist is empty. Tap hearts on products to add items.';
             children.push(empty);
         } else {
-            const wishlistItems = allItems.filter(item => itemsForDisplay.includes(item.name));
+            const wishlistItems = allItems.filter(item => itemsForDisplay.includes(item.id) || itemsForDisplay.includes(item.name));
             const groupedItems = {};
             wishlistItems.forEach(item => {
                 if (!groupedItems[item.category]) {
@@ -1379,9 +1336,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const importSharedBtn = mobileWishlistContainer.querySelector('#mobile-import-shared-wishlist-btn');
         if (importSharedBtn) {
             importSharedBtn.addEventListener('click', function() {
-                itemsForDisplay.forEach(itemName => {
-                    if (!wishlist.includes(itemName)) {
-                        wishlist.push(itemName);
+                itemsForDisplay.forEach(itemIdentifier => {
+                    if (!wishlist.includes(itemIdentifier)) {
+                        wishlist.push(itemIdentifier);
                     }
                 });
                 saveWishlist();
@@ -1668,26 +1625,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Modal handlers
-    // Consolidated modal close handler function
-    function closeModal(modal, cleanUrl = false) {
-        modal.classList.remove('show');
+    function closeModal(modalElement, cleanUrl = false) {
+        modalElement.classList.remove('show');
         if (cleanUrl) {
             window.history.replaceState({}, document.title, window.location.pathname);
         }
     }
 
-    // Generic modal close handler - handles both single elements and NodeLists
-    function setupModalHandler(modal, closeButtons, cleanUrl = false) {
-        // Convert single element to array, keep NodeList as is
+    function setupModalHandler(modalElement, closeButtons, cleanUrl = false) {
         const buttons = closeButtons.forEach ? closeButtons : [closeButtons];
         buttons.forEach(btn => {
             btn.addEventListener('click', function() {
-                closeModal(modal, cleanUrl);
+                closeModal(modalElement, cleanUrl);
             });
         });
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                closeModal(modal, cleanUrl);
+        modalElement.addEventListener('click', function(e) {
+            if (e.target === modalElement) {
+                closeModal(modalElement, cleanUrl);
             }
         });
     }
@@ -1699,7 +1653,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // [DESKTOP ONLY] Setup wishlist modal container
     const wishlistModal = document.getElementById('wishlist-modal');
-    // Note: URL cleaning is handled in the modal close buttons for shared wishlists
 
     // Wishlist button handlers
     if (showWishlistBtn) {
@@ -1732,11 +1685,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Initialize all items FIRST
-    for (const [categoryKey, items] of Object.entries(gearData)) {
-        items.forEach(item => {
-            item.category = categoryKey;
-            allItems.push(item);
+    // Hydrate allItems from normalized itemsCatalog & gearData mapping arrays
+    for (const [categoryKey, itemIds] of Object.entries(gearData)) {
+        if (!Array.isArray(itemIds)) continue;
+
+        itemIds.forEach(id => {
+            const rawCatalogItem = itemsCatalog[id];
+            if (!rawCatalogItem) return;
+
+            // Push catalog objects enriched with category contextual properties
+            allItems.push({
+                id: id,
+                ...rawCatalogItem,
+                category: categoryKey
+            });
         });
     }
 
@@ -1779,7 +1741,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Render all categories initially
     renderAllCategories();
 
-    // Check for shared wishlist in URL (AFTER allItems is populated)
+    // Check for shared wishlist in URL
     const sharedWishlist = loadWishlistFromURL();
     if (sharedWishlist) {
         if (isMobileViewport()) {
@@ -1957,8 +1919,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const favoriteBtn = e.target.closest('.favorite-btn');
         if (favoriteBtn) {
             e.preventDefault();
-            const itemName = favoriteBtn.getAttribute('data-item-name');
-            toggleWishlist(itemName);
+            const itemId = favoriteBtn.getAttribute('data-item-id') || favoriteBtn.getAttribute('data-item-name');
+            toggleWishlist(itemId);
             favoriteBtn.classList.toggle('active');
 
             if (isMobileViewport() && filtersOpen && bottomBarMode === 'wishlist') {
@@ -2023,11 +1985,23 @@ document.addEventListener('DOMContentLoaded', function() {
         resetButtonMobile.addEventListener('click', resetAllFilters);
     }
 
+    function buildCategoryMapFromAllItems(itemsList) {
+        const categoryMap = {};
+        itemsList.forEach(item => {
+            if (!categoryMap[item.category]) {
+                categoryMap[item.category] = [];
+            }
+            categoryMap[item.category].push(item);
+        });
+        return categoryMap;
+    }
+
     function renderAllCategories() {
         updateResetButtonsState();
+        const categoryMap = buildCategoryMapFromAllItems(allItems);
 
         if (currentViewMode === 'category') {
-            renderCategoryOnlyCategories(gearData);
+            renderCategoryOnlyCategories(categoryMap);
             return;
         }
 
@@ -2038,18 +2012,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (quoteBanner) {
             children.push(quoteBanner.cloneNode(true));
         }
-        if (!isMobileViewport()) {
-            children.push(viewModeToggle);
-        }
 
         resetWishlistButtonText();
 
-        for (const [categoryName, items] of Object.entries(gearData)) {
+        for (const [categoryName, items] of Object.entries(categoryMap)) {
             const categoryDiv = document.createElement('div');
             categoryDiv.className = 'category';
             categoryDiv.id = categoryName.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
 
-            // Category name is already a display name from data.js
             categoryDiv.innerHTML = `<h2>${categoryName}</h2>`;
 
             const itemsDiv = document.createElement('div');
@@ -2064,13 +2034,12 @@ document.addEventListener('DOMContentLoaded', function() {
             children.push(categoryDiv);
         }
 
-        if (isMobileViewport()) {
+        if (!isMobileViewport()) {
             children.push(viewModeToggle);
         }
 
         main.replaceChildren(...children);
         updateBottomBarScrollProgress();
-        
     }
 
     function createEmptyState(message, description = '', compact = false) {
@@ -2132,16 +2101,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         });
 
-        // Group filtered items by category
-        const groupedItems = {};
-        filteredItems.forEach(item => {
-            if (!groupedItems[item.category]) {
-                groupedItems[item.category] = [];
-            }
-            groupedItems[item.category].push(item);
-        });
+        const groupedItems = buildCategoryMapFromAllItems(filteredItems);
 
-        // Render filtered results
         if (currentViewMode === 'category') {
             renderCategoryOnlyCategories(groupedItems);
             return;
@@ -2151,37 +2112,31 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function renderFilteredCategories(groupedItems) {
-        // Preserve the quote banner
         const quoteBanner = main.querySelector('.quote-banner');
         const children = [];
         const viewModeToggle = createViewModeToggleElement();
         if (quoteBanner) {
             children.push(quoteBanner.cloneNode(true));
         }
-        if (!isMobileViewport()) {
-            children.push(viewModeToggle);
-        }
         resetWishlistButtonText();
 
         if (Object.keys(groupedItems).length === 0) {
             const noResults = createEmptyState('No products match your filters', 'Try adjusting your search criteria');
             children.push(noResults);
-            if (isMobileViewport()) {
+            if (!isMobileViewport()) {
                 children.push(viewModeToggle);
             }
             main.replaceChildren(...children);
             updateBottomBarScrollProgress();
-            
             return;
         }
 
         for (const [categoryKey, items] of Object.entries(groupedItems)) {
             const categoryDiv = document.createElement('div');
             categoryDiv.className = 'category';
-            categoryDiv.id = categoryKey;
+            categoryDiv.id = categoryKey.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
 
-            const categoryTitle = categoryKey.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-            categoryDiv.innerHTML = `<h2>${categoryTitle} (${items.length})</h2>`;
+            categoryDiv.innerHTML = `<h2>${categoryKey} (${items.length})</h2>`;
 
             const itemsDiv = document.createElement('div');
             itemsDiv.className = 'items';
@@ -2195,13 +2150,10 @@ document.addEventListener('DOMContentLoaded', function() {
             children.push(categoryDiv);
         }
 
-        if (isMobileViewport()) {
-            children.push(viewModeToggle);
-        }
+        children.push(viewModeToggle);
 
         main.replaceChildren(...children);
         updateBottomBarScrollProgress();
-        
     }
 
     function hasActiveFilters() {
@@ -2313,12 +2265,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (normalized.includes('iem')) {
             return '<svg viewBox="0 0 310 147" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><path fill="white" d="M50 0c5 0 9 4 9 9v16.5a45 45 0 0 1 18.3 10l.7.5a39 39 0 0 1 57.8 51.7 35 35 0 0 1-24.4 59.3H35a35 35 0 0 1-35-35V56.3Q0 54 .3 52H0V9a9 9 0 0 1 8.5-9H50m250.5 0h.5a9 9 0 0 1 8.5 9v43h-.3q.3 2 .3 4.3V112a35 35 0 0 1-35 35h-76.4a35 35 0 0 1-24.4-59.3A39 39 0 0 1 231.5 36l.7-.6a45 45 0 0 1 18.3-9.9V9c0-5 4-9 9-9zM32.3 39C22.7 39 15 46.7 15 56.3V112c0 11 9 20 20 20h75.6A20 20 0 0 0 124 97L67.3 46.7a30 30 0 0 0-20-7.6zM262 39a30 30 0 0 0-20 7.6l-56.5 50.5a20 20 0 0 0 13.3 34.9h75.6c11 0 20-9 20-20V56.3c0-9.6-7.7-17.3-17.2-17.3zm-158 2q-7.9.2-14 4.5l35 31.2q3-5.3 3-11.7a24 24 0 0 0-24-24m101.3 0a24 24 0 0 0-21 35.7l35-31.2q-6.1-4.3-14-4.5M12 31.2A32 32 0 0 1 32.3 24H47V12H12zM262.1 24h-.9zm-208 .6-.4-.1zm201.7-.1h-.4zm3.6-.4h-.2zM48.2 24l-.8-.1zm229-.1c7.7 0 14.8 2.7 20.3 7.2V12h-35v12zM260 24"/></svg>';
         }
-        if (normalized.includes('iem-v2-legacy')) {
-            return '<svg viewBox="0 0 310 147" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><path d="M50 0C54.9706 0 59 4.02944 59 9V25.5342C65.735 27.3387 72.0127 30.6965 77.2979 35.4072L77.9893 36.0234C84.9014 29.7928 94.0542 26 104.093 26C125.632 26 143.093 43.4609 143.093 65C143.093 73.4634 140.396 81.296 135.815 87.6875C156.903 109.262 142.143 146.398 111.38 146.993L110.63 147H35C15.67 147 0 131.33 0 112V56.25C0 54.8092 0.0961986 53.3908 0.279297 52H0V9C1.24831e-07 4.18468 3.78166 0.252643 8.53711 0.0117188L9 0H50ZM300.5 0L300.963 0.0117188C305.718 0.252643 309.5 4.18468 309.5 9V52H309.221C309.404 53.3908 309.5 54.8092 309.5 56.25V112C309.5 131.33 293.83 147 274.5 147H198.87L198.12 146.993C167.358 146.398 152.596 109.262 173.684 87.6875C169.103 81.2961 166.407 73.4632 166.407 65C166.407 43.4609 183.868 26 205.407 26C215.446 26 224.597 29.7938 231.509 36.0244L232.202 35.4072C237.487 30.6965 243.765 27.3387 250.5 25.5342V9C250.5 4.02944 254.529 0 259.5 0H300.5ZM32.25 39C22.7231 39 15 46.7231 15 56.25V112C15 123.046 23.9543 132 35 132H110.63C129.007 132 137.655 109.297 123.937 97.0693L67.3174 46.6045C61.8221 41.7065 54.7177 39 47.3564 39H32.25ZM262.144 39C254.782 39 247.678 41.7065 242.183 46.6045L185.563 97.0693C171.845 109.297 180.493 132 198.87 132H274.5C285.546 132 294.5 123.046 294.5 112V56.25C294.5 46.7231 286.777 39 277.25 39H262.144ZM104.093 41C98.8627 41 94.0142 42.6707 90.0625 45.5215L125.049 76.7051C126.99 73.2385 128.093 69.2475 128.093 65C128.093 51.7452 117.348 41 104.093 41ZM205.407 41C192.152 41 181.407 51.7452 181.407 65C181.407 69.2475 182.51 73.2385 184.451 76.7051L219.437 45.5215C215.485 42.6707 210.637 41 205.407 41ZM303.274 37.2031C303.254 37.1759 303.235 37.1483 303.215 37.1211C303.235 37.1483 303.254 37.1759 303.274 37.2031ZM302.824 36.6035C302.801 36.5735 302.778 36.5436 302.755 36.5137C302.778 36.5436 302.801 36.5735 302.824 36.6035ZM12 31.1514C11.9937 31.1564 11.9877 31.1619 11.9814 31.167C17.52 26.6859 24.5708 24 32.25 24H47V12H12V31.1514ZM262.144 24C261.834 24 261.524 24.0034 261.215 24.0098L262.144 24ZM54.876 24.6348C54.7839 24.6191 54.6918 24.6039 54.5996 24.5889C54.6918 24.6039 54.7839 24.6192 54.876 24.6348ZM254.899 24.5889C254.807 24.6039 254.715 24.6191 254.623 24.6348C254.715 24.6192 254.807 24.6039 254.899 24.5889ZM54.0928 24.5088C53.9741 24.4908 53.8552 24.4741 53.7363 24.457C53.8552 24.4741 53.9741 24.4908 54.0928 24.5088ZM255.763 24.457C255.644 24.4741 255.525 24.4908 255.406 24.5088C255.525 24.4908 255.644 24.4741 255.763 24.457ZM53.1172 24.3721C52.8977 24.3437 52.6781 24.3162 52.458 24.291C52.6781 24.3161 52.8977 24.3437 53.1172 24.3721ZM257.041 24.291C256.821 24.3162 256.602 24.3437 256.383 24.3721C256.602 24.3438 256.821 24.3161 257.041 24.291ZM52.0869 24.251C51.9357 24.2349 51.7843 24.2196 51.6328 24.2051C51.7843 24.2195 51.9357 24.235 52.0869 24.251ZM257.866 24.2051C257.715 24.2196 257.563 24.2349 257.412 24.251C257.563 24.235 257.715 24.2195 257.866 24.2051ZM258.848 24.1221C258.669 24.1352 258.49 24.1488 258.312 24.1641C258.49 24.1488 258.669 24.1352 258.848 24.1221ZM51.1875 24.1641C51.009 24.1488 50.8302 24.1352 50.6514 24.1221C50.8302 24.1352 51.009 24.1488 51.1875 24.1641ZM259.351 24.0869C259.293 24.0905 259.235 24.0938 259.178 24.0977C259.235 24.0939 259.293 24.0905 259.351 24.0869ZM260.951 24.0166C260.721 24.0227 260.492 24.0304 260.263 24.04C260.492 24.0305 260.721 24.0227 260.951 24.0166ZM49.2363 24.04C49.007 24.0304 48.7776 24.0227 48.5479 24.0166C48.7776 24.0227 49.007 24.0305 49.2363 24.04ZM48.2842 24.0098C47.9753 24.0034 47.666 24 47.3564 24L48.2842 24.0098ZM277.25 24C284.929 24 291.98 26.6859 297.519 31.167C297.512 31.1619 297.506 31.1564 297.5 31.1514V12H262.5V24H277.25ZM260.041 24.0488C259.811 24.0596 259.58 24.0726 259.351 24.0869C259.58 24.0726 259.811 24.0596 260.041 24.0488Z" fill="none" stroke-width="6"/></svg>';
-        }
-        if (normalized.includes('iem-legacy')) {
-            return '<svg viewBox="0 0 320 147" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><path d="M50 0C54.9706 0 59 4.02944 59 9V25.5342C65.735 27.3387 72.0127 30.6965 77.2979 35.4072L77.9561 35.9941C85.0533 28.6017 95.0356 24 106.093 24C127.632 24 145.093 41.4609 145.093 63C145.093 72.4892 141.702 81.1852 136.068 87.9463C156.786 109.557 142.019 146.4 111.38 146.993L110.63 147H35C15.67 147 0 131.33 0 112V56.25C0 54.8092 0.0961986 53.3908 0.279297 52H0V9C1.24831e-07 4.18468 3.78166 0.252643 8.53711 0.0117188L9 0H50ZM310.5 0L310.963 0.0117188C315.718 0.252643 319.5 4.18468 319.5 9V52H319.221C319.404 53.3908 319.5 54.8092 319.5 56.25V112C319.5 131.33 303.83 147 284.5 147H208.87L208.12 146.993C177.481 146.4 162.714 109.557 183.431 87.9463C177.797 81.1853 174.407 72.489 174.407 63C174.407 41.4609 191.868 24 213.407 24C224.464 24 234.446 28.602 241.543 35.9941L242.202 35.4072C247.487 30.6965 253.765 27.3387 260.5 25.5342V9C260.5 4.02944 264.529 0 269.5 0H310.5ZM32.25 37C21.6185 37 13 45.6185 13 56.25V112C13 124.15 22.8497 134 35 134H110.63C130.844 134 140.358 109.027 125.268 95.5771L68.6484 45.1113C62.7868 39.8868 55.2085 37 47.3564 37H32.25ZM272.144 37C264.291 37 256.713 39.8868 250.852 45.1113L194.232 95.5771C179.142 109.027 188.656 134 208.87 134H284.5C296.65 134 306.5 124.15 306.5 112V56.25C306.5 45.6185 297.881 37 287.25 37H272.144ZM106.093 37C99.5404 37 93.5454 39.4237 88.9639 43.4385L127.486 77.7744C130.395 73.5735 132.093 68.4846 132.093 63C132.093 48.6406 120.452 37 106.093 37ZM213.407 37C199.048 37 187.407 48.6406 187.407 63C187.407 68.4846 189.105 73.5735 192.014 77.7744L230.536 43.4385C225.955 39.4237 219.96 37 213.407 37ZM314.137 38.4385C314.121 38.4144 314.105 38.3902 314.089 38.3662C314.105 38.3902 314.121 38.4144 314.137 38.4385ZM313.254 37.1748C313.239 37.154 313.223 37.1331 313.208 37.1123C313.223 37.1331 313.239 37.154 313.254 37.1748ZM312.824 36.6035C312.801 36.5735 312.778 36.5436 312.755 36.5137C312.778 36.5436 312.801 36.5735 312.824 36.6035ZM272.144 24C271.834 24 271.524 24.0034 271.215 24.0098L272.144 24ZM12 31.1504C17.5356 26.6787 24.5797 24 32.25 24H47V12H12V31.1504ZM54.876 24.6348C54.7839 24.6191 54.6918 24.6039 54.5996 24.5889C54.6918 24.6039 54.7839 24.6192 54.876 24.6348ZM264.899 24.5889C264.807 24.6039 264.715 24.6191 264.623 24.6348C264.715 24.6192 264.807 24.6039 264.899 24.5889ZM54.0928 24.5088C53.9741 24.4908 53.8552 24.4741 53.7363 24.457C53.8552 24.4741 53.9741 24.4908 54.0928 24.5088ZM265.763 24.457C265.644 24.4741 265.525 24.4908 265.406 24.5088C265.525 24.4908 265.644 24.4741 265.763 24.457ZM53.1172 24.3721C52.8977 24.3437 52.6781 24.3162 52.458 24.291C52.6781 24.3161 52.8977 24.3437 53.1172 24.3721ZM267.041 24.291C266.821 24.3162 266.602 24.3437 266.383 24.3721C266.602 24.3438 266.821 24.3161 267.041 24.291ZM52.0869 24.251C51.9357 24.2349 51.7843 24.2196 51.6328 24.2051C51.7843 24.2195 51.9357 24.235 52.0869 24.251ZM267.866 24.2051C267.715 24.2196 267.563 24.2349 267.412 24.251C267.563 24.235 267.715 24.2195 267.866 24.2051ZM268.848 24.1221C268.669 24.1352 268.49 24.1488 268.312 24.1641C268.49 24.1488 268.669 24.1352 268.848 24.1221ZM51.1875 24.1641C51.009 24.1488 50.8302 24.1352 50.6514 24.1221C50.8302 24.1352 51.009 24.1488 51.1875 24.1641ZM269.351 24.0869C269.293 24.0905 269.235 24.0938 269.178 24.0977C269.235 24.0939 269.293 24.0905 269.351 24.0869ZM270.951 24.0166C270.721 24.0227 270.492 24.0304 270.263 24.04C270.492 24.0305 270.721 24.0227 270.951 24.0166ZM49.2363 24.04C49.007 24.0304 48.7776 24.0227 48.5479 24.0166C48.7776 24.0227 49.007 24.0305 49.2363 24.04ZM48.2842 24.0098C47.9753 24.0034 47.666 24 47.3564 24L48.2842 24.0098ZM287.25 24C294.931 24 301.983 26.687 307.522 31.1699C307.515 31.1638 307.508 31.1575 307.5 31.1514V12H272.5V24H287.25ZM270.041 24.0488C269.811 24.0596 269.58 24.0726 269.351 24.0869C269.58 24.0726 269.811 24.0596 270.041 24.0488Z" /></svg>';
-        }
         if (normalized.includes('headphone')) {
             return icon('<path d="M4 13a8 8 0 0 1 16 0"></path><rect x="3" y="13" width="4" height="7" rx="2"></rect><rect x="17" y="13" width="4" height="7" rx="2"></rect>');
         }
@@ -2343,12 +2289,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (normalized.includes('tech-i-use') || normalized.includes('tech i use')) {
             return icon('<circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1 1 0 0 0 .2 1.1l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1 1 0 0 0-1.1-.2 1 1 0 0 0-.6.9V20a2 2 0 1 1-4 0v-.2a1 1 0 0 0-.6-.9 1 1 0 0 0-1.1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1 1 0 0 0 .2-1.1 1 1 0 0 0-.9-.6H4a2 2 0 1 1 0-4h.2a1 1 0 0 0 .9-.6 1 1 0 0 0-.2-1.1l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1 1 0 0 0 1.1.2h.2a1 1 0 0 0 .6-.9V4a2 2 0 1 1 4 0v.2a1 1 0 0 0 .6.9h.2a1 1 0 0 0 1.1-.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1 1 0 0 0-.2 1.1v.2a1 1 0 0 0 .9.6H20a2 2 0 1 1 0 4h-.2a1 1 0 0 0-.9.6z"></path>');
         }
-        if (normalized.includes('explore-other-linktrees') || normalized.includes('other linktrees')) {
-            return icon('<path d="M12 22V12"></path><path d="M8 12h8"></path><path d="M6 7a4 4 0 1 1 8 0"></path><path d="M10 4a4 4 0 1 1 8 0"></path><path d="M4 10a4 4 0 1 1 8 0"></path>');
-        }
-        if (normalized.includes('about-this-account') || normalized.includes('about this account')) {
-            return icon('<circle cx="12" cy="8" r="4"></circle><path d="M4 20a8 8 0 0 1 16 0"></path>');
-        }
 
         return icon('<path d="M9 18V6l10-2v12"></path><circle cx="6" cy="18" r="3"></circle><circle cx="16" cy="16" r="3"></circle>');
     }
@@ -2360,15 +2300,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (quoteBanner) {
             children.push(quoteBanner.cloneNode(true));
         }
-        if (!isMobileViewport()) {
-            children.push(viewModeToggle);
-        }
         resetWishlistButtonText();
 
         const categoryEntries = Object.entries(groupedItems);
         if (categoryEntries.length === 0) {
             const noResults = createEmptyState('No products match your filters', 'Try adjusting your search criteria');
             children.push(noResults);
+            children.push(viewModeToggle);
             main.replaceChildren(...children);
             updateBottomBarScrollProgress();
             return;
@@ -2419,6 +2357,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 children.push(mobileSocialLinks);
             }
         }
+        if (!isMobileViewport()) {
+            children.push(viewModeToggle);
+        }
         main.replaceChildren(...children);
         updateBottomBarScrollProgress();
     }
@@ -2463,7 +2404,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function renderFocusedCategoryPage(categoryName, categoryItems, children, viewModeToggle = null) {
-        const itemCount = categoryItems ? categoryItems.length : 0;
         updateFilterVisibility();
 
         if (!categoryItems || categoryItems.length === 0) {
@@ -2477,14 +2417,10 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Remove the view-mode-bar since we'll include the toggle in the category header
         const filteredChildren = children.filter(child => !child.classList || !child.classList.contains('view-mode-bar'));
 
         const categoryHeader = document.createElement('div');
         categoryHeader.className = 'category-page-header';
-        const headerToggleHtml = isMobileViewport()
-            ? ''
-            : '<button id="view-mode-toggle-in-header" class="view-mode-toggle-btn">Switch to Classic View</button>';
         categoryHeader.innerHTML = `
             <div class="category-header-left">
                 <button class="category-page-back" type="button">← Back to Categories</button>
@@ -2496,7 +2432,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 </h2>
             </div>
             <div class="category-header-right">
-                ${headerToggleHtml}
             </div>
         `;
         filteredChildren.push(categoryHeader);
@@ -2518,7 +2453,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function showExtraData(itemName, categoryName) {
-        const data = extraData[itemName];
+        const data = typeof extraData !== 'undefined' ? extraData[itemName] : null;
         const detailsHtml = buildExtraDetailsHtml(itemName, categoryName);
 
         if (!data && !detailsHtml) return;
@@ -2546,7 +2481,6 @@ document.addEventListener('DOMContentLoaded', function() {
             html += '</div>';
         }
 
-        // Add other stuff
         const otherKeys = data ? Object.keys(data).filter(key => key !== 'images' && key !== 'tiktoks') : [];
         if (otherKeys.length > 0) {
             html += '<div class="extra-notes">';
@@ -2566,8 +2500,8 @@ document.addEventListener('DOMContentLoaded', function() {
         extraModal.classList.add('show');
     }
 
-    // Preload images for extra data when hovering over info button
     function preloadExtraImages(itemName) {
+        if (typeof extraData === 'undefined') return;
         const data = extraData[itemName];
         if (!data || !data.images) return;
         
@@ -2580,26 +2514,24 @@ document.addEventListener('DOMContentLoaded', function() {
     function createItemElement(item, isShared = false, options = {}) {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'item';
+        itemDiv.setAttribute('data-id', item.id);
 
         const pickBadge = item.pick ? '<span class="pick-badge">B_Media Pick</span>' : '';
         const priceText = item.price ? `$${item.price}` : 'Check Price';
 
-        // Check if extra data exists
         const hasExtraData = hasAnyExtraInfo(item.name, item.category);
         const extraButton = hasExtraData ? `<a href="#" class="extra-data-btn" data-item-name="${item.name}" data-item-category="${item.category}" title="Extra Data" aria-label="Extra Data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="11" x2="12" y2="16"></line><circle cx="12" cy="8" r="1.2" fill="currentColor" stroke="none"></circle></svg></a>` : '';
 
-        // Check if item is in wishlist (only for personal wishlist)
-        const inWishlist = !isShared && isInWishlist(item.name);
+        const inWishlist = !isShared && (isInWishlist(item.id) || isInWishlist(item.name));
         const favoriteClass = inWishlist ? 'active' : '';
         const favoriteButton = isShared ? '' : `
-            <button class="favorite-btn ${favoriteClass}" data-item-name="${item.name}" title="Add to Wishlist">
+            <button class="favorite-btn ${favoriteClass}" data-item-id="${item.id}" data-item-name="${item.name}" title="Add to Wishlist">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                 </svg>
             </button>
         `;
 
-        // Share button for individual product (overlay on image) - only on main grid, not wishlist modal
         const shareButton = (isShared || options.hideShareButton) ? '' : `
             <button class="share-product-btn" data-item-name="${item.name}" title="Share">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -2612,7 +2544,6 @@ document.addEventListener('DOMContentLoaded', function() {
             </button>
         `;
 
-        // Use wrapper only for main grid (for share button overlay)
         const imageSection = (isShared || options.hideShareButton) ? `
             <img class="item-image" 
                  alt="${item.name}"
@@ -2644,7 +2575,6 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
-        // Observe image for lazy loading
         if (imageObserver) {
             const img = itemDiv.querySelector('.item-image');
             imageObserver.observe(img);
@@ -2653,7 +2583,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return itemDiv;
     }
 
-    // Generate markdown for a single product (concise format)
     function generateProductMarkdown(item) {
         const pick = item.pick ? ' *(B_Media Pick)*' : '';
         const price = item.price ? ` · $${item.price}` : '';
@@ -2661,7 +2590,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return `**${item.name}**${pick}${price}\n[View Product](${item.url})`;
     }
 
-    // Copy single product markdown to clipboard
     function shareProduct(itemName, button) {
         const item = allItems.find(i => i.name === itemName);
         if (!item) return;
@@ -2669,7 +2597,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const markdown = generateProductMarkdown(item);
         
         navigator.clipboard.writeText(markdown).then(() => {
-            // Visual feedback
             const originalHTML = button.innerHTML;
             button.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>';
             button.classList.add('copied');
@@ -2682,13 +2609,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Export wishlist as markdown for Discord/sharing
     function exportWishlistAsMarkdown(itemsToShow = null) {
         const items = itemsToShow || wishlist;
         if (items.length === 0) return '';
 
-        // Get items data and group by category
-        const wishlistItems = allItems.filter(item => items.includes(item.name));
+        const wishlistItems = allItems.filter(item => items.includes(item.id) || items.includes(item.name));
         const groupedItems = {};
         wishlistItems.forEach(item => {
             if (!groupedItems[item.category]) {
@@ -2697,11 +2622,9 @@ document.addEventListener('DOMContentLoaded', function() {
             groupedItems[item.category].push(item);
         });
 
-        // Generate shareable wishlist link
         const encoded = btoa(JSON.stringify(items));
         const shareUrl = `${window.location.origin}${window.location.pathname}?wishlist=${encoded}`;
         
-        // Build clean markdown
         let markdown = `# My Wishlist\n`;
         
         for (const [categoryKey, categoryItems] of Object.entries(groupedItems)) {
@@ -2720,7 +2643,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return markdown;
     }
 
-    // Copy markdown to clipboard with visual feedback
     function copyMarkdownToClipboard(button, itemsToShow = null) {
         const markdown = exportWishlistAsMarkdown(itemsToShow);
         if (!markdown) {
@@ -2741,7 +2663,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // [DESKTOP ONLY] Wishlist modal renderer (mobile uses bottom-bar wishlist UI)
     function showWishlistModal(sharedItems = null, isShared = false) {
         const itemsToShow = isShared ? sharedItems : wishlist;
         
@@ -2750,14 +2671,12 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Open the wishlist modal
         const wishlistModal = document.getElementById('wishlist-modal');
         const wishlistContent = document.getElementById('wishlist-modal-content');
         const wishlistItemCount = document.getElementById('wishlist-item-count');
         const wishlistTitle = document.getElementById('wishlist-modal-title');
         const wishlistActions = document.getElementById('wishlist-modal-actions');
 
-        // Set title and count
         if (isShared) {
             wishlistTitle.innerHTML = `
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;">
@@ -2780,8 +2699,7 @@ document.addEventListener('DOMContentLoaded', function() {
             wishlistItemCount.textContent = `${itemsToShow.length} item${itemsToShow.length !== 1 ? 's' : ''}`;
         }
 
-        // Get items data
-        const wishlistItems = allItems.filter(item => itemsToShow.includes(item.name));
+        const wishlistItems = allItems.filter(item => itemsToShow.includes(item.id) || itemsToShow.includes(item.name));
         const groupedItems = {};
         wishlistItems.forEach(item => {
             if (!groupedItems[item.category]) {
@@ -2790,10 +2708,8 @@ document.addEventListener('DOMContentLoaded', function() {
             groupedItems[item.category].push(item);
         });
 
-        // Build the modal content
         const children = [];
         if (isShared) {
-            // Add description for shared wishlist
             const desc = document.createElement('p');
             desc.className = 'shared-wishlist-note';
             desc.textContent = 'Someone shared their wishlist with you!';
@@ -2803,12 +2719,11 @@ document.addEventListener('DOMContentLoaded', function() {
         for (const [categoryKey, items] of Object.entries(groupedItems)) {
             const categoryDiv = document.createElement('div');
             categoryDiv.className = 'wishlist-category';
-            categoryDiv.id = `wishlist-${categoryKey}`;
+            categoryDiv.id = `wishlist-${categoryKey.toLowerCase().replace(/\s+/g, '-')}`;
 
-            const categoryTitle = categoryKey.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
             categoryDiv.innerHTML = `
                 <div class="wishlist-category-header">
-                    <h3>${categoryTitle}</h3>
+                    <h3>${categoryKey}</h3>
                     <span class="wishlist-category-count">${items.length} item${items.length !== 1 ? 's' : ''}</span>
                 </div>
             `;
@@ -2817,7 +2732,7 @@ document.addEventListener('DOMContentLoaded', function() {
             itemsDiv.className = 'wishlist-items-grid';
 
             items.forEach(item => {
-                const itemDiv = createItemElement(item, true); // Always true in wishlist modal to hide share button
+                const itemDiv = createItemElement(item, true);
                 itemsDiv.appendChild(itemDiv);
             });
 
@@ -2827,7 +2742,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         wishlistContent.replaceChildren(...children);
 
-        // Set up actions
         if (isShared) {
             wishlistActions.innerHTML = `
                 <div class="wishlist-actions-primary">
@@ -2851,22 +2765,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     <button id="close-shared-wishlist-btn" class="action-btn tertiary">Close</button>
                 </div>
             `;
-            // Copy markdown handler (for shared wishlist)
             document.getElementById('copy-markdown-btn').addEventListener('click', function() {
                 copyMarkdownToClipboard(this, itemsToShow);
             });
-            // Import button handler
             document.getElementById('import-shared-wishlist-btn').addEventListener('click', function() {
-                itemsToShow.forEach(itemName => {
-                    if (!wishlist.includes(itemName)) {
-                        wishlist.push(itemName);
+                itemsToShow.forEach(itemIdentifier => {
+                    if (!wishlist.includes(itemIdentifier)) {
+                        wishlist.push(itemIdentifier);
                     }
                 });
                 saveWishlist();
                 updateWishlistCount();
                 closeModal(wishlistModal, true);
             });
-            // Close button handler
             document.getElementById('close-shared-wishlist-btn').addEventListener('click', function() {
                 closeModal(wishlistModal, true);
             });
@@ -2894,17 +2805,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     <button id="close-wishlist-btn" class="action-btn tertiary">Close</button>
                 </div>
             `;
-            // Copy markdown handler
             document.getElementById('copy-markdown-btn').addEventListener('click', function() {
                 copyMarkdownToClipboard(this);
             });
-            // Clear wishlist handler
             document.getElementById('wishlist-modal-clear').onclick = function() {
                 if (confirm('Are you sure you want to clear your entire wishlist?')) {
                     wishlist = [];
                     saveWishlist();
                     closeModal(wishlistModal);
-                    // Update the wishlist button count
                     const wishlistBtn = document.getElementById('show-wishlist-btn');
                     if (wishlistBtn) {
                         const wishlistBtnText = wishlistBtn.querySelector('span');
@@ -2914,19 +2822,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
             };
-            // Close button handler
             document.getElementById('close-wishlist-btn').addEventListener('click', function() {
                 closeModal(wishlistModal);
             });
         }
 
-        // Show modal
         wishlistModal.classList.add('show');
 
-        // Add overlay click handler for all modals
         const closeCurrentModal = () => closeModal(wishlistModal, isShared);
         
-        // Overlay click
         const overlayHandler = function(e) {
             if (e.target === wishlistModal) {
                 closeCurrentModal();
@@ -2934,7 +2838,6 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         wishlistModal.addEventListener('click', overlayHandler);
 
-        // ESC key
         const escHandler = function(e) {
             if (e.key === 'Escape') {
                 closeCurrentModal();

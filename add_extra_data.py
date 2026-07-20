@@ -3,55 +3,70 @@ import re
 import os
 
 def sanitize_name(name):
-    # Sanitize the name for filename: lowercase, replace spaces and special chars with _
     return re.sub(r'[^a-zA-Z0-9_]', '_', name.lower().replace(' ', '_'))
 
 def load_js_object(filepath, var_name):
-    with open(filepath, 'r') as f:
+    with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
-    # Remove the const var_name = and trailing ;
-    content = content.replace(f'const {var_name} = ', '').rstrip(';')
-    # Remove comment lines
+    
+    # Strip comments out safely
     content = re.sub(r'^\s*//.*$', '', content, flags=re.MULTILINE)
-    # Replace unquoted keys with quoted
-    keys_to_quote = ['name', 'price', 'url', 'pick', 'image', 'images', 'tiktoks', 'otherStuff']
-    for key in keys_to_quote:
-        content = content.replace(f'{key}: ', f'"{key}": ')
-    content = content.strip()
-    # Extract the JSON object
-    start = content.find('{')
-    end = content.rfind('}') + 1
-    if start != -1 and end != -1:
-        content = content[start:end]
-    return json.loads(content)
+    
+    # Locate the target variable statement
+    marker = f"const {var_name} = "
+    start_idx = content.find(marker)
+    if start_idx == -1:
+        raise ValueError(f"Could not locate variable initialization: {var_name}")
+        
+    start_brace = content.find('{', start_idx)
+    
+    # Read characters forward balancing the braces
+    depth = 0
+    end_brace = -1
+    for idx in range(start_brace, len(content)):
+        char = content[idx]
+        if char == '{':
+            depth += 1
+        elif char == '}':
+            depth -= 1
+            if depth == 0:
+                end_brace = idx
+                break
+                
+    if end_brace == -1:
+        raise ValueError(f"Malformed braces structure inside target object: {var_name}")
+        
+    raw_js_obj = content[start_brace:end_brace+1]
+    
+    # Transform JavaScript-native objects safely into valid parsing JSON strings
+    # 1. Ensure object keys are wrapped in proper double quotes
+    raw_json_str = re.sub(r'([{,]\s*)([a-zA-Z_][a-zA-Z0-9_]*)\s*:', r'\1"\2":', raw_js_obj)
+    # 2. Convert raw trailing block commas out if any exist
+    raw_json_str = re.sub(r',\s*([\]}])', r'\1', raw_json_str)
+    
+    return json.loads(raw_json_str)
 
 def main():
-    # Load data
     gear_data = load_js_object('js/data.js', 'gearData')
     extra_data = load_js_object('js/extraData.js', 'extraData')
 
-    # Get all product names from gearData
     all_products = []
     for category, items in gear_data.items():
         for item in items:
             all_products.append(item['name'])
 
-    # Products not in extraData, in the order they appear in data.js
     missing_products = [p for p in all_products if p not in extra_data]
 
     if not missing_products:
         print("All products already have extra data.")
         return
 
-    # Show only first 5
     products_to_show = missing_products[:5]
 
-    # List options
     print("Products missing extra data (showing first 5):")
     for i, product in enumerate(products_to_show, 1):
         print(f"{i}. {product}")
 
-    # Get user choice
     while True:
         try:
             choice = int(input("Enter the number of the product to add extra data: "))
@@ -63,26 +78,21 @@ def main():
         except ValueError:
             print("Please enter a number.")
 
-    # Ask for TikTok links
     tiktoks_input = input("Enter TikTok links separated by commas (or press enter for none): ")
     tiktoks = [link.strip() for link in tiktoks_input.split(',') if link.strip()]
 
-    # Generate image location logically
     sanitized = sanitize_name(selected_product)
     image_path = f"images/extraData/{sanitized}_graph.png"
     images = [image_path]
 
-    # Placeholder for otherStuff
-    other_stuff = f"Here could go some additional information about the {selected_product}. This is a temporary placeholder."
+    other_stuff = f"Here could go some additional information about the {selected_product}."
 
-    # Add to extraData
     extra_data[selected_product] = {
         "images": images,
         "tiktoks": tiktoks,
         "otherStuff": other_stuff
     }
 
-    # Save back
     comment = """// Extra data for products, manually added by user
 // Example structure:
 // "IEM Name": {
@@ -92,10 +102,10 @@ def main():
 // }
 """
 
-    with open('js/extraData.js', 'w') as f:
+    with open('js/extraData.js', 'w', encoding='utf-8') as f:
         f.write(comment)
         f.write('const extraData = ')
-        json.dump(extra_data, f, indent=4)
+        json.dump(extra_data, f, indent=4, ensure_ascii=False)
         f.write(';\n')
 
     print(f"Added extra data for {selected_product}.")

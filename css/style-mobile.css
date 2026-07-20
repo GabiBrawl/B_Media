@@ -374,13 +374,30 @@
     .category-options-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.5rem;
-        grid-auto-rows: 1fr;
+        gap: 0.38rem;
+        grid-auto-rows: 105px;
+    }
+
+    /* Compact bento spans for mobile */
+    .category-options-grid .category:nth-child(1) {
+        grid-column: span 2;
+        grid-row: span 1;
+    }
+
+    .category-options-grid .category:nth-child(2),
+    .category-options-grid .category:nth-child(3),
+    .category-options-grid .category:nth-child(n+5) {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+
+    .category-options-grid .category:nth-child(4) {
+        grid-column: span 1;
+        grid-row: span 1;
     }
 
     .category-toggle-btn {
-        padding: 0.62rem;
-        min-height: 90px;
+        padding: 0.58rem;
         height: 100%;
         aspect-ratio: auto;
         align-items: stretch;
@@ -390,9 +407,19 @@
     .category-toggle-content {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.62rem;
         width: 100%;
         height: 100%;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+
+    /* Reset bento grid centering for mobile */
+    .category-options-grid .category:nth-child(1) .category-toggle-content,
+    .category-options-grid .category:nth-child(4) .category-toggle-content {
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: row;
     }
 
     .category-toggle-text {
@@ -400,18 +427,26 @@
     }
 
     .category-toggle-label {
-        font-size: clamp(0.8rem, 3.2vw, 0.95rem);
+        font-size: clamp(0.90rem, 3.8vw, 1.10rem);
         line-height: 1.1;
     }
 
     .category-toggle-count {
-        font-size: 0.7rem;
+        font-size: 0.68rem;
     }
 
     .category-toggle-svg {
-        width: 30px;
-        height: 30px;
-        flex: 0 0 30px;
+        width: 26px;
+        height: 26px;
+        flex: 0 0 26px;
+    }
+
+    /* Reset bento grid icon sizes for mobile */
+    .category-options-grid .category:nth-child(1) .category-toggle-svg,
+    .category-options-grid .category:nth-child(4) .category-toggle-svg {
+        width: 26px;
+        height: 26px;
+        flex: 0 0 26px;
     }
 
     .category-page-header {
