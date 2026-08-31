@@ -11,8 +11,9 @@ const itemsCatalog = {
     "audeze-mm-500": { name: "Audeze MM-500", price: 1700, url: "https://amzn.to/40Pa83z", pick: false, image: "images/Audeze_MM-500.jpg" },
     "basn-bmaster5": { name: "BASN Bmaster5", price: 170, url: "https://amzn.to/4f9tXua", pick: false, image: "images/BASN_Bmaster5.jpg" },
     "bluetooth-hiby-w3-ii": { name: "Bluetooth HiBy W3 II", price: 49, url: "https://www.linsoul.com/products/hiby-w3-ii?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Bluetooth_HiBy_W3_II.png" },
-    "bmedia-terras-cable": { name: "B_Media Terras Cable", price: 46, url: "https://www.linsoul.com/products/kiwi-ears-x-b_media-terras?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/B_Media_Terras_Cable.jpg" },
+    "bmedia-terras-cable": { name: "B Media Terras Cable", price: 48, url: "https://www.linsoul.com/products/kiwi-ears-x-b-media-terras-headphone-cable?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/B_Media_Terras_Cable.jpg" },
     "bose-qc-ultra-2": { name: "Bose QC Ultra 2", price: 450, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB0FDKQ2FG6%2Fref%3Dcm_sw_r_as_gl_api_gl_i_KMZZ1JFZZ6GY3C88QWTP%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3D09ba8bbe979351a9c6fb08316894060e&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/Bose_QC_Ultra_2.jpg" },
+    "bqeyz-frost": { name: "BQEYZ Frost", price: 180, url: "https://amzn.to/3TEHQIJ", pick: false, image: "images/BQEYZ_Frost.jpg" },
     "bqeyz-winter-ii": { name: "BQEYZ Winter II", price: 320, url: "https://amzn.to/4wAhaaC", pick: false, image: "images/BQEYZ_Winter_II.jpg" },
     "but-constantly-on-sale-focal-hadenys": { name: "but constantly on sale Focal HADENYS", price: 750, url: "https://amzn.to/4lMy80L", pick: false, image: "images/but_constantly_on_sale_Focal_HADENYS.jpg" },
     "but-constantly-on-sale-sennheiser-hd-599": { name: "but constantly on sale Sennheiser HD 599", price: 240, url: "https://amzn.to/4bKO5QD", pick: false, image: "images/but_constantly_on_sale_Sennheiser_HD_599.jpg" },
@@ -31,6 +32,7 @@ const itemsCatalog = {
     "fatfreq-maestro-se-universals": { name: "FatFreq Maestro SE Universals", price: 2500, url: "https://fatfreq.com/products/maestro-se?srsltid=AfmBOoppbPC40665jKDzhpH6lchKDLBP_Stg5txzJAnnbUgeKlVoit-q", pick: false, image: "images/FatFreq_Maestro_SE_Universals.jpg" },
     "fiio-eh11": { name: "FiiO EH11", price: 35, url: "https://amzn.to/4yHwofy", pick: false, image: "images/FiiO_EH11.jpg" },
     "fiio-eh13": { name: "FiiO EH13", price: 60, url: "https://amzn.to/4yBJWJh", pick: false, image: "images/FiiO_EH13.jpg" },
+    "fiio-fg3": { name: "FiiO FG3", price: 70, url: "https://apos.audio/products/fiio-fg3-gaming-headphones?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/FiiO_FG3.jpg" },
     "fiio-ft1": { name: "FiiO FT1", price: 160, url: "https://apos.audio/products/fiio-ft1?sca_ref=9857353.lTWqXMxzNa", pick: true, image: "images/FiiO_FT1.png" },
     "fiio-ft1-pro": { name: "FiiO FT1 Pro", price: 220, url: "https://apos.audio/products/fiio-ft1-pro-open-back?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/FiiO_FT1_Pro.jpg" },
     "fiio-ft7": { name: "FiiO FT7", price: 700, url: "https://apos.audio/products/fiio-ft7-planar-magnetic-open-back-headphones?sca_ref=9857353.lTWqXMxzNa", pick: true, image: "images/FiiO_FT7.jpg" },
@@ -124,6 +126,7 @@ const itemsCatalog = {
     "questyle-m15i": { name: "Questyle M15i", price: 250, url: "https://amzn.to/4evROCA", pick: false, image: "images/Questyle_M15i.png" },
     "questyle-sigma": { name: "Questyle Sigma", price: 600, url: "https://amzn.to/3Npc92M", pick: false, image: "images/Questyle_Sigma.jpg" },
     "rog-x-hifiman-kithara": { name: "ROG x Hifiman Kithara", price: 300, url: "https://amzn.to/4awEqfZ", pick: true, image: "images/ROG_x_Hifiman_Kithara.jpg" },
+    "roseselsa-ceramics-ultra": { name: "ROSESELSA Ceramics Ultra", price: 50, url: "https://amzn.to/4yOUG7c", pick: false, image: "images/ROSESELSA_Ceramics_Ultra.jpg" },
     "salad-halo-headphone-stand": { name: "Salad Halo Headphone Stand", price: null, url: "https://apos.audio/products/salad-halo-headphone-stand?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Salad_Halo_Headphone_Stand.jpg" },
     "schiit-fulla": { name: "Schiit Fulla", price: 136, url: "https://amzn.to/403r0nk", pick: false, image: "images/Schiit_Fulla.png" },
     "schiit-gunnr-mission-critical": { name: "Schiit Gunnr Mission-Critical", price: 259, url: "https://amzn.to/3TsPAKC", pick: false, image: "images/Schiit_Gunnr_Mission-Critical.png" },
@@ -141,6 +144,7 @@ const itemsCatalog = {
     "simgot-ep5": { name: "Simgot EP5", price: 98, url: "https://www.linsoul.com/products/simgot-ep5?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Simgot_EP5.png" },
     "simgot-ew300": { name: "SIMGOT EW300", price: 80, url: "https://www.linsoul.com/products/simgot-ew300?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/SIMGOT_EW300.jpg" },
     "sivga-peng": { name: "SIVGA Peng", price: 500, url: "https://www.linsoul.com/products/sivga-peng?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/SIVGA_Peng.jpg" },
+    "sjy-horizon-carbon-closed": { name: "SJY Horizon Carbon Closed", price: 1000, url: "https://apos.audio/products/sjy-horizon-closed-carbon-planar-magnetic-headphones?sca_ref=9857353.lTWqXMxzNa", pick: true, image: "images/SJY_Horizon_Carbon_Closed.jpg" },
     "sony-alpha-a6400-mirrorless-camera-compact-aps-c-interchangeable-lens-digital-camera-with-real-time-eye-auto-focus-4k-video-flip-up-touchscreen-e-mount-compatible-cameras-ilce-6400b-body": { name: "Sony Alpha a6400 Mirrorless Camera: Compact APS-C Interchangeable Lens Digital Camera with Real-Time Eye Auto Focus, 4K Video & Flip Up Touchscreen - E Mount Compatible Cameras - ILCE-6400/B Body", price: null, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB07MTWVN3M%2Fref%3Dcm_sw_r_as_gl_api_gl_i_FNG9TMGEJ2YYAD1EY767%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3D226d9c09123e826a0039edad56cfc99c&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/Sony_Alpha_a6400_Mirrorless_Camera_Compact_APS-C_Interchangeable_Lens_Digital_Camera_with_Real-Time_Eye_Auto_Focus_4K_Video__Flip_Up_Touchscreen_-_E_Mount_Compatible_Cameras_-_ILCE-6400B_Body.jpg" },
     "sony-inzone-h6-air": { name: "Sony INZONE H6 Air", price: 200, url: "https://amzn.to/4nNAXzP", pick: false, image: "images/Sony_INZONE_H6_Air.jpg" },
     "soundpeats-air5-pro": { name: "Soundpeats Air5 Pro+", price: 130, url: "https://amzn.to/4aByvYz", pick: false, image: "images/Soundpeats_Air5_Pro.jpg" },
@@ -172,9 +176,9 @@ const itemsCatalog = {
 const gearData = {
     "My Audio Collection / Collabs": [
         "7hz-x-crinacle-zero-2", "fiio-eh11", "kiwi-ears-x-bmedia-chorus", "bmedia-terras-cable",
-        "soundpeats-clip1", "apos-x-community-gremlin-tube-amp", "shanling-m0-pro", "but-constantly-on-sale-sennheiser-hd-599",
-        "questyle-sigma", "but-constantly-on-sale-focal-hadenys", "letshuoer-mystic-8", "shanling-m7t",
-        "audeze-mm-500", "audeze-lcd-3"
+        "bmedia-terras-cable", "soundpeats-clip1", "apos-x-community-gremlin-tube-amp", "shanling-m0-pro",
+        "but-constantly-on-sale-sennheiser-hd-599", "questyle-sigma", "but-constantly-on-sale-focal-hadenys", "letshuoer-mystic-8",
+        "sjy-horizon-carbon-closed", "shanling-m7t", "audeze-mm-500", "audeze-lcd-3"
     ],
     "IEMs": [
         "truthear-gate", "tangzu-waner-sg-ii-red-lion", "7hz-x-crinacle-zero-2", "kiwi-ears-belle",
@@ -184,22 +188,23 @@ const gearData = {
         "simgot-ew300", "juzear-x-z-reviews-defiant", "moondrop-rays", "euiu-ui-05",
         "fosi-audio-im4", "tinhifi-t6", "tinhifi-p1-max-ii", "kiwi-ears-tude",
         "simgot-em6l", "7hz-x-crinacle-divine", "basn-bmaster5", "crinear-daybreak",
-        "letshuoer-astralis", "hidizs-mp145-pro", "tanchjim-fola", "nicehck-nx8",
-        "ziigaat-x-hangoutaudio-odyssey-2", "nicehck-nx8-se", "kiwi-ears-halcyon", "kiwi-ears-septet",
-        "ziigaat-x-fresh-reviews-arete-ii", "kiwi-ears-astral", "tanchjim-soda", "bqeyz-winter-ii",
-        "punch-audio-martilo", "crinear-reference", "inawaken-twilight-ds", "xenns-mangird-tea-pro",
-        "thieaudio-hype-4-mkii", "nicehck-nx8ti-limited-edition", "kiwi-ears-x-hbb-punch", "fiio-oak-nano",
-        "yanyin-baker", "xenns-mangird-tea-pro", "letshuoer-ember", "letshuoer-mystic-8",
-        "ioaudio-cielo", "fatfreq-maestro-se-universals"
+        "bqeyz-frost", "letshuoer-astralis", "hidizs-mp145-pro", "tanchjim-fola",
+        "nicehck-nx8", "ziigaat-x-hangoutaudio-odyssey-2", "nicehck-nx8-se", "kiwi-ears-halcyon",
+        "kiwi-ears-septet", "ziigaat-x-fresh-reviews-arete-ii", "kiwi-ears-astral", "tanchjim-soda",
+        "bqeyz-winter-ii", "punch-audio-martilo", "crinear-reference", "inawaken-twilight-ds",
+        "xenns-mangird-tea-pro", "thieaudio-hype-4-mkii", "nicehck-nx8ti-limited-edition", "kiwi-ears-x-hbb-punch",
+        "fiio-oak-nano", "yanyin-baker", "xenns-mangird-tea-pro", "letshuoer-ember",
+        "letshuoer-mystic-8", "ioaudio-cielo", "fatfreq-maestro-se-universals"
     ],
     "Headphones": [
-        "moondrop-old-fashioned", "fiio-jade-audio-jt3", "kiwi-ears-altruva", "simgot-ep5",
-        "fiio-jade-audio-jt3", "fiio-ft1", "sony-inzone-h6-air", "headset-drop-pc38x",
-        "fiio-ft1-pro", "sennheiser-hd599", "sennheiser-hd-560-s", "hifiman-sundara",
-        "rog-x-hifiman-kithara", "harmonicdyne-romantic", "thieaudio-cypher", "sennheiser-hd620s",
-        "hd-490-pro", "dunu-mortise", "sivga-peng", "fosi-audio-i5",
-        "focal-azurys", "fiio-ft7", "focal-hadenys", "moondrop-skyland",
-        "meze-109-pro", "audeze-mm-500", "audeze-lcd-3"
+        "moondrop-old-fashioned", "fiio-fg3", "fiio-jade-audio-jt3", "kiwi-ears-altruva",
+        "simgot-ep5", "fiio-jade-audio-jt3", "fiio-ft1", "sony-inzone-h6-air",
+        "headset-drop-pc38x", "fiio-ft1-pro", "sennheiser-hd599", "sennheiser-hd-560-s",
+        "hifiman-sundara", "rog-x-hifiman-kithara", "harmonicdyne-romantic", "thieaudio-cypher",
+        "sennheiser-hd620s", "hd-490-pro", "dunu-mortise", "sivga-peng",
+        "fosi-audio-i5", "focal-azurys", "fiio-ft7", "focal-hadenys",
+        "moondrop-skyland", "meze-109-pro", "sjy-horizon-carbon-closed", "audeze-mm-500",
+        "audeze-lcd-3"
     ],
     "Portable DAC/AMP": [
         "kiwi-ears-ad1", "kiwi-ears-ad1-pro", "jcally-jm6-pro", "nicehck-nk1-max",
@@ -221,8 +226,9 @@ const gearData = {
         "fiio-m23", "shanling-m7t"
     ],
     "Wireless Earbuds": [
-        "moondrop-space-travel-2", "moondrop-pudding", "cmf-buds-pro-2", "soundpeats-clip1-open-ear-earbuds",
-        "moondrop-golden-ages-2", "moondrop-robin", "soundpeats-h3", "soundpeats-air5-pro"
+        "moondrop-space-travel-2", "moondrop-pudding", "roseselsa-ceramics-ultra", "cmf-buds-pro-2",
+        "soundpeats-clip1-open-ear-earbuds", "moondrop-golden-ages-2", "moondrop-robin", "soundpeats-h3",
+        "soundpeats-air5-pro"
     ],
     "Wireless Headphones": [
         "fiio-eh11", "1mii-y8", "fiio-eh13", "moondrop-edge",
@@ -234,7 +240,7 @@ const gearData = {
         "nicehck-blackwheat-iem-wmic", "letshuoer-lc01-usb-type-c", "original-kiwi-ears-terras", "kiwi-ears-x-bmedia-terras"
     ],
     "Headphone Accessories": [
-        "salad-halo-headphone-stand", "hart-audio"
+        "bmedia-terras-cable", "salad-halo-headphone-stand", "hart-audio"
     ],
     "Tech I Use": [
         "dji-osmo-pocket-3-creator-combo", "keychron-m6-8k-wireless-gaming-mouse", "keychron-q1-ultra-8k-75-wireless-mechanical-keyboard", "sennheiser-mke-400-mobile-kit",
