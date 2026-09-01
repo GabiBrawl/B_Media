@@ -13,7 +13,9 @@ const itemsCatalog = {
     "bluetooth-hiby-w3-ii": { name: "Bluetooth HiBy W3 II", price: 49, url: "https://www.linsoul.com/products/hiby-w3-ii?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Bluetooth_HiBy_W3_II.png" },
     "bmedia-terras-cable": { name: "B Media Terras Cable", price: 48, url: "https://www.linsoul.com/products/kiwi-ears-x-b-media-terras-headphone-cable?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/B_Media_Terras_Cable.jpg" },
     "bose-qc-ultra-2": { name: "Bose QC Ultra 2", price: 450, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB0FDKQ2FG6%2Fref%3Dcm_sw_r_as_gl_api_gl_i_KMZZ1JFZZ6GY3C88QWTP%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3D09ba8bbe979351a9c6fb08316894060e&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/Bose_QC_Ultra_2.jpg" },
+    "bose-quietcomfort-gen-2": { name: "Bose QuietComfort Gen 2", price: 360, url: "https://amzn.to/46y9tpU", pick: false, image: "images/Bose_QuietComfort_Gen_2.jpg" },
     "bqeyz-frost": { name: "BQEYZ Frost", price: 180, url: "https://amzn.to/3TEHQIJ", pick: false, image: "images/BQEYZ_Frost.jpg" },
+    "bqeyz-ni": { name: "BQEYZ NI", price: 48, url: "https://amzn.to/4wTYIsI", pick: false, image: "images/BQEYZ_NI.jpg" },
     "bqeyz-winter-ii": { name: "BQEYZ Winter II", price: 320, url: "https://amzn.to/4wAhaaC", pick: false, image: "images/BQEYZ_Winter_II.jpg" },
     "but-constantly-on-sale-focal-hadenys": { name: "but constantly on sale Focal HADENYS", price: 750, url: "https://amzn.to/4lMy80L", pick: false, image: "images/but_constantly_on_sale_Focal_HADENYS.jpg" },
     "but-constantly-on-sale-sennheiser-hd-599": { name: "but constantly on sale Sennheiser HD 599", price: 240, url: "https://amzn.to/4bKO5QD", pick: false, image: "images/but_constantly_on_sale_Sennheiser_HD_599.jpg" },
@@ -70,6 +72,7 @@ const itemsCatalog = {
     "inawaken-twilight-ds": { name: "INAWAKEN Twilight-DS", price: 350, url: "https://www.linsoul.com/products/inawaken-twilight-ds?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/INAWAKEN_Twilight-DS.jpg" },
     "ioaudio-cielo": { name: "IOAUDIO CIELO", price: 1000, url: "https://shenzhenaudio.com/collections/headphones/products/ioaudio-cielo-16-balanced-armatures-in-ear-headphone?_fid=eebacd484&_pos=23&_ss=c&ref=tsmeyyjl&utm_source=affiliate", pick: true, image: "images/IOAUDIO_CIELO.jpg" },
     "jcally-jm6-pro": { name: "JCALLY JM6 Pro", price: 18, url: "https://amzn.to/3TMeGUZ", pick: false, image: "images/JCALLY_JM6_Pro.png" },
+    "juzear-light-shuttle": { name: "JUZEAR Light Shuttle", price: 185, url: "https://hifigo.com/products/juzear-unveil-series-light-shuttle?rfsn=8882848.207d9c&_su_rec=jxy1lZhnShS4y6xhvV1tgkznAijVc3RpOe-SjWD6FbP5GO0ZCNQEYP3z3Q57-ZUX1C_QQWmlLLJuKPaAKHqpBWZhxmxg6jyKsKAUh1LL2BAqlId3Jdq_XICWzTrYYk4AxwL8OSC7nR1AstRvcT7gMw9e7W4vyaaPK0E0TyJl3B2lWrbIPcHxGndrIiQI9ClLaN9IfRAZe5j7g_xUeILHjmqBhCJ6Lm5LVHPZ9CsMWargL6AdQZ1uSftOJ-tc76nF&_su_rec_id=531aa698-b419-43f6-a3c5-69282416926d-1787948822", pick: false, image: "images/JUZEAR_Light_Shuttle.jpg" },
     "juzear-x-z-reviews-defiant": { name: "JUZEAR x Z Reviews Defiant", price: 90, url: "https://hifigo.com/products/juzear-x-z-reviews-defiant?rfsn=8882848.207d9c&variant=46359559897327", pick: false, image: "images/JUZEAR_x_Z_Reviews_Defiant.jpg" },
     "kefine-delci": { name: "Kefine Delci", price: 75, url: "https://www.linsoul.com/products/kefine-delci?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kefine_Delci.jpg" },
     "kefine-klean": { name: "Kefine Klean", price: 50, url: "https://www.linsoul.com/products/kefine-klean?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Kefine_Klean.png" },
@@ -98,6 +101,7 @@ const itemsCatalog = {
     "letshuoer-mystic-8": { name: "LETSHUOER Mystic 8", price: 990, url: "https://letshuoer.net/products/letshuoer-mystic-8-wired-iem-hifi-earphones-8-ba-drivers-in-ear-monitor?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_Mystic_8.jpg" },
     "meze-109-pro": { name: "Meze 109 Pro", price: 800, url: "https://apos.audio/products/meze-audio-109-pro?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Meze_109_Pro.png" },
     "mic-moondrop-mc1": { name: "Mic Moondrop MC1", price: null, url: "https://www.linsoul.com/products/moondrop-mc1?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Mic_Moondrop_MC1.jpg" },
+    "moondrop-chu-iii": { name: "MOONDROP CHU III", price: 25, url: "https://shenzhenaudio.com/products/moondrop-chu3-10mm-dynamic-driver-in-ear-headphone?ref=tsmeyyjl&srsltid=AfmBOoquNNxH9kxTZc2yTxC5RNfwmK6aUf19Adz1TJpr_uWbLmqHvF-h&utm_source=affiliate", pick: false, image: "images/MOONDROP_CHU_III.jpg" },
     "moondrop-dawn-pro-2": { name: "Moondrop Dawn Pro 2", price: 60, url: "https://www.linsoul.com/products/moondrop-dawn-pro2?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Moondrop_Dawn_Pro_2.jpg" },
     "moondrop-edge": { name: "Moondrop Edge", price: 90, url: "https://www.linsoul.com/products/moondrop-edge?_pos=10&_sid=2605a58ec&_ss=r&sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Moondrop_Edge.jpg" },
     "moondrop-golden-ages-2": { name: "Moondrop Golden Ages 2", price: 90, url: "https://shenzhenaudio.com/products/moondrop-golden-ages-2-13mm-planar-true-wireless-headphone-tws?ref=tsmeyyjl&utm_source=affiliate", pick: false, image: "images/Moondrop_Golden_Ages_2.png" },
@@ -109,7 +113,9 @@ const itemsCatalog = {
     "moondrop-robin": { name: "Moondrop Robin", price: 90, url: "https://shenzhenaudio.com/products/moondrop-robins-earphones-true-wireless-headphone-tws?variant=46516174881011", pick: true, image: "images/Moondrop_Robin.png" },
     "moondrop-skyland": { name: "Moondrop Skyland", price: 800, url: "https://apos.audio/products/moondrop-skyland-full-size-planar-magnetic-headphone?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Moondrop_Skyland.jpg" },
     "moondrop-space-travel-2": { name: "Moondrop Space Travel 2", price: 30, url: "https://www.linsoul.com/products/moondrop-space-travel-2?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/Moondrop_Space_Travel_2.jpg" },
+    "moondrop-x-crinacle-silicon": { name: "MOONDROP x Crinacle Silicon", price: 250, url: "https://shenzhenaudio.com/collections/headphones/products/moondrop-x-crinacle-silicon-1dd-2ba-2mems-in-ear-headphone?_pos=2&_fid=488ead1cf&_ss=c", pick: false, image: "images/MOONDROP_x_Crinacle_Silicon.jpg" },
     "moondrop-x-smsl-dha15": { name: "Moondrop x SMSL DHA15", price: 650, url: "https://apos.audio/products/moondrop-dha15-all-in-one-dac-amp?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Moondrop_x_SMSL_DHA15.jpg" },
+    "muse-m3-ultra": { name: "Muse M3 Ultra", price: 110, url: "https://hifigo.com/products/muse-hifi-m3-ultra?rfsn=8882848.207d9c&variant=49564406087919", pick: false, image: "images/Muse_M3_Ultra.jpg" },
     "nicehck-08-silicone-ear-tips-noise-isolating": { name: "NICEHCK 08 Silicone Ear Tips Noise Isolating", price: null, url: "https://nicehck.com/products/nicehck-08-silicone-ear-tips-noise-isolating-earbuds-cushion-earphone-accessories-improve-clear-vocal-for-nx7mk4-zero-2-t2-gk20?sca_ref=9185017.bnGYqsxONg", pick: false, image: "images/NICEHCK_08_Silicone_Ear_Tips_Noise_Isolating.jpg" },
     "nicehck-blackwheat-iem-wmic": { name: "NICEHCK BlackWheat IEM w/mic", price: null, url: "https://nicehck.com/products/nicehck-blackwheat-8-core-silver-plated-copper-microphone-cable-mmcx-qdc-0-78-2pin-for-db3-zsn-zst-as10-zs10-edx-c10-ca4-c12?variant=47860952662307&sca_ref=9185017.bnGYqsxONg", pick: false, image: "images/NICEHCK_BlackWheat_IEM_wmic.jpg" },
     "nicehck-c04-liquid-silicone-eartips": { name: "NICEHCK C04 Liquid Silicone Eartips", price: null, url: "https://nicehck.com/products/nicehck-c04-liquid-silicone-ear-tips?sca_ref=9185017.bnGYqsxONg", pick: true, image: "images/NICEHCK_C04_Liquid_Silicone_Eartips.jpg" },
@@ -181,20 +187,21 @@ const gearData = {
         "sjy-horizon-carbon-closed", "shanling-m7t", "audeze-mm-500", "audeze-lcd-3"
     ],
     "IEMs": [
-        "truthear-gate", "tangzu-waner-sg-ii-red-lion", "7hz-x-crinacle-zero-2", "kiwi-ears-belle",
-        "euiu-ei-01", "nicehck-tears", "ziigaat-x-vivir-digital-rumba", "ooopusx-op22",
-        "kiwi-ears-x-bmedia-chorus", "kiwi-ears-cadenza-ii", "kefine-klean", "inawaken-dawn-ms",
-        "apos-x-community-rock-lobster-iems", "moondrop-lan-ii", "inawaken-dawn-mistwood", "kefine-delci",
-        "simgot-ew300", "juzear-x-z-reviews-defiant", "moondrop-rays", "euiu-ui-05",
-        "fosi-audio-im4", "tinhifi-t6", "tinhifi-p1-max-ii", "kiwi-ears-tude",
-        "simgot-em6l", "7hz-x-crinacle-divine", "basn-bmaster5", "crinear-daybreak",
-        "bqeyz-frost", "letshuoer-astralis", "hidizs-mp145-pro", "tanchjim-fola",
-        "nicehck-nx8", "ziigaat-x-hangoutaudio-odyssey-2", "nicehck-nx8-se", "kiwi-ears-halcyon",
-        "kiwi-ears-septet", "ziigaat-x-fresh-reviews-arete-ii", "kiwi-ears-astral", "tanchjim-soda",
-        "bqeyz-winter-ii", "punch-audio-martilo", "crinear-reference", "inawaken-twilight-ds",
-        "xenns-mangird-tea-pro", "thieaudio-hype-4-mkii", "nicehck-nx8ti-limited-edition", "kiwi-ears-x-hbb-punch",
-        "fiio-oak-nano", "yanyin-baker", "xenns-mangird-tea-pro", "letshuoer-ember",
-        "letshuoer-mystic-8", "ioaudio-cielo", "fatfreq-maestro-se-universals"
+        "truthear-gate", "tangzu-waner-sg-ii-red-lion", "moondrop-chu-iii", "7hz-x-crinacle-zero-2",
+        "kiwi-ears-belle", "euiu-ei-01", "nicehck-tears", "ziigaat-x-vivir-digital-rumba",
+        "ooopusx-op22", "kiwi-ears-x-bmedia-chorus", "bqeyz-ni", "kiwi-ears-cadenza-ii",
+        "inawaken-dawn-ms", "apos-x-community-rock-lobster-iems", "moondrop-lan-ii", "inawaken-dawn-mistwood",
+        "kefine-delci", "simgot-ew300", "juzear-x-z-reviews-defiant", "moondrop-rays",
+        "euiu-ui-05", "fosi-audio-im4", "tinhifi-t6", "tinhifi-p1-max-ii",
+        "kiwi-ears-tude", "simgot-em6l", "7hz-x-crinacle-divine", "basn-bmaster5",
+        "crinear-daybreak", "bqeyz-frost", "letshuoer-astralis", "juzear-light-shuttle",
+        "hidizs-mp145-pro", "tanchjim-fola", "nicehck-nx8", "moondrop-x-crinacle-silicon",
+        "nicehck-nx8-se", "kiwi-ears-halcyon", "kiwi-ears-septet", "ziigaat-x-fresh-reviews-arete-ii",
+        "kiwi-ears-astral", "tanchjim-soda", "bqeyz-winter-ii", "punch-audio-martilo",
+        "crinear-reference", "inawaken-twilight-ds", "xenns-mangird-tea-pro", "thieaudio-hype-4-mkii",
+        "nicehck-nx8ti-limited-edition", "kiwi-ears-x-hbb-punch", "fiio-oak-nano", "yanyin-baker",
+        "xenns-mangird-tea-pro", "letshuoer-ember", "letshuoer-mystic-8", "ioaudio-cielo",
+        "fatfreq-maestro-se-universals"
     ],
     "Headphones": [
         "moondrop-old-fashioned", "fiio-fg3", "fiio-jade-audio-jt3", "kiwi-ears-altruva",
@@ -210,8 +217,8 @@ const gearData = {
         "kiwi-ears-ad1", "kiwi-ears-ad1-pro", "jcally-jm6-pro", "nicehck-nk1-max",
         "kiwi-ears-allegro-mini", "trn-black-pearl", "bluetooth-hiby-w3-ii", "kiwi-ears-allegro-pro",
         "moondrop-dawn-pro-2", "nicehck-octave", "crinear-protocol-max", "fiio-ka15",
-        "fosi-audio-ds3", "fosi-audio-ds3", "moondrop-moonriver-3", "questyle-m15i",
-        "shanling-ua7-its-got-a-tube", "questyle-sigma"
+        "fosi-audio-ds3", "muse-m3-ultra", "fosi-audio-ds3", "moondrop-moonriver-3",
+        "questyle-m15i", "shanling-ua7-its-got-a-tube", "questyle-sigma"
     ],
     "Desktop DAC/AMP": [
         "ifi-uno", "topping-dx1-ii", "apos-x-community-gremlin-tube-amp", "xduoo-mh-02",
@@ -233,7 +240,7 @@ const gearData = {
     "Wireless Headphones": [
         "fiio-eh11", "1mii-y8", "fiio-eh13", "moondrop-edge",
         "cmf-by-nothing-headphone-pro", "nothing-headphone-a", "edifier-wh950nb-gen-2", "gaming-audeze-maxwell-2",
-        "bose-qc-ultra-2", "sennheiser-hdb-630"
+        "bose-quietcomfort-gen-2", "bose-qc-ultra-2", "sennheiser-hdb-630"
     ],
     "IEM Cables & Eartips": [
         "nicehck-c04-liquid-silicone-eartips", "tangzu-tang-sancai", "nicehck-08-silicone-ear-tips-noise-isolating", "mic-moondrop-mc1",
