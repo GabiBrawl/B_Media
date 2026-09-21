@@ -23,6 +23,7 @@ const itemsCatalog = {
     "cmf-buds-pro-2": { name: "CMF Buds Pro 2", price: 60, url: "https://amzn.to/45m8kku", pick: false, image: "images/CMF_Buds_Pro_2.png" },
     "cmf-by-nothing-headphone-pro": { name: "CMF by Nothing Headphone Pro", price: 100, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB0FKG6TDRR%2Fref%3Dcm_sw_r_as_gl_api_gl_i_10TV6G03W2PC25HEMKE4%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3D8cc5f836f5310ef8f0690b0d272abf92&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/CMF_by_Nothing_Headphone_Pro.jpg" },
     "crinear-daybreak": { name: "Crinear Daybreak", price: 170, url: "https://www.linsoul.com/products/crinear-daybreak?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Crinear_Daybreak.jpg" },
+    "crinear-nightfall": { name: "CrinEar Nightfall", price: 100, url: "https://www.linsoul.com/products/crinear-nightfall?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/CrinEar_Nightfall.jpg" },
     "crinear-protocol-max": { name: "CrinEar Protocol Max", price: 90, url: "https://www.linsoul.com/products/crinear-protocol-max?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/CrinEar_Protocol_Max.jpg" },
     "crinear-reference": { name: "CrinEar Reference", price: 350, url: "https://www.linsoul.com/products/crinear-reference?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/CrinEar_Reference.jpg" },
     "da-alpha": { name: "D&A Alpha", price: 400, url: "https://shenzhenaudio.com/products/d-a-alpha-dual-es9039q2m-desktop-dac-headphone-amplifier", pick: true, image: "images/DA_Alpha.jpg" },
@@ -51,7 +52,7 @@ const itemsCatalog = {
     "fosi-audio-ds3": { name: "Fosi Audio MD3", price: 150, url: "https://fosiaudioshop.com/products/fosi-audio-md3-magdac-portable-dac-headphone-amplifier-with-rear-display?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: false, image: "images/Fosi_Audio_DS3.jpg" },
     "fosi-audio-gr70": { name: "Fosi Audio GR70", price: 200, url: "https://fosiaudioshop.com/products/gr70-tube-headphone-amp?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: false, image: "images/Fosi_Audio_GR70.jpg" },
     "fosi-audio-i5": { name: "Fosi Audio i5", price: 550, url: "https://fosiaudioshop.com/products/i5-headphones?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: true, image: "images/Fosi_Audio_i5.jpg" },
-    "fosi-audio-im4": { name: "Fosi Audio IM4", price: 100, url: "https://fosiaudioshop.com/products/fosi-audio-im4?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: true, image: "images/Fosi_Audio_IM4.jpg" },
+    "fosi-audio-im4": { name: "Fosi Audio IM4", price: 100, url: "https://fosiaudioshop.com/products/fosi-audio-im4?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: false, image: "images/Fosi_Audio_IM4.jpg" },
     "fosi-audio-k7": { name: "Fosi Audio K7", price: 200, url: "https://fosiaudioshop.com/products/k7-dac-headphone-amp?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: false, image: "images/Fosi_Audio_K7.jpg" },
     "fosi-audio-zh3": { name: "Fosi Audio ZH3", price: 200, url: "https://fosiaudioshop.com/products/zh3-dac-headphone-amp-preamp?sca_ref=9795660.evSmNtMEvd&utm_source=affiliate&utm_medium=referral&utm_campaign=uppromote", pick: true, image: "images/Fosi_Audio_ZH3.jpg" },
     "gaming-audeze-maxwell-2": { name: "Gaming Audeze Maxwell 2", price: 330, url: "https://apos.audio/products/audeze-maxwell-2-wireless-gaming-headset?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Gaming_Audeze_Maxwell_2.png" },
@@ -99,6 +100,7 @@ const itemsCatalog = {
     "letshuoer-ember": { name: "LETSHUOER Ember", price: 500, url: "https://letshuoer.net/products/letshuoer-ember-14-8mm-large-flagship-planar-magnetic-hi-fi-in-ear-monitors?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_Ember.jpg" },
     "letshuoer-lc01-usb-type-c": { name: "LETSHUOER LC01 USB Type-C", price: null, url: "https://letshuoer.net/products/letshuoer-lc01-usb-type-c-earphones-cable?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_LC01_USB_Type-C.jpg" },
     "letshuoer-mystic-8": { name: "LETSHUOER Mystic 8", price: 990, url: "https://letshuoer.net/products/letshuoer-mystic-8-wired-iem-hifi-earphones-8-ba-drivers-in-ear-monitor?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/LETSHUOER_Mystic_8.jpg" },
+    "letshuoer-sonata": { name: "Letshuoer Sonata", price: 2300, url: "https://letshuoer.net/products/letshuoer-sonata-2dd-4-knowles-ba-4-sonion-est-flagship-tribrid-in-ear-monitors?sca_ref=9494666.Bbv8z0WcOh", pick: false, image: "images/Letshuoer_Sonata.jpg" },
     "meze-109-pro": { name: "Meze 109 Pro", price: 800, url: "https://apos.audio/products/meze-audio-109-pro?sca_ref=9857353.lTWqXMxzNa", pick: false, image: "images/Meze_109_Pro.png" },
     "mic-moondrop-mc1": { name: "Mic Moondrop MC1", price: null, url: "https://www.linsoul.com/products/moondrop-mc1?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Mic_Moondrop_MC1.jpg" },
     "moondrop-chu-iii": { name: "MOONDROP CHU III", price: 25, url: "https://shenzhenaudio.com/products/moondrop-chu3-10mm-dynamic-driver-in-ear-headphone?ref=tsmeyyjl&srsltid=AfmBOoquNNxH9kxTZc2yTxC5RNfwmK6aUf19Adz1TJpr_uWbLmqHvF-h&utm_source=affiliate", pick: false, image: "images/MOONDROP_CHU_III.jpg" },
@@ -141,10 +143,12 @@ const itemsCatalog = {
     "sennheiser-hd620s": { name: "Sennheiser HD620S", price: 400, url: "https://amzn.to/4eytz6T", pick: false, image: "images/Sennheiser_HD620S.png" },
     "sennheiser-hdb-630": { name: "Sennheiser HDB 630", price: 500, url: "https://r.amzlink.to/?btn_url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB0FK4K5Z37%2Fref%3Dcm_sw_r_as_gl_api_gl_i_J5QCFF41K3X5F978M3Z1%3FlinkCode%3Dml1%26tag%3Dbmedia091-20%26linkId%3Ddc35d45f37440632ee3611e6c7b1fbdd&btn_ref=org-433bb393e1b8b503", pick: false, image: "images/Sennheiser_HDB_630.jpg" },
     "sennheiser-mke-400-mobile-kit": { name: "SENNHEISER MKE 400 + Mobile Kit", price: null, url: "https://amzn.to/4qx1hPm", pick: false, image: "images/SENNHEISER_MKE_400__Mobile_Kit.jpg" },
+    "sennheiser-mke-600": { name: "Sennheiser MKE 600", price: null, url: "https://amzn.to/4xoOdho", pick: false, image: "images/Sennheiser_MKE_600.jpg" },
     "shanling-m0-pro": { name: "SHANLING M0 Pura", price: 140, url: "https://amzn.to/4njSsHM", pick: false, image: "images/SHANLING_M0_Pro.jpg" },
     "shanling-m0s": { name: "SHANLING M0s", price: 100, url: "https://amzn.to/4nc3D54", pick: false, image: "images/SHANLING_M0s.jpg" },
     "shanling-m1-plus": { name: "Shanling M3 Plus", price: 469, url: "https://www.linsoul.com/products/shanling-m3-plus?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Shanling_M1_Plus.jpg" },
     "shanling-m7t": { name: "Shanling M7T", price: 1200, url: "https://www.linsoul.com/products/shanling-m7t?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Shanling_M7T.jpg" },
+    "shanling-q2": { name: "SHANLING Q2", price: 270, url: "https://amzn.to/4cIeIH7", pick: false, image: "images/SHANLING_Q2.jpg" },
     "shanling-ua7-its-got-a-tube": { name: "Shanling UA7 ITS GOT A TUBE", price: 270, url: "https://www.linsoul.com/products/shanling-ua7?sca_ref=8292414.EuVtu9PPWr", pick: true, image: "images/Shanling_UA7_ITS_GOT_A_TUBE.jpg" },
     "simgot-em6l": { name: "SIMGOT EM6L", price: 125, url: "https://www.linsoul.com/products/simgot-em6l?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/SIMGOT_EM6L.jpg" },
     "simgot-ep5": { name: "Simgot EP5", price: 98, url: "https://www.linsoul.com/products/simgot-ep5?sca_ref=8292414.EuVtu9PPWr", pick: false, image: "images/Simgot_EP5.png" },
@@ -182,9 +186,9 @@ const itemsCatalog = {
 const gearData = {
     "My Audio Collection / Collabs": [
         "7hz-x-crinacle-zero-2", "fiio-eh11", "kiwi-ears-x-bmedia-chorus", "bmedia-terras-cable",
-        "bmedia-terras-cable", "soundpeats-clip1", "apos-x-community-gremlin-tube-amp", "shanling-m0-pro",
-        "but-constantly-on-sale-sennheiser-hd-599", "questyle-sigma", "but-constantly-on-sale-focal-hadenys", "letshuoer-mystic-8",
-        "sjy-horizon-carbon-closed", "shanling-m7t", "audeze-mm-500", "audeze-lcd-3"
+        "bmedia-terras-cable", "soundpeats-clip1", "apos-x-community-gremlin-tube-amp", "but-constantly-on-sale-sennheiser-hd-599",
+        "shanling-q2", "questyle-sigma", "but-constantly-on-sale-focal-hadenys", "sjy-horizon-carbon-closed",
+        "shanling-m7t", "audeze-mm-500", "audeze-lcd-3", "letshuoer-sonata"
     ],
     "IEMs": [
         "truthear-gate", "tangzu-waner-sg-ii-red-lion", "moondrop-chu-iii", "7hz-x-crinacle-zero-2",
@@ -192,16 +196,16 @@ const gearData = {
         "ooopusx-op22", "kiwi-ears-x-bmedia-chorus", "bqeyz-ni", "kiwi-ears-cadenza-ii",
         "inawaken-dawn-ms", "apos-x-community-rock-lobster-iems", "moondrop-lan-ii", "inawaken-dawn-mistwood",
         "kefine-delci", "simgot-ew300", "juzear-x-z-reviews-defiant", "moondrop-rays",
-        "euiu-ui-05", "fosi-audio-im4", "tinhifi-t6", "tinhifi-p1-max-ii",
-        "kiwi-ears-tude", "simgot-em6l", "7hz-x-crinacle-divine", "basn-bmaster5",
-        "crinear-daybreak", "bqeyz-frost", "letshuoer-astralis", "juzear-light-shuttle",
-        "hidizs-mp145-pro", "tanchjim-fola", "nicehck-nx8", "moondrop-x-crinacle-silicon",
-        "nicehck-nx8-se", "kiwi-ears-halcyon", "kiwi-ears-septet", "ziigaat-x-fresh-reviews-arete-ii",
-        "kiwi-ears-astral", "tanchjim-soda", "bqeyz-winter-ii", "punch-audio-martilo",
-        "crinear-reference", "inawaken-twilight-ds", "xenns-mangird-tea-pro", "thieaudio-hype-4-mkii",
-        "nicehck-nx8ti-limited-edition", "kiwi-ears-x-hbb-punch", "fiio-oak-nano", "yanyin-baker",
-        "xenns-mangird-tea-pro", "letshuoer-ember", "letshuoer-mystic-8", "ioaudio-cielo",
-        "fatfreq-maestro-se-universals"
+        "euiu-ui-05", "crinear-nightfall", "fosi-audio-im4", "tinhifi-t6",
+        "tinhifi-p1-max-ii", "kiwi-ears-tude", "simgot-em6l", "7hz-x-crinacle-divine",
+        "basn-bmaster5", "crinear-daybreak", "bqeyz-frost", "letshuoer-astralis",
+        "juzear-light-shuttle", "hidizs-mp145-pro", "tanchjim-fola", "nicehck-nx8",
+        "moondrop-x-crinacle-silicon", "nicehck-nx8-se", "kiwi-ears-halcyon", "kiwi-ears-septet",
+        "ziigaat-x-fresh-reviews-arete-ii", "kiwi-ears-astral", "tanchjim-soda", "bqeyz-winter-ii",
+        "punch-audio-martilo", "crinear-reference", "inawaken-twilight-ds", "xenns-mangird-tea-pro",
+        "thieaudio-hype-4-mkii", "nicehck-nx8ti-limited-edition", "kiwi-ears-x-hbb-punch", "fiio-oak-nano",
+        "yanyin-baker", "xenns-mangird-tea-pro", "letshuoer-ember", "letshuoer-mystic-8",
+        "ioaudio-cielo", "letshuoer-sonata", "fatfreq-maestro-se-universals"
     ],
     "Headphones": [
         "moondrop-old-fashioned", "fiio-fg3", "fiio-jade-audio-jt3", "kiwi-ears-altruva",
@@ -229,8 +233,8 @@ const gearData = {
     "Digital Audio Players": [
         "fiio-snowsky-echo-mini", "hiby-r1", "hidizs-ap30-music-boy", "shanling-m0s",
         "shanling-m0-pro", "hidizs-x-linsoul-ap80-pro-max", "shanling-m1-plus", "hiby-r4",
-        "fiio-m21", "hiby-r6-iii", "shanling-m1-plus", "cayin-n3ultra",
-        "fiio-m23", "shanling-m7t"
+        "shanling-q2", "fiio-m21", "hiby-r6-iii", "shanling-m1-plus",
+        "cayin-n3ultra", "fiio-m23", "shanling-m7t"
     ],
     "Wireless Earbuds": [
         "moondrop-space-travel-2", "moondrop-pudding", "roseselsa-ceramics-ultra", "cmf-buds-pro-2",
@@ -250,8 +254,8 @@ const gearData = {
         "bmedia-terras-cable", "salad-halo-headphone-stand", "hart-audio"
     ],
     "Tech I Use": [
-        "dji-osmo-pocket-3-creator-combo", "keychron-m6-8k-wireless-gaming-mouse", "keychron-q1-ultra-8k-75-wireless-mechanical-keyboard", "sennheiser-mke-400-mobile-kit",
-        "anker-555-usb-c-hub-8-in-1", "anker-140w-max-4-port-gan-usb-c-charger", "kf-concept-60-inch-carbon-fiber-camera-tripodsuper-lightweight-compact-travel-tripod-with-360-degree-ball-headquick-release-platedetachable-monopod-17-lb-load-capacity-for-slr-dslr-c225c0-ba225", "kf-concept-67mm-variable-fader-nd2-32-nd-filter-and-cpl-circular-polarizing-lens-filter-in-1-for-camera-lens-waterproof-neutral-density-polarizer-filter-nano-d-series",
-        "tamron-17-70mm-f28-di-iii-a-vc-rxd-lens-for-sony-e-aps-c-mirrorless-cameras-black", "sony-alpha-a6400-mirrorless-camera-compact-aps-c-interchangeable-lens-digital-camera-with-real-time-eye-auto-focus-4k-video-flip-up-touchscreen-e-mount-compatible-cameras-ilce-6400b-body"
+        "sennheiser-mke-600", "dji-osmo-pocket-3-creator-combo", "keychron-m6-8k-wireless-gaming-mouse", "keychron-q1-ultra-8k-75-wireless-mechanical-keyboard",
+        "sennheiser-mke-400-mobile-kit", "anker-555-usb-c-hub-8-in-1", "anker-140w-max-4-port-gan-usb-c-charger", "kf-concept-60-inch-carbon-fiber-camera-tripodsuper-lightweight-compact-travel-tripod-with-360-degree-ball-headquick-release-platedetachable-monopod-17-lb-load-capacity-for-slr-dslr-c225c0-ba225",
+        "kf-concept-67mm-variable-fader-nd2-32-nd-filter-and-cpl-circular-polarizing-lens-filter-in-1-for-camera-lens-waterproof-neutral-density-polarizer-filter-nano-d-series", "tamron-17-70mm-f28-di-iii-a-vc-rxd-lens-for-sony-e-aps-c-mirrorless-cameras-black", "sony-alpha-a6400-mirrorless-camera-compact-aps-c-interchangeable-lens-digital-camera-with-real-time-eye-auto-focus-4k-video-flip-up-touchscreen-e-mount-compatible-cameras-ilce-6400b-body"
     ]
 };
