@@ -409,6 +409,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobilePriceMaxHandle = document.getElementById('mobile-price-max-handle');
     const modal = document.getElementById('pick-info-modal');
     const modalClose = modal.querySelector('.modal-close');
+    const dataFreshnessModal = document.getElementById('data-freshness-modal');
+    const dataFreshnessModalClose = dataFreshnessModal.querySelector('.modal-close');
 
     const extraModal = document.getElementById('extra-data-modal');
     const extraModalClose = extraModal.querySelector('.modal-close');
@@ -1649,6 +1651,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Setup all modals
     setupModalHandler(modal, modalClose);
+    setupModalHandler(dataFreshnessModal, dataFreshnessModalClose);
+    const lastUpdatedTimestamp = typeof lastUpdated === 'string' ? Date.parse(lastUpdated) : NaN;
+    const twoWeeksInMilliseconds = 14 * 24 * 60 * 60 * 1000;
+    if (!Number.isNaN(lastUpdatedTimestamp) && Date.now() - lastUpdatedTimestamp >= twoWeeksInMilliseconds) {
+        dataFreshnessModal.classList.add('show');
+    }
     setupModalHandler(extraModal, extraModalClose);
     setupModalHandler(shareModal, shareModalClose);
     
