@@ -229,6 +229,22 @@ function toggleWishlist(identifier) {
     saveWishlist();
 }
 
+// Catalog products can occur in multiple categories; wishlists contain products once.
+function getWishlistProducts(identifiers) {
+    const selected = new Set(identifiers);
+    const products = new Map();
+    for (const item of allItems) {
+        if (!selected.has(item.id) && !selected.has(item.name)) continue;
+        const key = item.id || item.name;
+        const existing = products.get(key);
+        // Prefer the product type over the curated collection for grouping.
+        if (!existing || (/collection|collabs/i.test(existing.category) && !/collection|collabs/i.test(item.category))) {
+            products.set(key, item);
+        }
+    }
+    return [...products.values()];
+}
+
 // Check if item is in wishlist
 function isInWishlist(identifier) {
     return wishlist.includes(identifier);
@@ -1222,7 +1238,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (isSharedWishlistMode) {
                 setBottomBarActionText('Someone shared their wishlist!');
             } else {
-                setBottomBarActionText(`Tap to close wishlist - ${itemsForDisplay.length} item(s)`);
+                setBottomBarActionText(`Tap to close wishlist - ${getWishlistProducts(itemsForDisplay).length} item(s)`);
             }
         }
 
@@ -1236,7 +1252,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 : 'Your wishlist is empty. Tap hearts on products to add items.';
             children.push(empty);
         } else {
-            const wishlistItems = allItems.filter(item => itemsForDisplay.includes(item.id) || itemsForDisplay.includes(item.name));
+            const wishlistItems = getWishlistProducts(itemsForDisplay);
             const groupedItems = {};
             wishlistItems.forEach(item => {
                 if (!groupedItems[item.category]) {
@@ -1648,6 +1664,74 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Keep focus and scrolling inside the topmost dialog, including nested popups.
+    const dialogStack = [];
+    const dialogTriggers = new WeakMap();
+    const focusableSelector = 'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), [tabindex="0"]';
+    document.querySelectorAll('.modal').forEach((dialog, index) => {
+        dialog.setAttribute('role', 'dialog');
+        dialog.setAttribute('aria-modal', 'true');
+        dialog.setAttribute('aria-hidden', 'true');
+        const heading = dialog.querySelector('h3');
+        if (heading) {
+            if (!heading.id) heading.id = `dialog-title-${index}`;
+            dialog.setAttribute('aria-labelledby', heading.id);
+        }
+        const content = dialog.querySelector('.modal-content');
+        content.tabIndex = -1;
+        const dismiss = document.createElement('button');
+        dismiss.type = 'button';
+        dismiss.className = 'modal-dismiss';
+        dismiss.setAttribute('aria-label', 'Close dialog');
+        dismiss.textContent = '×';
+        dismiss.addEventListener('click', () => closeModal(dialog, dialog.dataset.shared === 'true'));
+        content.prepend(dismiss);
+        new MutationObserver(() => {
+            const open = dialog.classList.contains('show');
+            dialog.setAttribute('aria-hidden', String(!open));
+            const position = dialogStack.indexOf(dialog);
+            if (open && position === -1) {
+                dialogTriggers.set(dialog, document.activeElement);
+                dialogStack.push(dialog);
+                (dialog.querySelector(focusableSelector) || content).focus();
+            } else if (!open && position !== -1) {
+                dialogStack.splice(position, 1);
+                const trigger = dialogTriggers.get(dialog);
+                if (trigger && trigger.isConnected) {
+                    const parentDialog = trigger.closest('.modal');
+                    if (parentDialog) parentDialog.inert = false;
+                    else document.querySelector('.container').inert = false;
+                    trigger.focus();
+                }
+            }
+            document.body.classList.toggle('has-open-modal', dialogStack.length > 0);
+            document.querySelector('.container').inert = dialogStack.length > 0;
+            const topDialog = dialogStack[dialogStack.length - 1];
+            document.querySelectorAll('.modal').forEach(item => {
+                item.inert = item !== topDialog;
+            });
+        }).observe(dialog, { attributes: true, attributeFilter: ['class'] });
+    });
+    document.addEventListener('keydown', event => {
+        const dialog = dialogStack[dialogStack.length - 1];
+        if (!dialog) return;
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            closeModal(dialog, dialog.dataset.shared === 'true');
+        } else if (event.key === 'Tab') {
+            const controls = [...dialog.querySelectorAll(focusableSelector)].filter(el => el.getClientRects().length);
+            const first = controls[0];
+            const last = controls[controls.length - 1];
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        }
+    });
 
     // Setup all modals
     setupModalHandler(modal, modalClose);
@@ -2475,31 +2559,32 @@ document.addEventListener('DOMContentLoaded', function() {
         let html = '';
 
         if (data && data.images && data.images.length > 0) {
-            html += '<div class="extra-images">';
+            html += '<section class="extra-section"><h4 class="extra-section-title">Images &amp; measurements</h4><div class="extra-images">';
             data.images.forEach(img => {
-                html += `<img src="${img}" alt="Extra image" class="extra-image">`;
+                html += `<a class="extra-image-link" href="${escapeExtraDetailHtml(img)}" target="_blank" rel="noopener noreferrer" aria-label="Open image for ${escapeExtraDetailHtml(itemName)} in a new tab"><img src="${escapeExtraDetailHtml(img)}" alt="${escapeExtraDetailHtml(itemName)} — additional image" class="extra-image"></a>`;
             });
-            html += '</div>';
+            html += '</div><p class="extra-image-hint">Select an image to view full size ↗</p></section>';
         }
 
-        html += detailsHtml;
+        if (detailsHtml) html += `<section class="extra-section"><h4 class="extra-section-title">Specifications</h4>${detailsHtml}</section>`;
 
         if (data && data.tiktoks && data.tiktoks.length > 0) {
             html += '<div class="extra-tiktoks">';
-            html += `<a href="${data.tiktoks[0]}" target="_blank" class="tiktok-link">Watch TikTok Video</a>`;
+            html += `<a href="${data.tiktoks[0]}" target="_blank" rel="noopener noreferrer" class="tiktok-link">Watch on TikTok ↗</a>`;
             html += '</div>';
         }
 
-        const otherKeys = data ? Object.keys(data).filter(key => key !== 'images' && key !== 'tiktoks') : [];
+        const otherKeys = data ? Object.keys(data).filter(key => key !== 'images' && key !== 'tiktoks' && typeof data[key] === 'string' && data[key].trim() && !data[key].includes('This is a temporary placeholder.')) : [];
         if (otherKeys.length > 0) {
             html += '<div class="extra-notes">';
             otherKeys.forEach(key => {
-                html += `<h4>${key.charAt(0).toUpperCase() + key.slice(1)}</h4><p>${data[key]}</p>`;
+                html += `<h4>${key === 'otherStuff' ? 'Additional notes' : escapeExtraDetailHtml(formatExtraDetailKey(key))}</h4><p>${escapeExtraDetailHtml(data[key])}</p>`;
             });
             html += '</div>';
         }
 
         if (!html.trim()) return;
+        html = `<div class="product-details-body">${html}</div>`;
 
         if (openMobileInfoPanel(`More about ${itemName}`, html)) {
             return;
@@ -2622,7 +2707,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const items = itemsToShow || wishlist;
         if (items.length === 0) return '';
 
-        const wishlistItems = allItems.filter(item => items.includes(item.id) || items.includes(item.name));
+        const wishlistItems = getWishlistProducts(items);
         const groupedItems = {};
         wishlistItems.forEach(item => {
             if (!groupedItems[item.category]) {
@@ -2673,6 +2758,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function showWishlistModal(sharedItems = null, isShared = false) {
+        document.getElementById('wishlist-modal').dataset.shared = String(isShared);
         const itemsToShow = isShared ? sharedItems : wishlist;
         
         if (!isShared && itemsToShow.length === 0) {
@@ -2697,7 +2783,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </svg>
                 Shared Wishlist
             `;
-            wishlistItemCount.textContent = `${itemsToShow.length} item${itemsToShow.length !== 1 ? 's' : ''}`;
+            wishlistItemCount.textContent = `${getWishlistProducts(itemsToShow).length} item${getWishlistProducts(itemsToShow).length !== 1 ? 's' : ''}`;
         } else {
             wishlistTitle.innerHTML = `
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;">
@@ -2705,10 +2791,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 </svg>
                 Your Wishlist
             `;
-            wishlistItemCount.textContent = `${itemsToShow.length} item${itemsToShow.length !== 1 ? 's' : ''}`;
+            wishlistItemCount.textContent = `${getWishlistProducts(itemsToShow).length} item${getWishlistProducts(itemsToShow).length !== 1 ? 's' : ''}`;
         }
 
-        const wishlistItems = allItems.filter(item => itemsToShow.includes(item.id) || itemsToShow.includes(item.name));
+        const wishlistItems = getWishlistProducts(itemsToShow);
         const groupedItems = {};
         wishlistItems.forEach(item => {
             if (!groupedItems[item.category]) {
@@ -2742,6 +2828,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             items.forEach(item => {
                 const itemDiv = createItemElement(item, true);
+                // Keep the price with the product name rather than over its thumbnail.
+                itemDiv.querySelector('.item-header').appendChild(itemDiv.querySelector('.item-price'));
                 itemsDiv.appendChild(itemDiv);
             });
 
@@ -2847,13 +2935,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         wishlistModal.addEventListener('click', overlayHandler);
 
-        const escHandler = function(e) {
-            if (e.key === 'Escape') {
-                closeCurrentModal();
-                document.removeEventListener('keydown', escHandler);
-            }
-        };
-        document.addEventListener('keydown', escHandler);
+
     }
 
     function generateShareLink() {

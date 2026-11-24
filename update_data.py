@@ -92,6 +92,11 @@ def download_image(image_url, filename):
         response = requests.get(image_url, headers=headers, timeout=10)
         response.raise_for_status()
         
+        content_type = response.headers.get('Content-Type', '').lower()
+        if not content_type.startswith('image/'):
+            print(f"  ✗ Refusing non-image response for {image_url} ({content_type or 'unknown type'})")
+            return False
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
         with open(filename, 'wb') as f:
             f.write(response.content)
         print(f"  ✓ Downloaded: {os.path.basename(filename)}")
@@ -148,15 +153,20 @@ def scrape_linktree_with_selenium(url):
                     categories[current_category] = []
                     print(f"Found category: {current_category}")
             elif elem.name == 'a' and current_category:
+                # Linktree puts the actual label in data-link-label and the
+                # thumbnail inside the same anchor. Avoid nested/utility links.
+                if elem.get('data-testid') != 'LinkClickTriggerLink':
+                    continue
                 # This is a link under the current category
-                text = elem.get_text(strip=True)
+                label = elem.select_one('[data-link-label="true"]')
+                text = label.get_text(' ', strip=True) if label else elem.get('aria-label', '').strip()
                 href = elem.get('href')
                 
                 # Try to find associated image
                 img = elem.find('img')
                 img_url = None
-                if img and img.get('src'):
-                    img_url = img['src']
+                if img:
+                    img_url = img.get('src') or img.get('data-src')
                 
                 if text and href and not href.startswith('#'):
                     categories[current_category].append({
@@ -207,15 +217,32 @@ def find_matching_item(name, items_dict, threshold=0.90):
         if key.lower().strip() == normalized_name:
             return key
 
+    # Fuzzy matching should only rename a record when the best candidate is
+    # clearly better than every alternative. Otherwise a similarly named
+    # product can inherit another product's URL and image.
+    name_tokens = re.findall(r'[a-z]+|\d+', normalized_name)
+    name_numbers = {token for token in name_tokens if token.isdigit()}
+    normalized_name = ''.join(name_tokens)
     best_match = None
     best_score = 0.0
+    runner_up = 0.0
     for key in items_dict:
-        score = SequenceMatcher(None, normalized_name, key.lower().strip()).ratio()
+        key_tokens = re.findall(r'[a-z]+|\d+', key.lower().strip())
+        key_numbers = {token for token in key_tokens if token.isdigit()}
+        # Product/model numbers are identity-bearing. A fuzzy match may not
+        # cross between (for example) Zero 2 and Zero 3 or HD 599 and HD 560.
+        if name_numbers != key_numbers:
+            continue
+        normalized_key = ''.join(key_tokens)
+        score = SequenceMatcher(None, normalized_name, normalized_key).ratio()
         if score >= threshold and score > best_score:
+            runner_up = best_score
             best_score = score
             best_match = key
+        elif score > runner_up:
+            runner_up = score
 
-    return best_match
+    return best_match if best_match and best_score >= max(threshold, 0.94) and best_score - runner_up >= 0.05 else None
 
 def parse_linktree(url):
     """Parse the Linktree page and extract product data organized by category."""
@@ -271,13 +298,20 @@ def parse_product_text(text, url):
     if not text or 'previous' in text.lower() or 'next' in text.lower():
         return None
     
-    leading_price_pattern = r'^\$(\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?(?:-ish)?\s*'
-    price_match = re.match(leading_price_pattern, text)
-    price = int(price_match.group(1).replace(',', '')) if price_match else None
+    price_pattern = r'\$(\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?(?:-ish)?'
+    price_matches = list(re.finditer(price_pattern, text))
+    price = None
+    if price_matches:
+        # Labels normally lead with the price. Linktree/Amazon labels can
+        # append it after the title; accept either edge, never digits inside a name.
+        match = price_matches[0] if price_matches[0].start() <= 1 else price_matches[-1]
+        if not text[:match.start()].strip() or not text[match.end():].strip():
+            price = int(match.group(1).replace(',', ''))
+            text = text[:match.start()] + text[match.end():]
     
     pick = '*B_Media Pick*' in text or 'B_Media Pick' in text
     
-    name = re.sub(leading_price_pattern, '', text)
+    name = text
     name = re.sub(r'\*B_Media Pick\*', '', name)
     name = re.sub(r'\*[^*]+\*', '', name)
     name = name.strip()
@@ -424,6 +458,8 @@ def update_data_js(linktree_data, data_file_path, images_dir):
                     if name_changed:
                         print(f"    Name: {matched_name} → {lt_name}")
                     
+                    # Never replace a valid existing thumbnail just because a
+                    # scraped product name happened to match fuzzily.
                     if not image_exists and lt_item.get('image_url'):
                         print(f"    Image missing, downloading...")
                         safe_name = re.sub(r'[^\w\s-]', '', lt_name).strip().replace(' ', '_')
@@ -431,7 +467,8 @@ def update_data_js(linktree_data, data_file_path, images_dir):
                         ext = '.png' if '.png' in img_url.lower() else '.jpg'
                         image_filename = f"{safe_name}{ext}"
                         image_path = f"images/{image_filename}"
-                        download_image(img_url, os.path.join(images_dir, image_filename))
+                        if download_image(img_url, os.path.join(images_dir, image_filename)):
+                            image_path = f"images/{image_filename}"
                         
                     updated_catalog[item_id] = {
                         'name': lt_name,
@@ -466,7 +503,8 @@ def update_data_js(linktree_data, data_file_path, images_dir):
                     ext = '.png' if '.png' in img_url.lower() else '.jpg'
                     image_filename = f"{safe_name}{ext}"
                     image_path = f"images/{image_filename}"
-                    download_image(img_url, os.path.join(images_dir, image_filename))
+                    if not download_image(img_url, os.path.join(images_dir, image_filename)):
+                        image_path = "images/placeholder.png"
                     
                 updated_catalog[item_id] = {
                     'name': lt_name,
@@ -477,7 +515,8 @@ def update_data_js(linktree_data, data_file_path, images_dir):
                 }
                 catalog_by_name[lt_name] = item_id
                 
-            category_item_ids.append(item_id)
+            if item_id not in category_item_ids:
+                category_item_ids.append(item_id)
             
         updated_relations[category] = category_item_ids
         
