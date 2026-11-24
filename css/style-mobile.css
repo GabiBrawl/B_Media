@@ -387,6 +387,19 @@
 
     .category-intro-hint { font-size: 0.76rem; }
 
+    .category-page-header {
+        grid-template-columns: 1fr auto;
+        gap: 0.6rem;
+        padding-bottom: 0.7rem;
+    }
+    .category-header-left { grid-column: 1; grid-row: 1; }
+    .category-header-middle { grid-column: 1 / -1; grid-row: 2; justify-content: flex-start; }
+    .category-header-right { grid-column: 2; grid-row: 1; }
+    .category-page-title { font-size: 1.25rem; }
+    .category-page-back { padding-inline: 0.7rem; font-size: 0.82rem; }
+    .items.category-page-items > .item .item-image { height: clamp(150px, 48vw, 220px); }
+    .items.category-page-items > .item .item-header { min-height: 4.8rem; }
+
     /* Compact bento spans for mobile */
     .category-options-grid .category:nth-child(1) {
         grid-column: span 2;

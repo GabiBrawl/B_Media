@@ -2541,6 +2541,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </h2>
             </div>
             <div class="category-header-right">
+                <span class="category-product-count">${categoryItems.length} products</span>
             </div>
         `;
         filteredChildren.push(categoryHeader);

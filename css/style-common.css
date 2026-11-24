@@ -2513,6 +2513,43 @@ body.has-open-modal { overflow: hidden; }
     *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
 }
 
+/* Product listing polish: show more of each product and keep card rhythm. */
+.category-page-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 1rem;
+    padding: 0.25rem 0 0.85rem;
+    border-bottom: 1px solid #302d32;
+}
+.category-header-left { justify-content: flex-start; }
+.category-header-middle { justify-content: center; }
+.category-header-right { display: flex; justify-content: flex-end; }
+.category-page-title { gap: 0.55rem; font-size: clamp(1.25rem, 1.7vw, 1.65rem); letter-spacing: -0.03em; }
+.category-page-title-icon { width: 25px; height: 25px; color: var(--accent-text); }
+.category-product-count {
+    padding: 0.38rem 0.65rem;
+    color: #d9d2d8;
+    background: #211e21;
+    border: 1px solid #3c353c;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+}
+.category-page-back { min-height: 40px; padding-inline: 0.85rem; }
+.items.category-page-items { align-items: stretch; gap: clamp(0.8rem, 1.2vw, 1.2rem); }
+.items.category-page-items > .item { min-width: 0; }
+.items.category-page-items > .item .item-image {
+    height: clamp(190px, 20vw, 270px);
+    object-fit: cover;
+    transform: none;
+}
+.items.category-page-items > .item:hover .item-image { transform: scale(1.025); }
+.items.category-page-items > .item .item-header { min-height: 5.4rem; }
+.items.category-page-items > .item h3 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.items.category-page-items > .item .pick-badge { max-width: calc(100% - 1rem); white-space: nowrap; }
+.category-page-items .item .item-buttons-product { font-size: 0.86rem; letter-spacing: 0.01em; }
+
 /* Give the sidebar a clear order: search, filters, layout, then saved items. */
 .sidebar .sidebar-section { padding: 1rem 0.85rem; }
 .sidebar .sidebar-section.filter-section { background: #141314; }
