@@ -182,8 +182,9 @@ main {
 .category-options-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 0.6rem;
-    grid-auto-rows: 130px;
+    gap: 0.75rem;
+    grid-auto-rows: clamp(108px, 10vw, 140px);
+    grid-auto-flow: dense;
     align-items: stretch;
 }
 
@@ -243,7 +244,7 @@ main {
 
 
 .category-options-grid .category:nth-child(11) {
-    grid-column: span 5;
+    grid-column: span 2;
     grid-row: span 1;
 }
 
@@ -268,7 +269,9 @@ main {
     border-radius: var(--radius-md);
     padding: 0.55rem;
     cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.045);
+    background: linear-gradient(145deg, #242224, #1c1b1d);
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
     text-align: left;
     height: 100%;
     aspect-ratio: auto;
@@ -276,7 +279,17 @@ main {
 }
 
 .category-toggle-btn:hover {
-    background: var(--accent-bg);
+    background: linear-gradient(145deg, #2a2224, #211d20);
+    border-color: #80504c;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2);
+}
+.category-toggle-btn:focus-visible {
+    position: relative;
+    z-index: 1;
+    outline-offset: 3px;
+}
+.category-toggle-btn:hover .category-toggle-svg {
+    color: var(--accent-text);
 }
 
 .category-toggle-content {
@@ -334,6 +347,51 @@ main {
     color: var(--medium-text);
     line-height: 1;
 }
+
+.category-intro {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0 0 1.1rem;
+}
+.category-intro-eyebrow {
+    margin: 0 0 0.3rem;
+    color: var(--accent-text);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+.category-intro h1 {
+    margin: 0;
+    color: var(--light-text);
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+    letter-spacing: -0.04em;
+}
+.category-intro-hint {
+    margin: 0 0 0.12rem;
+    color: var(--medium-text);
+    font-size: 0.82rem;
+}
+
+/* The bento cards share a stable alignment while keeping deliberate spans. */
+.category-options-grid .category { min-width: 0; }
+.category-options-grid .category:nth-child(1) .category-toggle-content {
+    justify-content: flex-start;
+    align-items: center;
+    padding: clamp(0.75rem, 2vw, 2rem);
+}
+.category-options-grid .category:nth-child(1) .category-toggle-svg { width: 44px; height: 44px; flex-basis: 44px; }
+.category-options-grid .category:nth-child(1) .category-toggle-label { font-size: clamp(1rem, 1.25vw, 1.3rem); }
+.category-options-grid .category:nth-child(4) .category-toggle-content {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.category-options-grid .category:nth-child(4) .category-toggle-svg { width: 32px; height: 32px; flex-basis: 32px; }
+.category-options-grid .category:nth-child(11) .category-toggle-content { padding-inline: 1rem; }
+.category-toggle-text { overflow-wrap: anywhere; }
 
 .category-page-header {
     margin-bottom: 1.5rem;
@@ -2454,3 +2512,28 @@ body.has-open-modal { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
 }
+
+/* Give the sidebar a clear order: search, filters, layout, then saved items. */
+.sidebar .sidebar-section { padding: 1rem 0.85rem; }
+.sidebar .sidebar-section.filter-section { background: #141314; }
+.sidebar .sidebar-section .section-header { margin-bottom: 0.8rem; }
+.sidebar .sidebar-section .section-header h3 { font-size: 0.74rem; letter-spacing: 0.11em; }
+.sidebar .filter-controls { gap: 1rem; }
+.sidebar .filter-item label:not(.checkbox-label) { margin-bottom: 0.45rem; color: #c7c3c9; font-size: 0.7rem; letter-spacing: 0.08em; }
+.sidebar .search-box input { min-height: 48px; border-color: #343139; background: #1c1b1d; }
+.sidebar .search-box input::placeholder { color: #89848e; }
+.sidebar .view-mode-section { padding-top: 0.8rem; padding-bottom: 0.9rem; }
+.sidebar .view-mode-section .section-header { margin-bottom: 0.55rem; }
+.sidebar .sidebar-view-mode-toggle { width: 100%; margin: 0; padding: 0.7rem 0.8rem; text-align: left; border-color: #38343b; background: #1c1b1d; color: #d7d2d9; font-size: 0.82rem; }
+.sidebar .sidebar-view-mode-toggle:hover { border-color: #80504c; color: #fff; }
+.sidebar .wishlist-btn { background: #2b2528; border: 1px solid #44383e; color: #f0dadd; }
+.sidebar .wishlist-btn:hover { background: #3b292e; border-color: #68434d; }
+.sidebar .share-btn { background: transparent; border: 1px solid #343139; }
+.sidebar .social-links { gap: 0.45rem; }
+.sidebar .social-row { gap: 0.45rem; }
+.sidebar .social-row a { min-height: 48px; padding: 0.55rem; background: transparent; }
+.sidebar .social-links svg { width: 21px; height: 21px; }
+.sidebar .sidebar-footer { padding: 0.8rem 0.85rem; }
+.sidebar .sidebar-footer p { margin-bottom: 0.55rem; line-height: 1.5; }
+.sidebar .sidebar-footer .last-updated { margin-bottom: 0.55rem; }
+.view-mode-bar { display: none !important; }

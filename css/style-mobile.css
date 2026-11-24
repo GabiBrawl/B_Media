@@ -378,6 +378,15 @@
         grid-auto-rows: 105px;
     }
 
+    .category-intro {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.25rem;
+        margin: 0.35rem 0 0.8rem;
+    }
+
+    .category-intro-hint { font-size: 0.76rem; }
+
     /* Compact bento spans for mobile */
     .category-options-grid .category:nth-child(1) {
         grid-column: span 2;

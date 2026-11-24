@@ -1904,6 +1904,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (viewToggleBtn) {
             e.preventDefault();
             currentViewMode = currentViewMode === 'category' ? 'classic' : 'category';
+            document.querySelectorAll('.sidebar-view-mode-toggle, #view-mode-toggle-mobile, .view-mode-bar button').forEach(button => {
+                button.textContent = getViewModeToggleButtonText();
+            });
             if (currentViewMode === 'classic') {
                 activeCategoryPage = null;
             }
@@ -2273,7 +2276,7 @@ document.addEventListener('DOMContentLoaded', function() {
         viewBar.className = 'view-mode-bar';
         const buttonText = getViewModeToggleButtonText();
 
-        viewBar.innerHTML = `<button id="view-mode-toggle" class="view-mode-toggle-btn">${buttonText}</button>`;
+        viewBar.innerHTML = `<button type="button" class="view-mode-toggle-btn">${buttonText}</button>`;
         updateFilterVisibility();
         return viewBar;
     }
@@ -2313,6 +2316,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (mobileToggleButton) {
             mobileToggleButton.textContent = getViewModeToggleButtonText();
         }
+        const sidebarToggle = document.querySelector('.sidebar-view-mode-toggle');
+        if (sidebarToggle) sidebarToggle.textContent = getViewModeToggleButtonText();
     }
 
     function createMobileSocialLinksElement() {
@@ -2416,6 +2421,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const showCounts = true;
+        const categoryIntro = document.createElement('section');
+        categoryIntro.className = 'category-intro';
+        categoryIntro.setAttribute('aria-labelledby', 'category-intro-title');
+        categoryIntro.innerHTML = `
+            <div>
+                <p class="category-intro-eyebrow">B_Media recommendations</p>
+                <h1 id="category-intro-title">Explore by category</h1>
+            </div>
+            <p class="category-intro-hint">Choose a category to browse the gear</p>
+        `;
+        children.push(categoryIntro);
         const optionsGrid = document.createElement('div');
         optionsGrid.className = 'category-options-grid';
 
@@ -2428,7 +2444,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const categoryIcon = getCategoryIconSvg(categoryName);
 
             categoryDiv.innerHTML = `
-                <button class="category-toggle-btn" data-category="${categoryName}">
+                <button type="button" class="category-toggle-btn" data-category="${categoryName}" aria-label="Browse ${categoryName}, ${items.length} items">
                     <span class="category-toggle-content">
                         <span class="category-toggle-svg">${categoryIcon}</span>
                         <span class="category-toggle-text">
